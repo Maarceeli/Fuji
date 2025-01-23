@@ -3,7 +3,7 @@ import flet as ft
 def main(page: ft.Page):
     page.title = "Fuji"
     page.theme = ft.Theme(color_scheme_seed=ft.Colors.RED)
-
+    
     def changePage(index):
         pages = [
             # Home page
@@ -12,8 +12,20 @@ def main(page: ft.Page):
                 ft.Text("\n", size=30, weight="bold"),
                 ft.Container(
                     content=ft.Column([
-                        ft.Text("Timetable", size=16, font_family="Roboto", weight="bold"),
-                    ]),
+                        ft.Row([
+                            ft.Icon(ft.Icons.LOOKS_6_OUTLINED, size=32, color="#FFFFFF"),
+                            ft.Text("Timetable", size=24, font_family="Roboto", weight="bold")
+                            ]),
+                        ft.ListView(
+                            controls=[
+                                ft.Text("1. Lorem ipsum\n2. Lorem ipsum\n3. Lorem ipsum\n4. Im curious what happens if i ran out of space\n5. It just creates a new line\n6. No idea why i tested that\n7. I also want to test what happens if there is too much lines\n8. Lorem ipsum\n9. Yay now you can scroll\n10. Looks like dogshit but it works\n11. Simi simi jej simi jaj", size=16, weight="normal")
+                            ],
+                            expand=True,
+                            spacing=10,
+                            padding=10,
+                            auto_scroll=False
+                        )
+                    ]), 
                     margin=20,
                     padding=10,
                     alignment=ft.alignment.top_left,
@@ -26,37 +38,37 @@ def main(page: ft.Page):
             
             # Grades page
             ft.Column([
-                ft.Text("Grades", size=30, weight="bold"),
+                ft.Text("  Grades", size=30, weight="bold"),
             ]),
 
             # Timetable page
             ft.Column([
-                ft.Text("Timetable", size=30, weight="bold"),
+                ft.Text("  Timetable", size=30, weight="bold"),
             ]),
 
             # Homework page
             ft.Column([
-                ft.Text("Homework", size=30, weight="bold"),
+                ft.Text("  Homework", size=30, weight="bold"),
             ]),
 
             # Exams page
             ft.Column([
-                ft.Text("Exams", size=30, weight="bold"),
+                ft.Text("  Exams", size=30, weight="bold"),
             ]),
 
             # Attendance page
             ft.Column([
-                ft.Text("Attendance", size=30, weight="bold"),
+                ft.Text("  Attendance", size=30, weight="bold"),
             ]),
 
             # Behaviour page
             ft.Column([
-                ft.Text("Behaviour Notes", size=30, weight="bold"),
+                ft.Text("  Behaviour Notes", size=30, weight="bold"),
             ]),
 
             # Settings page
             ft.Column([
-                ft.Text("Settings", size=30, weight="bold"),
+                ft.Text("  Settings", size=30, weight="bold"),
             ]),
         ]
         return pages[index]
