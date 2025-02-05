@@ -1,5 +1,5 @@
 from impl.hebece.src.api import *
-from impl.hebece.src.sdkmain import *
+from impl.hebece.src.parser import *
 from impl.hebece.src.utils import *
 from impl.hebece.src.signer import *
 

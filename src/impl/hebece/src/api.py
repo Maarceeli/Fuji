@@ -16,6 +16,17 @@ def getDebugInfo(data):
     message = status.get("Message")
     return code, message
 
+def makeRequest(url):
+    digest, canonical_url, signature = get_signature_values(fingerprint, private_key, body=None, full_url=url, timestamp=datetime.now())
+
+    headers = makeHeader(signature, canonical_url)
+
+    response = requests.get(url, headers=headers)
+    content = response.text
+
+    dinfo = getDebugInfo(content)
+    return content, dinfo
+
 def APILogin(login, password):
     
     url = "https://eduvulcan.pl/"
@@ -111,82 +122,31 @@ def JWTLogin(token, debug=False):
 
 def HEBELogin(tenant, debug=False):
     url = f"https://lekcjaplus.vulcan.net.pl/{tenant}{HEBE}?mode=2&lastSyncDate=1970-01-01%2001%3A00%3A00"
-    
-    digest, canonical_url, signature = get_signature_values(fingerprint, private_key, body=None, full_url=url, timestamp=datetime.now())
-
-    headers = makeHeader(signature, canonical_url)
-
-    response = requests.get(url, headers=headers)
-    content = response.text
-
-    if debug:
-        dinfo = getDebugInfo(content)
-        return content, dinfo
-    
-    return content
+    content, dinfo = makeRequest(url)
+    return content, dinfo
 
 def getLuckyNumber(tenant, schoolid, pupilid, constituentid, debug=False):
     timestamp = datetime.now()
     date = timestamp.strftime("%Y-%m-%d")
     
     url = f"https://lekcjaplus.vulcan.net.pl/{tenant}/{schoolid}{LUCKY}?pupilId={pupilid}&constituentId={constituentid}&day={date}"
-    
-    digest, canonical_url, signature = get_signature_values(fingerprint, private_key, body=None, full_url=url, timestamp=datetime.now())
-    headers = makeHeader(signature, canonical_url)
-
-    response = requests.get(url, headers=headers)
-    content = response.text
-
-    if debug:
-        dinfo = getDebugInfo(content)
-        return content, dinfo
-    
-    return content
+    content, dinfo = makeRequest(url)
+    return content, dinfo
 
 def getGrades(tenant, schoolid, pupilid, unitid, periodid, debug=False):
     url = f"https://lekcjaplus.vulcan.net.pl/{tenant}/{schoolid}/api/mobile/grade/byPupil?unitId={unitid}&pupilId={pupilid}&periodId={periodid}&lastSyncDate=1970-01-01%2001%3A00%3A00&lastId=-2147483648&pageSize=500"
 
-    digest, canonical_url, signature = get_signature_values(fingerprint, private_key, body=None, full_url=url, timestamp=datetime.now())
-    
-    headers = makeHeader(signature, canonical_url)
-
-    response = requests.get(url, headers=headers)
-    content = response.text
-
-
-    if debug:
-        dinfo = getDebugInfo(content)
-        return content, dinfo
-
-    return content
+    content, dinfo = makeRequest(url)
+    return content, dinfo
 
 def getTimetable(tenant, schoolid, pupilid, start_date, end_date, debug=False):
     url = f"https://lekcjaplus.vulcan.net.pl/{tenant}/{schoolid}/api/mobile/schedule/withchanges/byPupil?pupilId={pupilid}&dateFrom={start_date}&dateTo={end_date}&lastId=-2147483648&pageSize=500&lastSyncDate=1970-01-01%2001%3A00%3A00"
     
-    digest, canonical_url, signature = get_signature_values(fingerprint, private_key, body=None, full_url=url, timestamp=datetime.now())
-
-    headers = makeHeader(signature, canonical_url)
-
-    response = requests.get(url, headers=headers)
-    content = response.text
-
-    if debug:
-        dinfo = getDebugInfo(content)
-        return content, dinfo
-
-    return content
+    content, dinfo = makeRequest(url)
+    return content, dinfo
 
 def getExams(tenant, schoolid, pupilid, start_date, end_date, debug=False):
     url = f"https://lekcjaplus.vulcan.net.pl/{tenant}/{schoolid}/api/mobile/exam/byPupil?pupilId={pupilid}&dateFrom={start_date}&dateTo={end_date}&lastId=-2147483648&pageSize=500&lastSyncDate=1970-01-01%2001%3A00%3A00"
     
-    digest, canonical_url, signature = get_signature_values(fingerprint, private_key, body=None, full_url=url, timestamp=datetime.now())
-    
-    headers = makeHeader(signature, canonical_url)
-    response = requests.get(url, headers=headers)
-    content = response.text
-
-    if debug:
-        dinfo = getDebugInfo(content)
-        return content, dinfo
-
-    return content
+    content, dinfo = makeRequest(url)
+    return content, dinfo
