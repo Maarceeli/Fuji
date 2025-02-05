@@ -5,10 +5,9 @@ import hashlib
 import sqlite3
 import os
 import base64
-from signer import *
-from utils import *
-from sqlite import *
-from api import *
+from impl.hebece.src.signer import *
+from impl.hebece.src.utils import *
+from impl.hebece.src.api import *
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 
@@ -65,13 +64,9 @@ if __name__ == '__main__':
     print(f"Lucky number: {LuckyNumber}")
 
     content, dinfoGRADE = getGrades(tenant=tenant, schoolid=SchoolID, pupilid=PupilID, unitid=UnitID, periodid=PeriodID, debug=debug)
-    ImportGradesToSQLite(content)
-    print("Grades imported to SQLite database")
 
     response, dinfoTIME = getTimetable(tenant=tenant, schoolid=SchoolID, pupilid=PupilID, start_date=start_date, end_date=end_date, debug=debug)
     
-    ImportTimetableToSQLite(response)
-    print("Timetable imported to SQLite database")
 
     r = getTimetableForDay(day=today)
     print(f"\nLessons for {today}:")

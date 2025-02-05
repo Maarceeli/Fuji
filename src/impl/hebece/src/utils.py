@@ -28,12 +28,6 @@ def get_tenant_from_jwt(token):
         print(f"Error decoding JWT: {e}")
         return None
 
-def getCurrentTimestamp():
-    now = datetime.now()
-    Timestamp = int(now.timestamp())
-
-    return Timestamp
-
 def getRandomIdentifier():
     ruuid = str(uuid.uuid4())
 
@@ -49,3 +43,12 @@ def get_current_week():
 
     # Return the dates as formatted strings
     return start_of_week.strftime('%Y-%m-%d'), end_of_week.strftime('%Y-%m-%d')
+
+def getDate():
+    return datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
+
+def getTimestamp():
+    now = datetime.now()
+    Timestamp = now.timestamp()
+
+    return Timestamp
