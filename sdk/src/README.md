@@ -28,7 +28,7 @@ from sdk.src.interfaces.prometheus.context import (
 )
 from sdk.src.interfaces.prometheus.interface import PrometheusInterface
 
-# Tworzymy interfejs prometeuszowy interfejs
+# Tworzymy instancję prometeuszowego interfejsu
 interface = PrometheusInterface(
     # Auth context, o tym więcej niżej
     auth_context=PrometheusAuthContext(
