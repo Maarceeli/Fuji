@@ -147,7 +147,7 @@ class PrometheusInterface(CoreInterface):
             self._hebe_client.set_rest_url(get_hebe_url(symbol))
             self._hebe_client.register_jwt(symbols[symbol])
 
-        self._auth_context.symbols = symbols.keys()
+        self._auth_context.symbols = list(symbols.keys())
 
     def _login_efeb(self):
         if not self._auth_context.efeb_web_cookies:
@@ -254,3 +254,8 @@ class PrometheusInterface(CoreInterface):
         self._check_is_auth_context_full()
         self._check_is_student_selected()
         return self._hebe_client.get_exams(self._student_context.student_id, from_, to)
+
+    def get_notes(self):
+        self._check_is_auth_context_full()
+        self._check_is_student_selected()
+        return self._hebe_client.get_notes(self._student_context.student_id)

@@ -15,6 +15,7 @@ from sdk.src.apis.hebe.constants import (
     ENDPOINT_EXAM_BYPUPIL,
     ENDPOINT_GRADE_BYPUPIL,
     ENDPOINT_HEARTBEAT,
+    ENDPOINT_NOTE_BYPUPIL,
     ENDPOINT_REGISTER_HEBE,
     ENDPOINT_REGISTER_JWT,
     ENDPOINT_REGISTER_TOKEN,
@@ -37,6 +38,7 @@ from sdk.src.apis.hebe.student import HebeStudent
 from sdk.src.apis.hebe.signer import get_signature_values
 from sdk.src.models.exam import Exam
 from sdk.src.models.grade import Grade
+from sdk.src.models.note import Note
 
 
 class HebeClient:
@@ -199,3 +201,9 @@ class HebeClient:
             },
         )
         return list(map(Exam.from_hebe_dict, envelope))
+
+    def get_notes(self, student_id: int):
+        envelope = self._send_request(
+            "GET", ENDPOINT_NOTE_BYPUPIL, params={"pupilId": student_id}
+        )
+        return list(map(Note.from_hebe_dict, envelope))
