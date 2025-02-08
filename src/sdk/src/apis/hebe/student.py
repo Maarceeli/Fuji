@@ -1,9 +1,7 @@
-from dataclasses import dataclass
 from datetime import date
+from pydantic import BaseModel
 
-
-@dataclass
-class HebePeriod:
+class HebePeriod(BaseModel):
     id: int
     number: int
     current: bool
@@ -21,8 +19,7 @@ class HebePeriod:
         )
 
 
-@dataclass
-class HebeStudent:
+class HebeStudent(BaseModel):
     id: int
     full_name: str
     unit_id: int

@@ -1,6 +1,7 @@
-from dataclasses import dataclass
 from datetime import date, datetime
 from enum import Enum
+
+from pydantic import BaseModel
 
 
 class ExamType(Enum):
@@ -22,8 +23,7 @@ class ExamType(Enum):
                 return ExamType.OTHER
 
 
-@dataclass
-class Exam:
+class Exam(BaseModel):
     deadline: date
     subject: str
     type: ExamType

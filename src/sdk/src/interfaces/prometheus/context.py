@@ -1,12 +1,11 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 from sdk.src.apis.hebe import HebeCertificate
 from sdk.src.apis.hebe.student import HebeStudent
 from sdk.src.interfaces.prometheus.utils import get_context_periods_from_hebe_periods
 
 
-@dataclass
-class PrometheusStudentContext:
+class PrometheusStudentContext(BaseModel):
     student_id: int
     unit_id: int
     constituent_id: int
@@ -32,16 +31,14 @@ class PrometheusStudentContext:
         )
 
 
-@dataclass
-class PrometheusWebCredentials:
+class PrometheusWebCredentials(BaseModel):
     username: str
     password: str
 
 
-@dataclass
-class PrometheusAuthContext:
+class PrometheusAuthContext(BaseModel):
     prometheus_web_credentials: PrometheusWebCredentials
     symbols: list[str] | None = None
     hebe_certificate: HebeCertificate | None = None
     prometheus_web_cookies: dict[str, str] | None = None
-    efeb_web_cookies: dict[str, str | None] | None = None
+    efeb_web_cookies: dict[str, dict[str, str] | None] | None = None

@@ -1,9 +1,9 @@
-from dataclasses import dataclass
 from datetime import datetime
 
+from pydantic import BaseModel
 
-@dataclass
-class Grade:
+
+class Grade(BaseModel):
     value: str
     is_point: bool
     point_numerator: int

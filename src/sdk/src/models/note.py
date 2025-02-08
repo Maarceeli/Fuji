@@ -1,9 +1,8 @@
-from dataclasses import dataclass
 from datetime import datetime
+from pydantic import BaseModel
 
 
-@dataclass
-class Note:
+class Note(BaseModel):
     name: str | None
     content: str
     points: str | None

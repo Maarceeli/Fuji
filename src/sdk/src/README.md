@@ -92,6 +92,70 @@ No możesz pobrać na przykład oceny, możesz to zrobić (gdy jesteś zalogowan
 grades = interface.get_grades(<numer semestru>)
 ```
 
+### Serializacja i wczytywanie danych
+
+SDK używa modeli pydanic, nie są to zwykłe dict'y czy JSON.
+
+#### Dict
+
+`Model -> dict`
+
+```py
+model.model_dump()
+```
+
+`dict -> model`
+
+```py
+model.model_validate()
+```
+
+#### Lista dictów
+
+`list[Model] -> list[dict]`
+
+```py
+ModelList = pydantic.TypeAdapter(list[Model])
+lista_dictow = ModelList.dump_python(lista_modeli)
+```
+
+`list[dict] -> list[Model]`
+
+```py
+ModelList = pydantic.TypeAdapter(list[Model])
+lista_modeli = ModelList.validate_python(lista_dictow)
+```
+
+#### JSON (pojedyńczy obiekt)
+
+`Model -> str`
+
+```py
+Model.model_dump_json()
+```
+
+`str -> model`
+
+```py
+Model.model_validate_json()
+```
+
+#### JSON (lista)
+
+`list[Model] -> str`
+
+```py
+ModelList = pydantic.TypeAdapter(list[Model])
+json_ = ModelList.dump_json(lista_modeli)
+```
+
+`str -> list[Model]`
+
+```py
+ModelList = pydantic.TypeAdapter(list[Model])
+lista_modeli = ModelList.validate_json(json_)
+```
+
 ## Jak dodawać funkcjonalności:
 
 1. Zrób model(e) do danych, nie dawaj zbyt dużo danych, bo pamiętaj, że ma być to uniwersalny model dla wielu dzienników.
@@ -122,8 +186,7 @@ class ExamType(Enum):
                 return ExamType.OTHER
 
 
-@dataclass
-class Exam:
+class Exam(BaseModel):
     deadline: date
     subject: str
     type: ExamType

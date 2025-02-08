@@ -1,6 +1,7 @@
 from datetime import date
 from sdk.src.models.exam import Exam
 from sdk.src.models.grade import Grade
+from sdk.src.models.note import Note
 from sdk.src.models.student import Student
 
 
@@ -21,4 +22,7 @@ class CoreInterface:
         pass
 
     def get_exams(from_: date, to: date) -> list[Exam]:
+        pass
+
+    def get_notes() -> list[Note]:
         pass

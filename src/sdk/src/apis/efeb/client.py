@@ -1,4 +1,3 @@
-import dataclasses
 import requests
 
 from sdk.src.apis.common.models import FsLsResponse, FsLsQuery
@@ -33,9 +32,9 @@ class EfebClient:
             method="POST" if prometheus_response else "GET",
             url=f"{BASE_LOGIN}/{self._symbol}/{ENDPOINT_LOGIN_FS_LS}",
             data=(
-                dataclasses.asdict(prometheus_response) if prometheus_response else None
+                dict(prometheus_response) if prometheus_response else None
             ),
-            params=dataclasses.asdict(query),
+            params=dict(query),
         )
         return parse_fs_ls_response_form(response.text)
 
@@ -43,7 +42,7 @@ class EfebClient:
         response = self._session.request(
             method="POST" if login_response else "GET",
             url=f"{BASE_STUDENT_CE if self._is_ce else BASE_STUDENT}/{self._symbol}/{ENDPOINT_STUDENT_APP}",
-            data=dataclasses.asdict(login_response) if login_response else None,
+            data=dict(login_response) if login_response else None,
         )
         return parse_app_html(response.text)
 
@@ -51,6 +50,6 @@ class EfebClient:
         response = self._session.request(
             method="POST" if login_response else "GET",
             url=f"{BASE_MESSAGES_CE if self._is_ce else BASE_MESSAGES}/{self._symbol}/{ENDPOINT_MESSAGES_APP}",
-            data=dataclasses.asdict(login_response) if login_response else None,
+            data=dict(login_response) if login_response else None,
         )
         return parse_app_html(response.text)

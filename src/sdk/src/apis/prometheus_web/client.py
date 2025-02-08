@@ -1,4 +1,3 @@
-import dataclasses
 import json
 from bs4 import BeautifulSoup
 import requests
@@ -97,7 +96,7 @@ class PrometheusWebClient:
     def fs_ls(self, query: FsLsQuery):
         response = self._session.get(
             f"{PROMETHEUS_WEB_BASE}/{ENDPOINT_FS_LS}",
-            params=dataclasses.asdict(query),
+            params=dict(query),
         )
 
         if "Logowanie" in response.text:

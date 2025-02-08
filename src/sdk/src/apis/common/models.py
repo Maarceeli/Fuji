@@ -1,15 +1,13 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass
-class FsLsQuery:
+class FsLsQuery(BaseModel):
     wa: str
     wtrealm: str
     wctx: str
 
 
-@dataclass
-class FsLsResponse:
+class FsLsResponse(BaseModel):
     wa: str
     wresult: str
     wctx: str

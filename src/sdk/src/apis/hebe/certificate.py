@@ -1,9 +1,8 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 from sdk.src.apis.hebe.signer import generate_key_pair
 
 
-@dataclass
-class Certificate:
+class Certificate(BaseModel):
     certificate: str
     fingerprint: str
     private_key: str
@@ -12,4 +11,4 @@ class Certificate:
     @staticmethod
     def generate():
         certificate, fingerprint, private_key = generate_key_pair()
-        return Certificate(certificate, fingerprint, private_key, "X509")
+        return Certificate(certificate=certificate, fingerprint=fingerprint, private_key=private_key, type="X509")

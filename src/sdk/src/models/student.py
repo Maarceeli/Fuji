@@ -1,12 +1,12 @@
-from dataclasses import dataclass
 from datetime import date
 from typing import Generic, TypeVar
+
+from pydantic import BaseModel
 
 from sdk.src.apis.hebe.student import HebePeriod, HebeStudent
 
 
-@dataclass
-class Period:
+class Period(BaseModel):
     id: int
     number: int
     current: bool
@@ -27,8 +27,7 @@ class Period:
 T = TypeVar("T")
 
 
-@dataclass
-class Student(Generic[T]):
+class Student(BaseModel, Generic[T]):
     full_name: str
     is_parent: bool
     class_name: str
