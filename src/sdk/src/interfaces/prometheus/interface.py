@@ -75,6 +75,10 @@ class PrometheusInterface(CoreInterface):
             result = self._login_prometheus(captcha)
             if result:
                 return result
+            self._efeb_clients = {}
+            self._auth_context.efeb_web_cookies = {}
+            self._efeb_student_vars = {}
+            self._efeb_messages_vars = {}
 
         self._auth_context.prometheus_web_cookies = (
             self._prometheus_web_client.get_cookies()
