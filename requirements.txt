@@ -1,0 +1,6 @@
+beautifulsoup4
+cryptography
+flet
+pydantic
+pyOpenSSL
+Requests
