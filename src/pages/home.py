@@ -1,12 +1,5 @@
 import flet as ft
-
-grade1 = "#F44336"
-grade2 = "#FF9800"
-grade3 = "#eebd00"
-grade4 = "#4CAF50"
-grade5 = "#2196F3"
-grade6 = "#9C27B0"
-gradeother = "#5D5D5D"
+from vars import *
 
 def HomePage():
     return ft.Column([
@@ -32,7 +25,7 @@ def HomePage():
                     margin=20,
                     padding=10,
                     alignment=ft.alignment.top_left,
-                    bgcolor='#271D1C',
+                    bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST,
                     width=420,
                     height=270,
                     border_radius=10,
@@ -53,7 +46,7 @@ def HomePage():
                                         margin=0,
                                         padding=0,
                                         alignment=ft.alignment.center,
-                                        bgcolor=grade6,
+                                        bgcolor=grade[6],
                                         width=20,
                                         height=20,
                                         border_radius=5,
@@ -63,7 +56,7 @@ def HomePage():
                                         margin=0,
                                         padding=0,
                                         alignment=ft.alignment.center,
-                                        bgcolor=grade5,
+                                        bgcolor=grade[5],
                                         width=20,
                                         height=20,
                                         border_radius=5,
@@ -73,7 +66,7 @@ def HomePage():
                                         margin=0,
                                         padding=0,
                                         alignment=ft.alignment.center,
-                                        bgcolor=grade4,
+                                        bgcolor=grade[4],
                                         width=20,
                                         height=20,
                                         border_radius=5,
@@ -83,7 +76,7 @@ def HomePage():
                                         margin=0,
                                         padding=0,
                                         alignment=ft.alignment.center,
-                                        bgcolor=grade3,
+                                        bgcolor=grade[3],
                                         width=20,
                                         height=20,
                                         border_radius=5,
@@ -93,7 +86,7 @@ def HomePage():
                                         margin=0,
                                         padding=0,
                                         alignment=ft.alignment.center,
-                                        bgcolor=grade2,
+                                        bgcolor=grade[2],
                                         width=20,
                                         height=20,
                                         border_radius=5,
@@ -103,7 +96,7 @@ def HomePage():
                                         margin=0,
                                         padding=0,
                                         alignment=ft.alignment.center,
-                                        bgcolor=grade1,
+                                        bgcolor=grade[1],
                                         width=20,
                                         height=20,
                                         border_radius=5,
@@ -119,7 +112,7 @@ def HomePage():
                     margin=20,
                     padding=10,
                     alignment=ft.alignment.top_left,
-                    bgcolor='#271D1C',
+                    bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST,
                     width=420,
                     height=270,
                     border_radius=10,

@@ -1,9 +1,10 @@
 import flet as ft
+import json
 from pages.home import *
 
 def main(page: ft.Page):
     page.title = "Fuji"
-    page.theme = ft.Theme(color_scheme_seed=ft.Colors.RED)
+    page.theme = ft.Theme(color_scheme_seed=ft.Colors.RED, font_family="Roboto")
     
     def changePage(index):
         pages = [
@@ -105,4 +106,44 @@ def main(page: ft.Page):
         )
     )
 
-ft.app(main)
+def login(page: ft.Page):
+    page.title = "Log in"
+    page.theme = ft.Theme(color_scheme_seed=ft.Colors.RED, font_family="Roboto")
+
+    loginpage = ft.Container(
+        content=ft.Column(
+            [
+                ft.Image(
+                src="https://i.imgur.com/t49tb4d.png",
+                width=200,
+                height=200,
+                fit=ft.ImageFit.NONE,
+                repeat=ft.ImageRepeat.NO_REPEAT,
+                border_radius=ft.border_radius.all(100)),
+
+                ft.Text(value="Welcome to Fuji!", size=48)
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,  # Center text vertically in Column
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,  # Center text horizontally
+        ),
+        alignment=ft.alignment.center,  # Center the entire container on the page
+        expand=True,  # Allow the container to take full page size
+    )
+    
+    page.add(loginpage)
+    page.update()
+
+    
+if __name__ == "__main__":
+    try:
+        with open("config.json", "r") as file:
+            data = json.load(file)
+        if data.get("isLoggedIn", False):
+            ft.app(target=main)
+        else:
+            ft.app(target=login)
+    except FileNotFoundError:
+        config = {"isLoggedIn": False}
+        with open("config.json", "w") as file:
+            json.dump(config, file)
+        ft.app(target=login)
