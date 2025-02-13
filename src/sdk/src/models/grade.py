@@ -6,8 +6,8 @@ from pydantic import BaseModel
 class Grade(BaseModel):
     value: str
     is_point: bool
-    point_numerator: int
-    point_denominator: int
+    point_numerator: int | None
+    point_denominator: int | None
     weight: float
     name: str
     created_at: datetime
