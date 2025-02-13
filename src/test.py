@@ -33,11 +33,12 @@ else:
         pickle.dump(auth_context, file)
 
 students = interface.get_students()
+print(students)
 
 # Select the first student and fetch grades
 if students:
     interface.select_student(students[0].context)
-    grades = interface.get_grades(2)
+    grades = interface.get_grades(int(1))
     print(grades)
 else:
     print("No students found.")

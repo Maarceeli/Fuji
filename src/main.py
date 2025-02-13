@@ -1,11 +1,25 @@
 import flet as ft
 import json
+import keyring
+import pickle
+import base64
 from pages.home import *
+from sdk.src.interfaces.prometheus.context import *
+from sdk.src.interfaces.prometheus.interface import *
 
 def main(page: ft.Page):
     page.title = "Fuji"
-    page.theme = ft.Theme(color_scheme_seed=ft.Colors.RED, font_family="Roboto")
-    
+    page.theme = ft.Theme(
+    color_scheme_seed=ft.Colors.RED,
+    font_family="Roboto",
+    page_transitions=ft.PageTransitionsTheme(
+        android=ft.PageTransitionTheme.PREDICTIVE,
+        ios=ft.PageTransitionTheme.PREDICTIVE,
+        macos=ft.PageTransitionTheme.PREDICTIVE,
+        linux=ft.PageTransitionTheme.PREDICTIVE,
+        windows=ft.PageTransitionTheme.PREDICTIVE
+        )
+    )
     def changePage(index):
         pages = [
             # Home page
@@ -108,30 +122,204 @@ def main(page: ft.Page):
 
 def login(page: ft.Page):
     page.title = "Log in"
-    page.theme = ft.Theme(color_scheme_seed=ft.Colors.RED, font_family="Roboto")
-
-    loginpage = ft.Container(
-        content=ft.Column(
-            [
-                ft.Image(
-                src="https://i.imgur.com/t49tb4d.png",
-                width=200,
-                height=200,
-                fit=ft.ImageFit.NONE,
-                repeat=ft.ImageRepeat.NO_REPEAT,
-                border_radius=ft.border_radius.all(100)),
-
-                ft.Text(value="Welcome to Fuji!", size=48)
-            ],
-            alignment=ft.MainAxisAlignment.CENTER,  # Center text vertically in Column
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,  # Center text horizontally
-        ),
-        alignment=ft.alignment.center,  # Center the entire container on the page
-        expand=True,  # Allow the container to take full page size
+    page.theme = ft.Theme(
+        color_scheme_seed=ft.Colors.RED,
+        font_family="Roboto",
+        page_transitions=ft.PageTransitionsTheme(
+            android=ft.PageTransitionTheme.PREDICTIVE,
+            ios=ft.PageTransitionTheme.PREDICTIVE,
+            macos=ft.PageTransitionTheme.PREDICTIVE,
+            linux=ft.PageTransitionTheme.PREDICTIVE,
+            windows=ft.PageTransitionTheme.PREDICTIVE
+        )
     )
+
+    interface = None
+    data = {"usr": None, "passwd": None}
     
-    page.add(loginpage)
-    page.update()
+    def changeusr(e):
+        global usr
+        
+        data["usr"] = e.control.value
+        #print(usr)
+
+    def changepasswd(e):
+        global passwd
+        
+        data["passwd"] = e.control.value
+        #print(passwd)
+    
+    def loginev(e):   
+        global interface
+        
+        login = data["usr"]
+        password = data["passwd"]
+        
+        if login and password:
+            interface = PrometheusInterface(auth_context=PrometheusAuthContext(prometheus_web_credentials=PrometheusWebCredentials(username=login, password=password)))
+            interface.login()
+            page.go("/students")
+        else:
+            print("No credentials!")
+    
+    def students():
+        global interface
+        
+        students = interface.get_students()
+        
+        def on_change(e):
+            selected_index = next((i for i, student in enumerate(students) if student.full_name == e.control.value), -1)
+            interface.select_student(students[selected_index].context)
+            
+            auth_context = interface.get_auth_context()
+            
+            serializedcontext = pickle.dumps(auth_context)
+            encodedcontext = base64.b64encode(serializedcontext).decode('utf-8')
+            keyring.set_password("Fuji", "Auth Context", encodedcontext)
+            
+            config = {"isLoggedIn": True}
+            
+            with open("config.json", "w") as file:
+                json.dump(config, file)
+            
+            page.views.clear()
+            page.clean()
+            page.controls.clear()
+            
+            # TODO: Fix this bs
+            w = ft.Text("Logged in!\nRestart Fuji to access your account.", size=32, weight="bold")
+            page.add(w)
+            page.update()
+                
+            
+            
+        
+        dropdown = ft.Dropdown(
+            label="Select a Student",
+            options=[
+                ft.dropdown.Option(student.full_name) for student in students
+            ],
+            on_change=on_change,
+            width=300
+        )
+        
+        return dropdown
+                
+            
+    
+    def route_change(route):
+        page.views.clear()
+        
+        # Welcome view
+        if page.route == "/login":
+            welcome_view = ft.View(
+                route="/login",
+                controls=[
+                    ft.Container(
+                        content=ft.Column(
+                            [
+                                ft.Image(
+                                    src="src/assets/logo.png",
+                                    width=256,
+                                    height=256,
+                                    fit=ft.ImageFit.CONTAIN,
+                                    border_radius=ft.border_radius.all(100000)
+                                ),
+                                ft.Text(value="Welcome to Fuji!", size=64),
+                                ft.Button(
+                                    "Get Started", 
+                                    scale=2.0, 
+                                    width=230, 
+                                    on_click=lambda e: page.go("/login/eduvulcan")
+                                ),
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                            spacing=30
+                        ),
+                        alignment=ft.alignment.center,
+                        expand=True,
+                        padding=ft.padding.all(20)
+                    )
+                ]
+            )
+            page.views.append(welcome_view)
+        
+        # Login form view
+        elif page.route == "/login/eduvulcan":
+            login_view = ft.View(
+                route="/login/eduvulcan",
+                controls=[
+                    ft.Container(
+                        content=ft.Column(
+                            [
+                                ft.Text(value="Log in", size=32, weight="bold", 
+                                       text_align=ft.TextAlign.CENTER),
+                                
+                                ft.TextField(
+                                    label="Username",
+                                    autofill_hints=[ft.AutofillHint.USERNAME],
+                                    width=300,
+                                    on_change=changeusr
+                                ),
+                                
+                                ft.TextField(
+                                    label="Password",
+                                    password=True,
+                                    can_reveal_password=True,
+                                    autofill_hints=[ft.AutofillHint.PASSWORD],
+                                    width=300,
+                                    on_change=changepasswd
+                                ),
+                                
+                                ft.Button("Log in", scale=1.25, width=250, on_click=loginev),
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                            spacing=30
+                        ),
+                        alignment=ft.alignment.center,
+                        expand=True,
+                        padding=ft.padding.all(20)
+                    )
+                ]
+            )
+            page.views.append(login_view)
+        
+        # Students view
+        elif page.route == "/students":
+            students_view = ft.View(
+                route="/students",
+                controls=[
+                    ft.Container(
+                        content=ft.Column(
+                            [
+                                ft.Text(value="Select a student", size=32, weight="bold", 
+                                       text_align=ft.TextAlign.CENTER),
+                                students(),
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                            spacing=30
+                        ),
+                        alignment=ft.alignment.center,
+                        expand=True,
+                        padding=ft.padding.all(20)
+                    )
+                ]
+            )
+            page.views.append(students_view)
+        
+        page.update()
+
+    def view_pop(view):
+        page.views.pop()
+        top_view = page.views[-1]
+        page.go(top_view.route)
+
+    page.on_route_change = route_change
+    page.on_view_pop = view_pop
+    page.go("/login")
 
     
 if __name__ == "__main__":
