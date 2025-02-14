@@ -28,36 +28,43 @@ def main(page: ft.Page):
             # Grades page
             ft.Column([
                 ft.Text("  Grades", size=30, weight="bold"),
+                ft.Placeholder()
             ]),
 
             # Timetable page
             ft.Column([
                 ft.Text("  Timetable", size=30, weight="bold"),
+                ft.Placeholder()
             ]),
 
             # Homework page
             ft.Column([
                 ft.Text("  Homework", size=30, weight="bold"),
+                ft.Placeholder()
             ]),
 
             # Exams page
             ft.Column([
                 ft.Text("  Exams", size=30, weight="bold"),
+                ft.Placeholder()
             ]),
 
             # Attendance page
             ft.Column([
                 ft.Text("  Attendance", size=30, weight="bold"),
+                ft.Placeholder()
             ]),
 
             # Behaviour page
             ft.Column([
                 ft.Text("  Behaviour Notes", size=30, weight="bold"),
+                ft.Placeholder()
             ]),
 
             # Settings page
             ft.Column([
                 ft.Text("  Settings", size=30, weight="bold"),
+                ft.Placeholder()
             ]),
         ]
         return pages[index]
