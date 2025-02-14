@@ -7,6 +7,13 @@ from pages.home import *
 from sdk.src.interfaces.prometheus.context import *
 from sdk.src.interfaces.prometheus.interface import *
 
+def loadauth(service, username):
+    try:
+        count = int(keyring.get_password(service, f"{username}_count"))
+        return "".join(keyring.get_password(service, f"{username}_{i}") or "" for i in range(count))
+    except (TypeError, ValueError):
+        return None
+
 def main(page: ft.Page):
     page.title = "Fuji"
     page.theme = ft.Theme(
@@ -174,23 +181,30 @@ def login(page: ft.Page):
         
         students = interface.get_students()
         
+        def saveauth(service, username, data, chunk_size=1000):
+            chunks = [data[i:i+chunk_size] for i in range(0, len(data), chunk_size)]
+            keyring.set_password(service, f"{username}_count", str(len(chunks)))
+            
+            for i, chunk in enumerate(chunks):
+                keyring.set_password(service, f"{username}_{i}", chunk)
+
+
+
         def on_change(e):
             selected_index = next((i for i, student in enumerate(students) if student.full_name == e.control.value), -1)
             interface.select_student(students[selected_index].context)
             
             auth_context = interface.get_auth_context()
-            
             jsoncontext = auth_context.model_dump_json()
-            keyring.set_password("Fuji", "Auth Context", jsoncontext)
+            
+            saveauth("Fuji", "Auth Context", jsoncontext)
             
             config = {"isLoggedIn": True}
-            
             with open("config.json", "w") as file:
                 json.dump(config, file)
             
-            
             page.go("/start")
-            
+                
             
         
         dropdown = ft.Dropdown(
