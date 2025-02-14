@@ -173,24 +173,16 @@ def login(page: ft.Page):
             
             auth_context = interface.get_auth_context()
             
-            serializedcontext = pickle.dumps(auth_context)
-            encodedcontext = base64.b64encode(serializedcontext).decode('utf-8')
-            keyring.set_password("Fuji", "Auth Context", encodedcontext)
+            jsoncontext = auth_context.model_dump_json()
+            keyring.set_password("Fuji", "Auth Context", jsoncontext)
             
             config = {"isLoggedIn": True}
             
             with open("config.json", "w") as file:
                 json.dump(config, file)
             
-            page.views.clear()
-            page.clean()
-            page.controls.clear()
             
-            # TODO: Fix this bs
-            w = ft.Text("Logged in!\nRestart Fuji to access your account.", size=32, weight="bold")
-            page.add(w)
-            page.update()
-                
+            page.go("/start")
             
             
         
@@ -310,6 +302,31 @@ def login(page: ft.Page):
             )
             page.views.append(students_view)
         
+        elif page.route == "/start":
+            start_view = ft.View(
+                route="/start",
+                controls=[
+                    ft.Container(
+                        content=ft.Column(
+                            [
+                                ft.Text(value="Logged in!", size=32, weight="bold", 
+                                       text_align=ft.TextAlign.CENTER),
+                                
+                                ft.Text(value="Please restart the app to use it.", size=16, weight="normal", 
+                                       text_align=ft.TextAlign.CENTER),
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                            spacing=30
+                        ),
+                        alignment=ft.alignment.center,
+                        expand=True,
+                        padding=ft.padding.all(20)
+                    )
+                ]
+            )
+            page.views.append(start_view)
+            
         page.update()
 
     def view_pop(view):
