@@ -4,3 +4,4 @@ flet
 pydantic
 pyOpenSSL
 Requests
+keyring
