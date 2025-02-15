@@ -38,18 +38,8 @@ def main(page: ft.Page):
 
     #   Eduvulcan login
     
-    interface = PrometheusInterface(
-        auth_context=PrometheusAuthContext(
-            prometheus_web_credentials=PrometheusWebCredentials(
-                username=" ", password=" "
-            )
-        ),
-        student_context=None,
-    )
-
     auth_context_raw = loadauth("Fuji", "Auth Context")
-    auth_context = interface.get_auth_context()
-    auth_context.model_validate_json(auth_context_raw)
+    auth_context = PrometheusAuthContext.model_validate_json(auth_context_raw)
     
     interface = PrometheusInterface(
             auth_context=auth_context,
