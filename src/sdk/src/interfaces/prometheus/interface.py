@@ -73,6 +73,7 @@ class PrometheusInterface(CoreInterface):
     def login(self, captcha: str | None = None):
         if not self._prometheus_web_client.is_logged():
             result = self._login_prometheus(captcha)
+            print("dupa")
             if result:
                 return result
             self._efeb_clients = {}

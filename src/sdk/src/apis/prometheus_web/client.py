@@ -57,6 +57,7 @@ class PrometheusWebClient:
                 "alias": username,
                 "__RequestVerificationToken": request_verification_token,
             },
+            headers=HEADERS,
         )
         data = response.json()["data"]
         return data["ExtraMessage"], data["ShowCaptcha"]

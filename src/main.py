@@ -4,6 +4,13 @@ import keyring
 import pickle
 import base64
 from pages.home import *
+from pages.grades import *
+from pages.timetable import *
+from pages.homework import *
+from pages.exams import *
+from pages.attendance import *
+from pages.behaviour import *
+from pages.settings import *
 from sdk.src.interfaces.prometheus.context import *
 from sdk.src.interfaces.prometheus.interface import *
 
@@ -14,80 +21,77 @@ def loadauth(service, username):
     except (TypeError, ValueError):
         return None
 
+
 def main(page: ft.Page):
+    # Page settings
+    
     page.title = "Fuji"
     page.theme = ft.Theme(
-    color_scheme_seed=ft.Colors.RED,
-    font_family="Roboto",
-    page_transitions=ft.PageTransitionsTheme(
-        android=ft.PageTransitionTheme.PREDICTIVE,
-        ios=ft.PageTransitionTheme.PREDICTIVE,
-        macos=ft.PageTransitionTheme.PREDICTIVE,
-        linux=ft.PageTransitionTheme.PREDICTIVE,
-        windows=ft.PageTransitionTheme.PREDICTIVE
+        color_scheme_seed=ft.Colors.RED,
+        font_family="Roboto",
+        page_transitions=ft.PageTransitionsTheme(
+            macos=ft.PageTransitionTheme.NONE,
+            linux=ft.PageTransitionTheme.NONE,
+            windows=ft.PageTransitionTheme.NONE
         )
     )
-    def changePage(index):
-        pages = [
-            # Home page
-            HomePage(),
-            
-            # Grades page
-            ft.Column([
-                ft.Text("  Grades", size=30, weight="bold"),
-                ft.Placeholder()
-            ]),
 
-            # Timetable page
-            ft.Column([
-                ft.Text("  Timetable", size=30, weight="bold"),
-                ft.Placeholder()
-            ]),
-
-            # Homework page
-            ft.Column([
-                ft.Text("  Homework", size=30, weight="bold"),
-                ft.Placeholder()
-            ]),
-
-            # Exams page
-            ft.Column([
-                ft.Text("  Exams", size=30, weight="bold"),
-                ft.Placeholder()
-            ]),
-
-            # Attendance page
-            ft.Column([
-                ft.Text("  Attendance", size=30, weight="bold"),
-                ft.Placeholder()
-            ]),
-
-            # Behaviour page
-            ft.Column([
-                ft.Text("  Behaviour Notes", size=30, weight="bold"),
-                ft.Placeholder()
-            ]),
-
-            # Settings page
-            ft.Column([
-                ft.Text("  Settings", size=30, weight="bold"),
-                ft.Placeholder()
-            ]),
-        ]
-        return pages[index]
-
-    # Function to switch content
-    def update_content(index):
-        main_container.content = changePage(index)
-        page.update()
-
-    # Initial content display container
-    main_container = ft.Container(
-        content=changePage(0),
-        expand=True,
+    #   Eduvulcan login
+    
+    interface = PrometheusInterface(
+        auth_context=PrometheusAuthContext(
+            prometheus_web_credentials=PrometheusWebCredentials(
+                username=" ", password=" "
+            )
+        ),
+        student_context=None,
     )
 
-    # Navigation Rail
+    auth_context_raw = loadauth("Fuji", "Auth Context")
+    auth_context = interface.get_auth_context()
+    auth_context.model_validate_json(auth_context_raw)
+    
+    interface = PrometheusInterface(
+            auth_context=auth_context,
+            student_context=None,
+        )
+    
+    r = interface.login()
+    
+    if r:
+        print(r)
+    if not r:
+        pass
+    
+    students = interface.get_students()
+    
+    student = int(keyring.get_password("Fuji", "Student_Index"))
+    interface.select_student(students[student].context)
+    
+    #   Page routing
+    def change_page(route):
+        routes = {
+            "/": HomePage(),
+            "/grades": GradesPage(),
+            "/timetable": TimetablePage(),
+            "/homework": HomeworkPage(),
+            "/exams": ExamsPage(),
+            "/attendance": AttendancePage(),
+            "/behaviour": BehaviourPage(),
+            "/settings": SettingsPage()
+        }
+        page.views.clear()
+        page.views.append(ft.View(route, [
+            ft.Row([
+                bar,
+                ft.Container(content=routes.get(route, HomePage()), expand=True)
+            ], expand=True)
+        ]))
+        page.update()
+    
+    def on_route_change(e):
+        change_page(e.route)
+
     bar = ft.NavigationRail(
         selected_index=0,
         label_type=ft.NavigationRailLabelType.ALL,
@@ -96,43 +100,30 @@ def main(page: ft.Page):
         min_extended_width=400,
         group_alignment=0,
         destinations=[
-            ft.NavigationRailDestination(
-                icon=ft.Icons.HOME_OUTLINED, selected_icon=ft.Icons.HOME, label="Home"
-            ),
-            ft.NavigationRailDestination(
-                icon=ft.Icons.LOOKS_6_OUTLINED, selected_icon=ft.Icons.LOOKS_6, label="Grades"
-            ),
-            ft.NavigationRailDestination(
-                icon=ft.Icons.BACKPACK_OUTLINED, selected_icon=ft.Icons.BACKPACK, label="Timetable"
-            ),
-            ft.NavigationRailDestination(
-                icon=ft.Icons.BOOK_OUTLINED, selected_icon=ft.Icons.BOOK, label="Homework"
-            ),
-            ft.NavigationRailDestination(
-                icon=ft.Icons.CALENDAR_TODAY_OUTLINED, selected_icon=ft.Icons.CALENDAR_TODAY, label="Exams"
-            ),
-            ft.NavigationRailDestination(
-                icon=ft.Icons.EVENT_NOTE_OUTLINED, selected_icon=ft.Icons.EVENT_NOTE, label="Attendance"
-            ),
-            ft.NavigationRailDestination(
-                icon=ft.Icons.STICKY_NOTE_2_OUTLINED, selected_icon=ft.Icons.STICKY_NOTE_2, label="Behaviour"
-            ),
-            ft.NavigationRailDestination(
-                icon=ft.Icons.SETTINGS_OUTLINED, selected_icon=ft.Icons.SETTINGS_ROUNDED, label="Settings"
-            ),
+            ft.NavigationRailDestination(icon=ft.Icons.HOME_OUTLINED, selected_icon=ft.Icons.HOME, label="Home"),
+            ft.NavigationRailDestination(icon=ft.Icons.LOOKS_6_OUTLINED, selected_icon=ft.Icons.LOOKS_6, label="Grades"),
+            ft.NavigationRailDestination(icon=ft.Icons.BACKPACK_OUTLINED, selected_icon=ft.Icons.BACKPACK, label="Timetable"),
+            ft.NavigationRailDestination(icon=ft.Icons.BOOK_OUTLINED, selected_icon=ft.Icons.BOOK, label="Homework"),
+            ft.NavigationRailDestination(icon=ft.Icons.CALENDAR_TODAY_OUTLINED, selected_icon=ft.Icons.CALENDAR_TODAY, label="Exams"),
+            ft.NavigationRailDestination(icon=ft.Icons.EVENT_NOTE_OUTLINED, selected_icon=ft.Icons.EVENT_NOTE, label="Attendance"),
+            ft.NavigationRailDestination(icon=ft.Icons.STICKY_NOTE_2_OUTLINED, selected_icon=ft.Icons.STICKY_NOTE_2, label="Behaviour"),
+            ft.NavigationRailDestination(icon=ft.Icons.SETTINGS_OUTLINED, selected_icon=ft.Icons.SETTINGS_ROUNDED, label="Settings"),
         ],
-        on_change=lambda e: update_content(e.control.selected_index),
+        on_change=lambda e: page.go([
+            "/",
+            "/grades",
+            "/timetable",
+            "/homework",
+            "/exams",
+            "/attendance",
+            "/behaviour",
+            "/settings"
+        ][e.control.selected_index])
     )
 
-    page.add(
-        ft.Row(
-            [
-                bar,
-                main_container,
-            ],
-            expand=True,
-        )
-    )
+    page.on_route_change = on_route_change
+    page.go("/")
+
 
 def login(page: ft.Page):
     page.title = "Log in"
@@ -192,7 +183,10 @@ def login(page: ft.Page):
 
         def on_change(e):
             selected_index = next((i for i, student in enumerate(students) if student.full_name == e.control.value), -1)
+            
             interface.select_student(students[selected_index].context)
+            keyring.set_password("Fuji", "Student_Index", str(selected_index))
+            
             
             auth_context = interface.get_auth_context()
             jsoncontext = auth_context.model_dump_json()
