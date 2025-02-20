@@ -3,6 +3,9 @@ import json
 import keyring
 import pickle
 import base64
+import gettext
+import threading
+from i18n import *
 from pages.home import *
 from pages.grades import *
 from pages.timetable import *
@@ -14,6 +17,42 @@ from pages.settings import *
 from sdk.src.interfaces.prometheus.context import *
 from sdk.src.interfaces.prometheus.interface import *
 
+def saveauth(service, username, data, chunk_size=1000):
+    chunks = [data[i:i+chunk_size] for i in range(0, len(data), chunk_size)]
+    keyring.set_password(service, f"{username}_count", str(len(chunks)))
+    
+    for i, chunk in enumerate(chunks):
+        keyring.set_password(service, f"{username}_{i}", chunk)
+
+def sync():
+    auth_context_raw = loadauth("Fuji", "Auth Context")
+    auth_context = PrometheusAuthContext.model_validate_json(auth_context_raw)
+    
+    interface = PrometheusInterface(
+            auth_context=auth_context,
+            student_context=None,
+        )
+    
+    
+    try:
+        interface.login()
+    except NoLoggedInException:
+        print("nologgedinexception")
+        
+    
+    students = interface.get_students()
+    
+    student = int(keyring.get_password("Fuji", "Student_Index"))
+    interface.select_student(students[student].context)
+    
+    
+    
+    auth_context = interface.get_auth_context()
+    jsoncontext = auth_context.model_dump_json()
+    saveauth("Fuji", "Auth Context", jsoncontext)
+    
+
+
 def loadauth(service, username):
     try:
         count = int(keyring.get_password(service, f"{username}_count"))
@@ -23,7 +62,7 @@ def loadauth(service, username):
 
 
 def main(page: ft.Page):
-    # Page settings
+    #run Page settings
     
     page.title = "Fuji"
     page.theme = ft.Theme(
@@ -35,28 +74,10 @@ def main(page: ft.Page):
             windows=ft.PageTransitionTheme.NONE
         )
     )
-
-    #   Eduvulcan login
+    # Sync 
     
-    auth_context_raw = loadauth("Fuji", "Auth Context")
-    auth_context = PrometheusAuthContext.model_validate_json(auth_context_raw)
-    
-    interface = PrometheusInterface(
-            auth_context=auth_context,
-            student_context=None,
-        )
-    
-    r = interface.login()
-    
-    if r:
-        print(r)
-    if not r:
-        pass
-    
-    students = interface.get_students()
-    
-    student = int(keyring.get_password("Fuji", "Student_Index"))
-    interface.select_student(students[student].context)
+    s = threading.Thread(target=sync)
+    s.start()
     
     #   Page routing
     def change_page(route):
@@ -90,14 +111,14 @@ def main(page: ft.Page):
         min_extended_width=400,
         group_alignment=0,
         destinations=[
-            ft.NavigationRailDestination(icon=ft.Icons.HOME_OUTLINED, selected_icon=ft.Icons.HOME, label="Home"),
-            ft.NavigationRailDestination(icon=ft.Icons.LOOKS_6_OUTLINED, selected_icon=ft.Icons.LOOKS_6, label="Grades"),
-            ft.NavigationRailDestination(icon=ft.Icons.BACKPACK_OUTLINED, selected_icon=ft.Icons.BACKPACK, label="Timetable"),
-            ft.NavigationRailDestination(icon=ft.Icons.BOOK_OUTLINED, selected_icon=ft.Icons.BOOK, label="Homework"),
-            ft.NavigationRailDestination(icon=ft.Icons.CALENDAR_TODAY_OUTLINED, selected_icon=ft.Icons.CALENDAR_TODAY, label="Exams"),
-            ft.NavigationRailDestination(icon=ft.Icons.EVENT_NOTE_OUTLINED, selected_icon=ft.Icons.EVENT_NOTE, label="Attendance"),
-            ft.NavigationRailDestination(icon=ft.Icons.STICKY_NOTE_2_OUTLINED, selected_icon=ft.Icons.STICKY_NOTE_2, label="Behaviour"),
-            ft.NavigationRailDestination(icon=ft.Icons.SETTINGS_OUTLINED, selected_icon=ft.Icons.SETTINGS_ROUNDED, label="Settings"),
+            ft.NavigationRailDestination(icon=ft.Icons.HOME_OUTLINED, selected_icon=ft.Icons.HOME, label=(_("Home"))),
+            ft.NavigationRailDestination(icon=ft.Icons.LOOKS_6_OUTLINED, selected_icon=ft.Icons.LOOKS_6, label=(_("Grades"))),
+            ft.NavigationRailDestination(icon=ft.Icons.BACKPACK_OUTLINED, selected_icon=ft.Icons.BACKPACK, label=(_("Timetable"))),
+            ft.NavigationRailDestination(icon=ft.Icons.BOOK_OUTLINED, selected_icon=ft.Icons.BOOK, label=(_("Homework"))),
+            ft.NavigationRailDestination(icon=ft.Icons.CALENDAR_TODAY_OUTLINED, selected_icon=ft.Icons.CALENDAR_TODAY, label=(_("Exams"))),
+            ft.NavigationRailDestination(icon=ft.Icons.EVENT_NOTE_OUTLINED, selected_icon=ft.Icons.EVENT_NOTE, label=(_("Attendance"))),
+            ft.NavigationRailDestination(icon=ft.Icons.STICKY_NOTE_2_OUTLINED, selected_icon=ft.Icons.STICKY_NOTE_2, label=(_("Behaviour"))),
+            ft.NavigationRailDestination(icon=ft.Icons.SETTINGS_OUTLINED, selected_icon=ft.Icons.SETTINGS_ROUNDED, label=(_("Settings"))),
         ],
         on_change=lambda e: page.go([
             "/",
@@ -162,15 +183,6 @@ def login(page: ft.Page):
         
         students = interface.get_students()
         
-        def saveauth(service, username, data, chunk_size=1000):
-            chunks = [data[i:i+chunk_size] for i in range(0, len(data), chunk_size)]
-            keyring.set_password(service, f"{username}_count", str(len(chunks)))
-            
-            for i, chunk in enumerate(chunks):
-                keyring.set_password(service, f"{username}_{i}", chunk)
-
-
-
         def on_change(e):
             selected_index = next((i for i, student in enumerate(students) if student.full_name == e.control.value), -1)
             
@@ -183,7 +195,7 @@ def login(page: ft.Page):
             
             saveauth("Fuji", "Auth Context", jsoncontext)
             
-            config = {"isLoggedIn": True}
+            config = {"isLoggedIn": True, "lang": "pl"}
             with open("config.json", "w") as file:
                 json.dump(config, file)
             
@@ -222,9 +234,9 @@ def login(page: ft.Page):
                                     fit=ft.ImageFit.CONTAIN,
                                     border_radius=ft.border_radius.all(100000)
                                 ),
-                                ft.Text(value="Welcome to Fuji!", size=64),
+                                ft.Text(value=(_("Welcome to Fuji!")), size=64),
                                 ft.Button(
-                                    "Get Started", 
+                                    (_("Get Started")), 
                                     scale=2.0, 
                                     width=230, 
                                     on_click=lambda e: page.go("/login/eduvulcan")
@@ -250,18 +262,18 @@ def login(page: ft.Page):
                     ft.Container(
                         content=ft.Column(
                             [
-                                ft.Text(value="Log in", size=32, weight="bold", 
+                                ft.Text(value=(_("Log in")), size=32, weight="bold", 
                                        text_align=ft.TextAlign.CENTER),
                                 
                                 ft.TextField(
-                                    label="Username",
+                                    label=(_("Username")),
                                     autofill_hints=[ft.AutofillHint.USERNAME],
                                     width=300,
                                     on_change=changeusr
                                 ),
                                 
                                 ft.TextField(
-                                    label="Password",
+                                    label=(_("Password")),
                                     password=True,
                                     can_reveal_password=True,
                                     autofill_hints=[ft.AutofillHint.PASSWORD],
@@ -269,7 +281,7 @@ def login(page: ft.Page):
                                     on_change=changepasswd
                                 ),
                                 
-                                ft.Button("Log in", scale=1.25, width=250, on_click=loginev),
+                                ft.Button((_("Log in")), scale=1.25, width=250, on_click=loginev),
                             ],
                             alignment=ft.MainAxisAlignment.CENTER,
                             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -291,7 +303,7 @@ def login(page: ft.Page):
                     ft.Container(
                         content=ft.Column(
                             [
-                                ft.Text(value="Select a student", size=32, weight="bold", 
+                                ft.Text(value=(_("Select a student")), size=32, weight="bold", 
                                        text_align=ft.TextAlign.CENTER),
                                 students(),
                             ],
@@ -307,6 +319,7 @@ def login(page: ft.Page):
             )
             page.views.append(students_view)
         
+        # Start view
         elif page.route == "/start":
             start_view = ft.View(
                 route="/start",
@@ -314,10 +327,10 @@ def login(page: ft.Page):
                     ft.Container(
                         content=ft.Column(
                             [
-                                ft.Text(value="Logged in!", size=32, weight="bold", 
+                                ft.Text(value=(_("Logged in!")), size=32, weight="bold", 
                                        text_align=ft.TextAlign.CENTER),
                                 
-                                ft.Text(value="Please restart the app to use it.", size=16, weight="normal", 
+                                ft.Text(value=(_("Please restart the app to use it.")), size=16, weight="normal", 
                                        text_align=ft.TextAlign.CENTER),
                             ],
                             alignment=ft.MainAxisAlignment.CENTER,
@@ -353,7 +366,7 @@ if __name__ == "__main__":
         else:
             ft.app(target=login)
     except FileNotFoundError:
-        config = {"isLoggedIn": False}
+        config = {"isLoggedIn": False, "lang": "pl"}
         with open("config.json", "w") as file:
             json.dump(config, file)
         ft.app(target=login)

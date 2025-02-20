@@ -98,6 +98,7 @@ class PrometheusWebClient:
         response = self._session.get(
             f"{PROMETHEUS_WEB_BASE}/{ENDPOINT_FS_LS}",
             params=dict(query),
+            headers=HEADERS,
         )
 
         if "Logowanie" in response.text:

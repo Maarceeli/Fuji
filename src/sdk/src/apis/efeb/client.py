@@ -21,7 +21,8 @@ class EfebClient:
         self._session.cookies.update(cookies)
         self._symbol = symbol
         self._is_ce = is_ce
-
+        self._session.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.92 Safari/537.36'
+        
     def get_cookies(self):
         return self._session.cookies.get_dict()
 

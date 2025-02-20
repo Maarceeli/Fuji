@@ -1,0 +1,86 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-16 12:01+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/main.py:115 src/pages/home.py:9
+msgid "Home"
+msgstr "Home"
+
+#: src/main.py:116 src/pages/grades.py:8
+msgid "Grades"
+msgstr "Grades"
+
+#: src/main.py:117 src/pages/home.py:16 src/pages/timetable.py:8
+msgid "Timetable"
+msgstr "Timetable"
+
+#: src/main.py:118 src/pages/homework.py:8
+msgid "Homework"
+msgstr "Homework"
+
+#: src/main.py:119 src/pages/exams.py:8
+msgid "Exams"
+msgstr "Exams"
+
+#: src/main.py:120 src/pages/attendance.py:8
+msgid "Attendance"
+msgstr "Attendance"
+
+#: src/main.py:121 src/pages/behaviour.py:8
+msgid "Behaviour"
+msgstr "Behaviour"
+
+#: src/main.py:122 src/pages/settings.py:8
+msgid "Settings"
+msgstr "Settings"
+
+#: src/main.py:238
+msgid "Welcome to Fuji!"
+msgstr "Welcome to Fuji!"
+
+#: src/main.py:240
+msgid "Get Started"
+msgstr "Get Started"
+
+#: src/main.py:266 src/main.py:285
+msgid "Log in"
+msgstr "Log in"
+
+#: src/main.py:270
+msgid "Username"
+msgstr "Username"
+
+#: src/main.py:277
+msgid "Password"
+msgstr "Password"
+
+#: src/main.py:307
+msgid "Select a student"
+msgstr "Select a student"
+
+#: src/main.py:331
+msgid "Logged in!"
+msgstr "Logged in!"
+
+#: src/main.py:334
+msgid "Please restart the app to use it."
+msgstr "Please restart the app to use it."
+
+#: src/pages/home.py:41
+msgid "Recent Grades"
+msgstr "Recent Grades"

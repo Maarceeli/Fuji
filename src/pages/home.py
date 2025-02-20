@@ -1,16 +1,19 @@
 import flet as ft
+from i18n import *
 from vars import *
+
+set_language("pl")
 
 def HomePage():
     return ft.Column([
-            ft.Text("  Home", size=30, weight="bold"),
+            ft.Text((_("Home")), size=30, weight="bold"),
             ft.Text("\n", size=30, weight="bold"),
             ft.Row([
                 ft.Container( # Timetable Card
                     content=ft.Column([
                         ft.Row([
                             ft.Icon(ft.Icons.BACKPACK_OUTLINED, size=32, color="#FFFFFF"),
-                            ft.Text("Timetable", size=24, font_family="Roboto", weight="bold")
+                            ft.Text((_("Timetable")), size=24, font_family="Roboto", weight="bold")
                         ]),
                         ft.ListView(
                             controls=[
@@ -35,7 +38,7 @@ def HomePage():
                     content=ft.Column([
                         ft.Row([
                             ft.Icon(ft.Icons.LOOKS_6_OUTLINED, size=32, color="#FFFFFF"),
-                            ft.Text("Recent Grades", size=24, font_family="Roboto", weight="bold")
+                            ft.Text((_("Recent Grades")), size=24, font_family="Roboto", weight="bold")
                         ]),
                         
                         ft.Placeholder()
