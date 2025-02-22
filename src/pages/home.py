@@ -1,6 +1,6 @@
 import flet as ft
 from i18n import *
-from vars import *
+from constants import *
 
 set_language("pl")
 
