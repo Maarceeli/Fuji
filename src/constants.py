@@ -7,3 +7,13 @@ grade = [
     "#2196F3",
     "#9C27B0",
 ]
+
+defconf = {
+    'isLogged': False,
+    'language': 'pl',
+    }
+
+usrconf = {
+    'fullName': '',
+    'grade': '',
+    }

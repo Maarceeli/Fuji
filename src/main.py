@@ -4,11 +4,11 @@ import base64
 import gettext
 import keyring
 import threading
+import configparser
 import flet as ft
 from i18n import *
 from utils import *
 from pages.home import *
-from pathlib import Path
 from pages.exams import *
 from pages.grades import *
 from pages.homework import *
@@ -16,8 +16,11 @@ from pages.settings import *
 from pages.timetable import *
 from pages.behaviour import *
 from pages.attendance import *
+from constants import defconf, usrconf
 from sdk.src.interfaces.prometheus.context import *
 from sdk.src.interfaces.prometheus.interface import *
+
+config = configparser.ConfigParser()
 
 def sync():
     auth_context_raw = loadauth("Fuji", "Auth Context")
@@ -182,9 +185,13 @@ def login(page: ft.Page):
             
             saveauth("Fuji", "Auth Context", jsoncontext)
             
-            config = {"isLoggedIn": True, "lang": "pl"}
-            with open("config.json", "w") as file:
-                json.dump(config, file)
+            config.read(f"{getconfigpath()}/config.ini")
+            config['DEFAULT']['isLogged'] = 'True'
+            config['User']['fullName'] = students[selected_index].full_name
+            config['User']['grade'] = students[selected_index].class_name
+            
+            with open(f"{getconfigpath()}/config.ini", "w") as file:
+                config.write(file)
             
             page.go("/start")
                 
@@ -347,14 +354,29 @@ def login(page: ft.Page):
 # App configuration
 if __name__ == "__main__":
     try:
-        with open("config.json", "r") as file:
-            data = json.load(file)
-        if data.get("isLoggedIn", False):
-            ft.app(target=main)
-        else:
-            ft.app(target=login)
-    except FileNotFoundError:
-        config = {"isLoggedIn": False, "lang": "pl"}
-        with open("config.json", "w") as file:
-            json.dump(config, file)
+        config.read(f"{getconfigpath()}/config.ini")
+        
+        isLogged =  config['DEFAULT']['isLogged']
+        
+        match isLogged:
+            case 'True':
+                ft.app(target=main)
+            case 'False':
+                ft.app(target=login)
+        
+    except (FileNotFoundError, KeyError):
+        os.makedirs(getconfigpath())
+        config['DEFAULT'] = defconf
+        config['User'] = usrconf
+        
+        with open(f"{getconfigpath()}/config.ini", "w") as file:
+            config.write(file)
+        ft.app(target=login)
+    
+    except FileExistsError:
+        config['DEFAULT'] = defconf
+        config['User'] = usrconf
+        
+        with open(f"{getconfigpath()}/config.ini", "w") as file:
+            config.write(file)
         ft.app(target=login)

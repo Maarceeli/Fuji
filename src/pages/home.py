@@ -2,8 +2,6 @@ import flet as ft
 from i18n import *
 from constants import *
 
-set_language("pl")
-
 def HomePage():
     return ft.Column([
             ft.Text((_("Home")), size=30, weight="bold"),
