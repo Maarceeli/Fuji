@@ -6,6 +6,7 @@ import keyring
 import threading
 import flet as ft
 from i18n import *
+from utils import *
 from pages.home import *
 from pathlib import Path
 from pages.exams import *
@@ -18,13 +19,6 @@ from pages.attendance import *
 from sdk.src.interfaces.prometheus.context import *
 from sdk.src.interfaces.prometheus.interface import *
 
-def saveauth(service, username, data, chunk_size=1000):
-    chunks = [data[i:i+chunk_size] for i in range(0, len(data), chunk_size)]
-    keyring.set_password(service, f"{username}_count", str(len(chunks)))
-    
-    for i, chunk in enumerate(chunks):
-        keyring.set_password(service, f"{username}_{i}", chunk)
-
 def sync():
     auth_context_raw = loadauth("Fuji", "Auth Context")
     auth_context = PrometheusAuthContext.model_validate_json(auth_context_raw)
@@ -34,11 +28,11 @@ def sync():
             student_context=None,
         )
     
-    
     try:
         interface.login()
+    
     except NoLoggedInException:
-        print("nologgedinexception")
+        print("NoLoggedInException, or in other words, vulcan shitted itself.")
         
     
     students = interface.get_students()
@@ -49,15 +43,6 @@ def sync():
     auth_context = interface.get_auth_context()
     jsoncontext = auth_context.model_dump_json()
     saveauth("Fuji", "Auth Context", jsoncontext)
-    
-
-def loadauth(service, username):
-    try:
-        count = int(keyring.get_password(service, f"{username}_count"))
-        return "".join(keyring.get_password(service, f"{username}_{i}") or "" for i in range(count))
-    except (TypeError, ValueError):
-        return None
-
 
 def main(page: ft.Page):
     # Page settings
