@@ -1,19 +1,20 @@
-import flet as ft
 import json
-import keyring
 import pickle
 import base64
 import gettext
+import keyring
 import threading
+import flet as ft
 from i18n import *
 from pages.home import *
-from pages.grades import *
-from pages.timetable import *
-from pages.homework import *
+from pathlib import Path
 from pages.exams import *
-from pages.attendance import *
-from pages.behaviour import *
+from pages.grades import *
+from pages.homework import *
 from pages.settings import *
+from pages.timetable import *
+from pages.behaviour import *
+from pages.attendance import *
 from sdk.src.interfaces.prometheus.context import *
 from sdk.src.interfaces.prometheus.interface import *
 
@@ -45,13 +46,10 @@ def sync():
     student = int(keyring.get_password("Fuji", "Student_Index"))
     interface.select_student(students[student].context)
     
-    
-    
     auth_context = interface.get_auth_context()
     jsoncontext = auth_context.model_dump_json()
     saveauth("Fuji", "Auth Context", jsoncontext)
     
-
 
 def loadauth(service, username):
     try:
@@ -62,8 +60,7 @@ def loadauth(service, username):
 
 
 def main(page: ft.Page):
-    #run Page settings
-    
+    # Page settings
     page.title = "Fuji"
     page.theme = ft.Theme(
         color_scheme_seed=ft.Colors.RED,
@@ -74,12 +71,12 @@ def main(page: ft.Page):
             windows=ft.PageTransitionTheme.NONE
         )
     )
-    # Sync 
     
+    # Sync 
     s = threading.Thread(target=sync)
     s.start()
     
-    #   Page routing
+    # Page routing
     def change_page(route):
         routes = {
             "/": HomePage(),
@@ -103,6 +100,7 @@ def main(page: ft.Page):
     def on_route_change(e):
         change_page(e.route)
 
+    # Navigation bar
     bar = ft.NavigationRail(
         selected_index=0,
         label_type=ft.NavigationRailLabelType.ALL,
@@ -137,6 +135,7 @@ def main(page: ft.Page):
 
 
 def login(page: ft.Page):
+    # Page settings
     page.title = "Log in"
     page.theme = ft.Theme(
         color_scheme_seed=ft.Colors.RED,
@@ -153,6 +152,7 @@ def login(page: ft.Page):
     interface = None
     data = {"usr": None, "passwd": None}
     
+    # Saving credentials
     def changeusr(e):
         global usr
         
@@ -165,6 +165,7 @@ def login(page: ft.Page):
         data["passwd"] = e.control.value
         #print(passwd)
     
+    # Login event
     def loginev(e):   
         global interface
         
@@ -178,6 +179,7 @@ def login(page: ft.Page):
         else:
             print("No credentials!")
     
+    # Students fetching, dropdown and selection
     def students():
         global interface
         
@@ -215,7 +217,7 @@ def login(page: ft.Page):
         return dropdown
                 
             
-    
+    # Page routing
     def route_change(route):
         page.views.clear()
         
@@ -356,7 +358,8 @@ def login(page: ft.Page):
     page.on_view_pop = view_pop
     page.go("/login")
 
-    
+
+# App configuration
 if __name__ == "__main__":
     try:
         with open("config.json", "r") as file:
