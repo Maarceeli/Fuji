@@ -1,6 +1,7 @@
 import keyring
 import os
 from pathlib import Path
+import configparser
 
 def saveauth(service, username, data, chunk_size=1000):
     chunks = [data[i:i+chunk_size] for i in range(0, len(data), chunk_size)]
@@ -27,3 +28,31 @@ def getconfigpath():
             return f"{home}/.FujiConfig"
         case 'nt':
             return f"{home}/AppData/Local/Fuji"
+
+def getthemecolor():
+    config = configparser.ConfigParser()
+    config.read(f"{getconfigpath()}/config.ini")
+    color = config['Settings']['themecolor']
+    
+    return color
+
+def setthemecolor(color):
+    config = configparser.ConfigParser()
+    config.read(f"{getconfigpath()}/config.ini")
+    config["Settings"]["themecolor"] = color
+    
+    with open(f"{getconfigpath()}/config.ini", "w") as file:
+        config.write(file)
+        
+def setlanguage(lang):
+    config = configparser.ConfigParser()
+    config.read(f"{getconfigpath()}/config.ini")
+    
+    match lang.data:
+        case "Polski":
+            config["Settings"]["language"] = "pl"
+        case "English":
+            config["Settings"]["language"] = "en"
+    
+    with open(f"{getconfigpath()}/config.ini", "w") as file:
+        config.write(file)

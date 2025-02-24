@@ -51,7 +51,7 @@ def main(page: ft.Page):
     # Page settings
     page.title = "Fuji"
     page.theme = ft.Theme(
-        color_scheme_seed=ft.Colors.RED,
+        color_scheme_seed=getattr(ft.Colors, getthemecolor()),
         font_family="Roboto",
         page_transitions=ft.PageTransitionsTheme(
             macos=ft.PageTransitionTheme.NONE,
@@ -121,7 +121,6 @@ def main(page: ft.Page):
     page.on_route_change = on_route_change
     page.go("/")
 
-
 def login(page: ft.Page):
     # Page settings
     page.title = "Log in"
@@ -186,7 +185,7 @@ def login(page: ft.Page):
             saveauth("Fuji", "Auth Context", jsoncontext)
             
             config.read(f"{getconfigpath()}/config.ini")
-            config['DEFAULT']['isLogged'] = 'True'
+            config['Settings']['isLogged'] = 'True'
             config['User']['fullName'] = students[selected_index].full_name
             config['User']['grade'] = students[selected_index].class_name
             
@@ -356,7 +355,7 @@ if __name__ == "__main__":
     try:
         config.read(f"{getconfigpath()}/config.ini")
         
-        isLogged =  config['DEFAULT']['isLogged']
+        isLogged =  config['Settings']['isLogged']
         
         match isLogged:
             case 'True':
@@ -366,7 +365,7 @@ if __name__ == "__main__":
         
     except (FileNotFoundError, KeyError):
         os.makedirs(getconfigpath())
-        config['DEFAULT'] = defconf
+        config['Settings'] = defconf
         config['User'] = usrconf
         
         with open(f"{getconfigpath()}/config.ini", "w") as file:
@@ -374,7 +373,7 @@ if __name__ == "__main__":
         ft.app(target=login)
     
     except FileExistsError:
-        config['DEFAULT'] = defconf
+        config['Settings'] = defconf
         config['User'] = usrconf
         
         with open(f"{getconfigpath()}/config.ini", "w") as file:

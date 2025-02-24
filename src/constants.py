@@ -11,6 +11,7 @@ grade = [
 defconf = {
     'isLogged': False,
     'language': 'pl',
+    'themecolor': 'PINK'
     }
 
 usrconf = {

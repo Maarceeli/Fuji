@@ -9,7 +9,7 @@ import os
 try:
     config = configparser.ConfigParser()
     config.read(f"{getconfigpath()}/config.ini")
-    lang = config["DEFAULT"]["language"]
+    lang = config["Settings"]["language"]
 except FileNotFoundError:
     lang = "pl"
     print("Defaulting to Polish due to missing config file")
