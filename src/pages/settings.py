@@ -4,12 +4,43 @@ from utils import setthemecolor, setlanguage
 from i18n import _
 
 def SettingsPage():
+    # Create the main container to hold everything
+    main_container = ft.Container()
+    
+    # Create a custom notification that we'll show/hide
+    notification = ft.Container(
+        visible=False,
+        bgcolor=ft.colors.AMBER_100,
+        border_radius=5,
+        padding=10,
+        margin=ft.margin.only(bottom=20, left=20, right=20),
+        content=ft.Row([
+            ft.Icon(ft.icons.INFO_OUTLINED, color=ft.colors.AMBER),
+            ft.Text(_("Settings changed. Restart required for changes to take effect."), 
+                   color=ft.colors.BLACK, expand=True),
+            ft.IconButton(
+                icon=ft.icons.CLOSE,
+                icon_color=ft.colors.GREY_800,
+                icon_size=20,
+                on_click=lambda e: hide_notification()
+            )
+        ])
+    )
+    
+    def hide_notification():
+        notification.visible = False
+        main_container.update()
+    
+    def show_notification():
+        notification.visible = True
+        main_container.update()
+    
     def getlangoptions():
         return [
             ft.DropdownOption(key="Polski", content=ft.Text("Polski")),
             ft.DropdownOption(key="English", content=ft.Text("English")),
         ]
-        
+    
     def getthemeoptions():
         return [
             ft.DropdownOption(key="RED", content=ft.Text(_("Red"))),
@@ -23,34 +54,48 @@ def SettingsPage():
             ft.DropdownOption(key="GREY", content=ft.Text(_("Grey"))),
             ft.DropdownOption(key="AMBER", content=ft.Text(_("Amber"))),
             ft.DropdownOption(key="CYAN", content=ft.Text(_("Cyan"))),
-            ]
-
+        ]
+    
     def onlangchange(e):
         setlanguage(e)
+        show_notification()
     
     def onthemechange(e):
         setthemecolor(e.data)
+        show_notification()
     
+    # Create a column with settings at top and notification container at bottom
+    main_content = ft.Column([
+        # Settings at the top
+        ft.Container(
+            content=ft.Column([
+                ft.Text(_("Settings"), size=30, weight="bold"),
+                ft.Row([
+                    ft.Text(_("Language (Requires restart)")),
+                    ft.Dropdown(
+                        width=200,
+                        label=(_("Language")),
+                        options=getlangoptions(),
+                        on_change=onlangchange
+                    ),
+                ]),
+                ft.Row([
+                    ft.Text(_("Theme (Requires restart)")),
+                    ft.Dropdown(
+                        width=200,
+                        label=(_("Theme")),
+                        options=getthemeoptions(),
+                        on_change=onthemechange
+                    )
+                ]),
+            ]),
+            expand=True  # Make this container expand to push the notification to the bottom
+        ),
+        # Notification at the bottom
+        notification
+    ], expand=True)  # Make the column expand to fill the available space
     
-    return ft.Column([
-        ft.Text(_("Settings"), size=30, weight="bold"),
-        ft.Row([
-            ft.Text(_("Language (Requires restart)")),
-            ft.Dropdown(
-                width=200,
-                label=(_("Language")),
-                options=getlangoptions(),
-                on_change=onlangchange
-            ),
-        ]),
-        
-        ft.Row([
-            ft.Text(_("Theme (Requires restart)")),
-            ft.Dropdown(
-                width=200,
-                label=(_("Theme")),
-                options=getthemeoptions(),
-                on_change=onthemechange
-            )
-        ]),
-    ])
+    main_container.content = main_content
+    main_container.expand = True  # Make the main container expand
+    
+    return main_container

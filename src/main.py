@@ -76,13 +76,15 @@ def main(page: ft.Page):
             "/behaviour": BehaviourPage(),
             "/settings": SettingsPage()
         }
+        
         page.views.clear()
-        page.views.append(ft.View(route, [
+        view = ft.View(route, [
             ft.Row([
                 bar,
                 ft.Container(content=routes.get(route, HomePage()), expand=True)
             ], expand=True)
-        ]))
+        ])
+        page.views.append(view)
         page.update()
     
     def on_route_change(e):
