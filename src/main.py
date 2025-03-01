@@ -47,6 +47,8 @@ def sync():
     jsoncontext = auth_context.model_dump_json()
     saveauth("Fuji", "Auth Context", jsoncontext)
 
+    student = students[student]
+    current_period = next(period for period in student.periods if period.current)
 def main(page: ft.Page):
     # Page settings
     page.title = "Fuji"
