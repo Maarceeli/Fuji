@@ -13,6 +13,7 @@ from pages.exams import *
 from pages.grades import *
 from pages.homework import *
 from pages.settings import *
+from sqlite_handler import *
 from pages.timetable import *
 from pages.behaviour import *
 from pages.attendance import *
@@ -49,6 +50,10 @@ def sync():
 
     student = students[student]
     current_period = next(period for period in student.periods if period.current)
+    grades = interface.get_grades(current_period.number)
+
+    create_grades_database(grades_list=grades)
+
 def main(page: ft.Page):
     # Page settings
     page.title = "Fuji"
