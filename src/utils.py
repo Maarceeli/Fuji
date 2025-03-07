@@ -2,6 +2,9 @@ import keyring
 import os
 from pathlib import Path
 import configparser
+import subprocess
+import sys
+import flet as ft
 
 def saveauth(service, username, data, chunk_size=1000):
     chunks = [data[i:i+chunk_size] for i in range(0, len(data), chunk_size)]
@@ -56,3 +59,8 @@ def setlanguage(lang):
     
     with open(f"{getconfigpath()}/config.ini", "w") as file:
         config.write(file)
+        
+def restart(page: ft.Page):
+    python = sys.executable
+    subprocess.Popen([python] + sys.argv)
+    page.window.destroy()
