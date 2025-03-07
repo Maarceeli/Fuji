@@ -1,6 +1,6 @@
 import flet as ft
 from constants import *
-from utils import setthemecolor, setlanguage
+from utils import setthemecolor, setlanguage, restart
 from i18n import _
 
 def SettingsPage():
@@ -18,6 +18,11 @@ def SettingsPage():
             ft.Icon(ft.icons.INFO_OUTLINED, color=ft.colors.AMBER),
             ft.Text(_("Settings changed. Restart required for changes to take effect."), 
                    color=ft.colors.BLACK, expand=True),
+            ft.TextButton(
+                text=_("Restart"),
+                on_click=lambda e: restart(e.page),
+                style=ft.ButtonStyle(color=ft.colors.BLUE),
+            ),
             ft.IconButton(
                 icon=ft.icons.CLOSE,
                 icon_color=ft.colors.GREY_800,
@@ -26,6 +31,7 @@ def SettingsPage():
             )
         ])
     )
+
     
     def hide_notification():
         notification.visible = False
