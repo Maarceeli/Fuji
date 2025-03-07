@@ -81,58 +81,9 @@ def create_grades_database(grades_list, db_path="grades.db"):
     print(f"Database created successfully with data from {len(list(re.finditer(pattern, grades_str)))} grades")
     return True
 
-def get_recent_grades(days=7, db_path="grades.db"):
+def get_current_week_grades(db_path="grades.db"):
     """
-    Retrieve grades from the database from the last specified number of days.
-    
-    Args:
-        days (int): Number of days to look back
-        db_path (str): Path to the SQLite database file
-    
-    Returns:
-        list: List of dictionaries containing the grade records
-    """
-    # Connect to SQLite database
-    conn = sqlite3.connect(db_path)
-    
-    # Configure connection to return datetime objects for timestamp fields
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-    
-    # Calculate the date from which to retrieve grades
-    cutoff_date = datetime.datetime.now() - timedelta(days=days)
-    
-    # Query recent grades
-    cursor.execute('''
-    SELECT * FROM grades
-    WHERE created_at >= ?
-    ORDER BY created_at DESC
-    ''', (cutoff_date,))
-    
-    # Fetch all results
-    results = cursor.fetchall()
-    
-    # Convert results to a list of dictionaries for easier access
-    grades = []
-    for row in results:
-        grade_dict = dict(row)
-        grades.append(grade_dict)
-    
-    # Close connection
-    conn.close()
-    
-    return grades
-
-def get_grades_by_subject(subject, db_path="grades.db"):
-    """
-    Retrieve grades for a specific subject from the database.
-    
-    Args:
-        subject (str): The subject name to filter by
-        db_path (str): Path to the SQLite database file
-    
-    Returns:
-        list: List of dictionaries containing the grade records
+    Get all grades from the current week (Monday to Sunday).
     """
     # Connect to SQLite database
     conn = sqlite3.connect(db_path)
@@ -141,46 +92,24 @@ def get_grades_by_subject(subject, db_path="grades.db"):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
-    # Query grades by subject
+    # Calculate the start and end of the current week
+    today = datetime.datetime.now()
+    start_of_week = today - timedelta(days=today.weekday())
+    start_of_week = start_of_week.replace(hour=0, minute=0, second=0, microsecond=0)
+    end_of_week = start_of_week + timedelta(days=6, hours=23, minutes=59, seconds=59)
+    
+    # Query to get grades from the current week
     cursor.execute('''
-    SELECT * FROM grades
-    WHERE subject = ?
-    ORDER BY created_at DESC
-    ''', (subject,))
+    SELECT id, subject, name, value, is_point, point_numerator, point_denominator, created_at 
+    FROM grades
+    WHERE created_at BETWEEN ? AND ?
+    ORDER BY subject, created_at
+    ''', (start_of_week, end_of_week))
     
-    # Fetch all results
-    results = cursor.fetchall()
+    # Convert cursor results to dictionaries
+    grades = [dict(row) for row in cursor.fetchall()]
     
-    # Convert results to a list of dictionaries for easier access
-    grades = []
-    for row in results:
-        grade_dict = dict(row)
-        grades.append(grade_dict)
-    
-    # Close connection
+    # Close the connection
     conn.close()
     
     return grades
-
-def display_grades(grades):
-    """
-    Helper function to display grades in a readable format.
-    
-    Args:
-        grades (list): List of grade dictionaries
-    """
-    if not grades:
-        print("No grades found.")
-        return
-    
-    for grade in grades:
-        created_at = grade['created_at']
-        if isinstance(created_at, str):
-            created_at = datetime.datetime.fromisoformat(created_at)
-        
-        print(f"Subject: {grade['subject']}")
-        print(f"Value: {grade['value']} (Weight: {grade['weight']})")
-        print(f"Name: {grade['name']}")
-        print(f"Created at: {created_at}")
-        print(f"Creator: {grade['creator']}")
-        print("-" * 50)

@@ -37,6 +37,7 @@ def sync():
     
     except NoLoggedInException:
         print("NoLoggedInException, or in other words, vulcan shitted itself.")
+        exit()
         
     
     students = interface.get_students()
