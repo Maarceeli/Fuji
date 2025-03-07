@@ -1,7 +1,7 @@
 import flet as ft
 from i18n import _
 from constants import *
-from test import RecentGradesColumn  # Import the function from your new file
+from homeutils import RecentGradesColumn  # Import the function from your new file
 
 def HomePage():
     return ft.Column([
