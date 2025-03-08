@@ -324,29 +324,8 @@ def login(page: ft.Page):
         
         # Start view
         elif page.route == "/start":
-            start_view = ft.View(
-                route="/start",
-                controls=[
-                    ft.Container(
-                        content=ft.Column(
-                            [
-                                ft.Text(value=(_("Logged in!")), size=32, weight="bold", 
-                                       text_align=ft.TextAlign.CENTER),
-                                
-                                ft.Text(value=(_("Please restart the app to use it.")), size=16, weight="normal", 
-                                       text_align=ft.TextAlign.CENTER),
-                            ],
-                            alignment=ft.MainAxisAlignment.CENTER,
-                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                            spacing=30
-                        ),
-                        alignment=ft.alignment.center,
-                        expand=True,
-                        padding=ft.padding.all(20)
-                    )
-                ]
-            )
-            page.views.append(start_view)
+            # start_view = ft.View(
+            restart(page)
             
         page.update()
 
