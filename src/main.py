@@ -76,7 +76,7 @@ def main(page: ft.Page):
     def change_page(route):
         routes = {
             "/": HomePage(),
-            "/grades": GradesPage(),
+            "/grades": GradesPage(page),
             "/timetable": TimetablePage(),
             "/homework": HomeworkPage(),
             "/exams": ExamsPage(),
