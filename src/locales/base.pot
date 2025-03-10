@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-16 12:01+0100\n"
+"POT-Creation-Date: 2025-03-10 08:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,70 +17,146 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main.py:115 src/pages/home.py:9
+#: homeutils.py:44
+msgid "No grades found for this week."
+msgstr ""
+
+#: homeutils.py:106
+msgid "Recent Grades"
+msgstr ""
+
+#: main.py:110 pages/home.py:8
 msgid "Home"
 msgstr ""
 
-#: src/main.py:116 src/pages/grades.py:8
+#: main.py:111 pages/grades.py:83
 msgid "Grades"
 msgstr ""
 
-#: src/main.py:117 src/pages/home.py:16 src/pages/timetable.py:8
+#: main.py:112 pages/home.py:15 pages/timetable.py:7
 msgid "Timetable"
 msgstr ""
 
-#: src/main.py:118 src/pages/homework.py:8
+#: main.py:113 pages/homework.py:7
 msgid "Homework"
 msgstr ""
 
-#: src/main.py:119 src/pages/exams.py:8
+#: main.py:114 pages/exams.py:7
 msgid "Exams"
 msgstr ""
 
-#: src/main.py:120 src/pages/attendance.py:8
+#: main.py:115 pages/attendance.py:6
 msgid "Attendance"
 msgstr ""
 
-#: src/main.py:121 src/pages/behaviour.py:8
+#: main.py:116 pages/behaviour.py:7
 msgid "Behaviour"
 msgstr ""
 
-#: src/main.py:122 src/pages/settings.py:8
+#: main.py:117 pages/settings.py:87
 msgid "Settings"
 msgstr ""
 
-#: src/main.py:238
+#: main.py:240
 msgid "Welcome to Fuji!"
 msgstr ""
 
-#: src/main.py:240
+#: main.py:242
 msgid "Get Started"
 msgstr ""
 
-#: src/main.py:266 src/main.py:285
+#: main.py:268 main.py:287
 msgid "Log in"
 msgstr ""
 
-#: src/main.py:270
+#: main.py:272
 msgid "Username"
 msgstr ""
 
-#: src/main.py:277
+#: main.py:279
 msgid "Password"
 msgstr ""
 
-#: src/main.py:307
+#: main.py:309
 msgid "Select a student"
 msgstr ""
 
-#: src/main.py:331
-msgid "Logged in!"
+#: pages/grades.py:8
+msgid "Test modal"
 msgstr ""
 
-#: src/main.py:334
-msgid "Please restart the app to use it."
+#: pages/grades.py:21
+msgid "grades"
 msgstr ""
 
-#: src/pages/home.py:41
-msgid "Recent Grades"
+#: pages/grades.py:22
+msgid "Average"
+msgstr ""
+
+#: pages/grades.py:51 pages/grades.py:72
+msgid "Weight"
+msgstr ""
+
+#: pages/settings.py:19
+msgid "Settings changed. Restart required for changes to take effect."
+msgstr ""
+
+#: pages/settings.py:22
+msgid "Restart"
+msgstr ""
+
+#: pages/settings.py:52
+msgid "Red"
+msgstr ""
+
+#: pages/settings.py:53
+msgid "Orange"
+msgstr ""
+
+#: pages/settings.py:54
+msgid "Yellow"
+msgstr ""
+
+#: pages/settings.py:55
+msgid "Green"
+msgstr ""
+
+#: pages/settings.py:56
+msgid "Blue"
+msgstr ""
+
+#: pages/settings.py:57
+msgid "Purple"
+msgstr ""
+
+#: pages/settings.py:58
+msgid "Pink"
+msgstr ""
+
+#: pages/settings.py:59
+msgid "Brown"
+msgstr ""
+
+#: pages/settings.py:60
+msgid "Grey"
+msgstr ""
+
+#: pages/settings.py:61
+msgid "Amber"
+msgstr ""
+
+#: pages/settings.py:62
+msgid "Cyan"
+msgstr ""
+
+#: pages/settings.py:89
+msgid "Language (Requires restart)"
+msgstr ""
+
+#: pages/settings.py:92
+msgid "Language"
+msgstr ""
+
+#: pages/settings.py:98 pages/settings.py:101
+msgid "Theme"
 msgstr ""
