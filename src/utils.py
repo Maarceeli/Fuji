@@ -61,6 +61,9 @@ def setlanguage(lang):
         config.write(file)
         
 def restart(page: ft.Page):
-    python = sys.executable
-    subprocess.Popen([python] + sys.argv)
-    page.window.destroy()
+    try:
+        python = sys.executable
+        subprocess.Popen([python] + sys.argv)
+        page.window.destroy()
+    except FileNotFoundError:
+        exit()
