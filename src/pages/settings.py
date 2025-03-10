@@ -1,9 +1,9 @@
 import flet as ft
 from constants import *
 from utils import setthemecolor, setlanguage, restart
-from i18n import _
+from i18n import _, set_language
 
-def SettingsPage():
+def SettingsPage(page):
     # Create the main container to hold everything
     main_container = ft.Container()
     
@@ -67,8 +67,17 @@ def SettingsPage():
         show_notification()
     
     def onthemechange(e):
+        page.theme = ft.Theme(
+        color_scheme_seed=getattr(ft.Colors, e.data),
+        font_family="Roboto",
+        page_transitions=ft.PageTransitionsTheme(
+            macos=ft.PageTransitionTheme.NONE,
+            linux=ft.PageTransitionTheme.NONE,
+            windows=ft.PageTransitionTheme.NONE
+            )
+        )
+        page.update()
         setthemecolor(e.data)
-        show_notification()
     
     # Create a column with settings at top and notification container at bottom
     main_content = ft.Column([
@@ -86,7 +95,7 @@ def SettingsPage():
                     ),
                 ]),
                 ft.Row([
-                    ft.Text(_("Theme (Requires restart)")),
+                    ft.Text(_("Theme")),
                     ft.Dropdown(
                         width=200,
                         label=(_("Theme")),

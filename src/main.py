@@ -82,7 +82,7 @@ def main(page: ft.Page):
             "/exams": ExamsPage(),
             "/attendance": AttendancePage(),
             "/behaviour": BehaviourPage(),
-            "/settings": SettingsPage()
+            "/settings": SettingsPage(page)
         }
         
         page.views.clear()
