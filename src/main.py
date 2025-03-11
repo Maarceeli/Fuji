@@ -23,7 +23,7 @@ from sdk.src.interfaces.prometheus.interface import *
 
 config = configparser.ConfigParser()
 
-def sync():
+def sync(page):
     auth_context_raw = loadauth("Fuji", "Auth Context")
     auth_context = PrometheusAuthContext.model_validate_json(auth_context_raw)
     
@@ -54,6 +54,80 @@ def sync():
     grades = interface.get_grades(current_period.number)
 
     create_grades_database(grades_list=grades)
+    
+    # Get the current route to know which page to refresh
+    current_route = page.route
+    
+    # Use the built-in change_page function to rewrite the current page
+    page.views.clear()
+    
+    routes = {
+        "/": HomePage(),
+        "/grades": GradesPage(page),
+        "/timetable": TimetablePage(),
+        "/homework": HomeworkPage(),
+        "/exams": ExamsPage(),
+        "/attendance": AttendancePage(),
+        "/behaviour": BehaviourPage(),
+        "/settings": SettingsPage(page)
+    }
+    
+    # Access the navigation bar from the main function
+    bar = get_navigation_bar(page)
+    
+    view = ft.View(current_route, [
+        ft.Row([
+            bar,
+            ft.Container(content=routes.get(current_route, HomePage()), expand=True)
+        ], expand=True)
+    ])
+    
+    page.views.append(view)
+    page.update()
+
+# You'll need to make the navigation bar accessible
+def get_navigation_bar(page):
+    return ft.NavigationRail(
+        selected_index=get_index_from_route(page.route),
+        label_type=ft.NavigationRailLabelType.ALL,
+        extended=False,
+        min_width=50,
+        min_extended_width=400,
+        group_alignment=0,
+        destinations=[
+            ft.NavigationRailDestination(icon=ft.Icons.HOME_OUTLINED, selected_icon=ft.Icons.HOME, label=(_("Home"))),
+            ft.NavigationRailDestination(icon=ft.Icons.LOOKS_6_OUTLINED, selected_icon=ft.Icons.LOOKS_6, label=(_("Grades"))),
+            ft.NavigationRailDestination(icon=ft.Icons.BACKPACK_OUTLINED, selected_icon=ft.Icons.BACKPACK, label=(_("Timetable"))),
+            ft.NavigationRailDestination(icon=ft.Icons.BOOK_OUTLINED, selected_icon=ft.Icons.BOOK, label=(_("Homework"))),
+            ft.NavigationRailDestination(icon=ft.Icons.CALENDAR_TODAY_OUTLINED, selected_icon=ft.Icons.CALENDAR_TODAY, label=(_("Exams"))),
+            ft.NavigationRailDestination(icon=ft.Icons.EVENT_NOTE_OUTLINED, selected_icon=ft.Icons.EVENT_NOTE, label=(_("Attendance"))),
+            ft.NavigationRailDestination(icon=ft.Icons.STICKY_NOTE_2_OUTLINED, selected_icon=ft.Icons.STICKY_NOTE_2, label=(_("Behaviour"))),
+            ft.NavigationRailDestination(icon=ft.Icons.SETTINGS_OUTLINED, selected_icon=ft.Icons.SETTINGS_ROUNDED, label=(_("Settings"))),
+        ],
+        on_change=lambda e: page.go([
+            "/",
+            "/grades",
+            "/timetable",
+            "/homework",
+            "/exams",
+            "/attendance",
+            "/behaviour",
+            "/settings"
+        ][e.control.selected_index])
+    )
+
+def get_index_from_route(route):
+    route_to_index = {
+        "/": 0,
+        "/grades": 1,
+        "/timetable": 2,
+        "/homework": 3,
+        "/exams": 4,
+        "/attendance": 5,
+        "/behaviour": 6,
+        "/settings": 7
+    }
+    return route_to_index.get(route, 0)
 
 def main(page: ft.Page):
     # Page settings
@@ -65,13 +139,13 @@ def main(page: ft.Page):
             macos=ft.PageTransitionTheme.NONE,
             linux=ft.PageTransitionTheme.NONE,
             windows=ft.PageTransitionTheme.NONE
-        )
+        ),
     )
     
     # Sync 
-    s = threading.Thread(target=sync)
+    s = threading.Thread(target=sync, args=(page,))
     s.start()
-    
+
     # Page routing
     def change_page(route):
         routes = {
