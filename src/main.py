@@ -13,7 +13,7 @@ from pages.exams import *
 from pages.grades import *
 from pages.homework import *
 from pages.settings import *
-from sqlite_handler import *
+from sqlitehandlernr import *
 from pages.timetable import *
 from pages.behaviour import *
 from pages.attendance import *

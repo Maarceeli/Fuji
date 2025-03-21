@@ -3,15 +3,15 @@ import sqlite3
 import datetime
 from datetime import timedelta
 from collections import defaultdict
-from sqlite_handler import get_current_week_grades
+from sqlitehandlernr import fetch_grades_this_week
 from i18n import _
 
 def format_grade(grade):
     """
     Format a single grade into a readable string.
     """
-    # For simple grade display
-    return str(grade['value'])
+    # Access the grade value as an attribute, not as a dictionary key
+    return str(grade.value)
 
 def RecentGradesColumn(db_path="grades.db"):
     """
@@ -27,12 +27,12 @@ def RecentGradesColumn(db_path="grades.db"):
     def load_grades(e=None):
         try:
             # Get grades from the current week
-            grades_list = get_current_week_grades(db_path)
+            grades_list = fetch_grades_this_week()
             
             # Group by subject
             grades_by_subject = defaultdict(list)
             for grade in grades_list:
-                subject = grade['subject']
+                subject = grade.subject
                 grades_by_subject[subject].append(grade)
             
             # Prepare the list of controls
@@ -49,7 +49,6 @@ def RecentGradesColumn(db_path="grades.db"):
                 for subject, grades in grades_by_subject.items():
                     # Format grades as a space-separated string  
                     formatted_grades = [format_grade(grade) for grade in grades]
-                    grades_str = " ".join(formatted_grades)
                     
                     # Create a row for each subject 
                     subject_row = ft.Row([
@@ -62,7 +61,7 @@ def RecentGradesColumn(db_path="grades.db"):
                         ),
                         *[
                             ft.Container(
-                                content=ft.Text(grade_val,color="#FFFFFF",size=16,text_align=ft.TextAlign.CENTER,width=30),
+                                content=ft.Text(grade_val, color="#FFFFFF", size=16, text_align=ft.TextAlign.CENTER, width=30),
                                 expand=False,
                                 bgcolor=ft.Colors.with_opacity(0.3, ft.Colors.BLACK),
                                 width=30,
@@ -103,7 +102,7 @@ def RecentGradesColumn(db_path="grades.db"):
     # Create the header section like in the image
     header = ft.Row([
         ft.Icon(ft.Icons.FILTER_6, size=32, color="#FFFFFF"),
-        ft.Text((_("Recent Grades")), size=24, font_family="Roboto", weight="bold")
+        ft.Text((_("Recent Grades")), size=24, font_family="Roboto", weight="bold", color="#FFFFFF")
     ], spacing=12, alignment=ft.MainAxisAlignment.START)
     
     # Create the column with header and content
