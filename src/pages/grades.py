@@ -90,6 +90,7 @@ def GradesPage(page):
                 ], spacing=15, alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER),
                 height=75,
                 color=ft.Colors.SURFACE_CONTAINER_HIGHEST,
+                margin=ft.margin.only(left=15, right=15, bottom=5),
             ),
             ft.Card(
                 content=ft.Row([
@@ -108,6 +109,7 @@ def GradesPage(page):
                 ], spacing=15, alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER),
                 height=75,
                 color=ft.Colors.SURFACE_CONTAINER_HIGHEST,
+                margin=ft.margin.only(left=15, right=15, top=5, bottom=5),
             ),
             ft.Card(
                 content=ft.Row([
@@ -126,6 +128,7 @@ def GradesPage(page):
                 ], spacing=15, alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER),
                 height=75,
                 color=ft.Colors.SURFACE_CONTAINER_HIGHEST,
+                margin=ft.margin.only(left=15, right=15, bottom=5, top=5),
             ),
         ], spacing=5)
         modal.open = True
