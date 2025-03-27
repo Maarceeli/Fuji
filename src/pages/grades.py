@@ -14,7 +14,7 @@ def parse_grade_value(value):
         return None
 
 def format_date(dt):
-    return dt.strftime("%Y-%m-%d")
+    return dt.strftime("%Y/%m/%d")
 
 def GradesPage(page):
     grades = fetch_all_grades()
