@@ -15,6 +15,14 @@ class Grades(SQLModel, table=True):
     subject: str
     creator: str
 
+class Notes(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)  # Add an auto-incrementing id
+    name: Optional[str] = Field(default=None, nullable=True)
+    content: Optional[str] = Field(default=None, nullable=True)
+    points: Optional[str] = Field(default=None, nullable=True)
+    creator: str
+    created_at: datetime
+
 engine = create_engine("sqlite:///database.db")
 SQLModel.metadata.create_all(engine)
 
@@ -22,9 +30,6 @@ def create_grades_database(grades_list):
     with Session(engine) as session:
         session.execute(delete(Grades))
         for grade in grades_list:
-            # Format the created_at to the desired format
-            formatted_time = grade.created_at.strftime('%d/%m/%Y %H:%M:%S')
-            
             grade_obj = Grades(
                 value=grade.value, 
                 is_point=grade.is_point,
@@ -55,3 +60,24 @@ def fetch_all_grades():
         grades = session.query(Grades).all()
     
     return grades
+
+def create_notes_database(notes_list):
+    with Session(engine) as session:
+        session.execute(delete(Notes))
+        for note in notes_list:  
+            note_obj = Notes(
+                name=note.name or "Untitled", 
+                content=note.content, 
+                points=note.points or "None", 
+                creator=note.creator, 
+                created_at=note.created_at,
+            )
+            
+            session.add(note_obj)
+            session.commit()
+
+def fetch_all_notes():
+    with Session(engine) as session:
+        notes = session.query(Notes).all()
+    
+    return notes

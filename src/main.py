@@ -52,7 +52,9 @@ def sync(page: ft.Page):
     student = students[student]
     current_period = next(period for period in student.periods if period.current)
     grades = interface.get_grades(current_period.number)
-
+    notes = interface.get_notes()
+    
+    create_notes_database(notes_list=notes)
     create_grades_database(grades_list=grades)
     
     def change_page(route):
