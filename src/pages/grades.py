@@ -1,6 +1,7 @@
 import flet as ft
 from sqlitehandlernr import fetch_all_grades
 from i18n import _
+from utils import getcurrentsemester
 
 def parse_grade_value(value):
     try:
@@ -17,26 +18,19 @@ def format_date(dt):
     return dt.strftime("%Y/%m/%d")
 
 def GradesPage(page):
-    grades = fetch_all_grades()
-    panels = []
-    subjects = {}
-    
-    for grade in grades:
-        subject = grade.subject
-        if subject not in subjects:
-            subjects[subject] = []
-        subjects[subject].append(grade)
-    
+    semester = ft.Ref[ft.Dropdown]()
+    content_column = ft.Ref[ft.Column]()
+
     modal = ft.BottomSheet(
         content=ft.Column([], spacing=5),
         enable_drag=True,
         open=False,
     )
-    
+
     def open_grade_modal(grade):
         parsed_value = parse_grade_value(grade.value)
         grade_display = f"{grade.value}" if parsed_value is not None else _("Grade not recognized")
-        
+
         modal.content = ft.Column([
             ft.Row([
                 ft.Container(
@@ -76,12 +70,12 @@ def GradesPage(page):
             ft.Card(
                 content=ft.Row([
                     ft.Container(
-                            content=ft.Icon(name=ft.Icons.LOOKS_6_ROUNDED, size=20),
-                            width=40,
-                            height=40,
-                            border_radius=8,
-                            alignment=ft.alignment.center,
-                            padding=ft.padding.only(left=10),
+                        content=ft.Icon(name=ft.Icons.LOOKS_6_ROUNDED, size=20),
+                        width=40,
+                        height=40,
+                        border_radius=8,
+                        alignment=ft.alignment.center,
+                        padding=ft.padding.only(left=10),
                     ),
                     ft.Column([
                         ft.Text("Grade", size=14, color=ft.Colors.WHITE70),
@@ -95,12 +89,12 @@ def GradesPage(page):
             ft.Card(
                 content=ft.Row([
                     ft.Container(
-                            content=ft.Icon(name=ft.Icons.SCALE, size=20),
-                            width=40,
-                            height=40,
-                            border_radius=8,
-                            alignment=ft.alignment.center,
-                            padding=ft.padding.only(left=10),
+                        content=ft.Icon(name=ft.Icons.SCALE, size=20),
+                        width=40,
+                        height=40,
+                        border_radius=8,
+                        alignment=ft.alignment.center,
+                        padding=ft.padding.only(left=10),
                     ),
                     ft.Column([
                         ft.Text("Weight", size=14, color=ft.Colors.WHITE70),
@@ -114,12 +108,12 @@ def GradesPage(page):
             ft.Card(
                 content=ft.Row([
                     ft.Container(
-                            content=ft.Icon(name=ft.Icons.CALENDAR_TODAY, size=20),
-                            width=40,
-                            height=40,
-                            border_radius=8,
-                            alignment=ft.alignment.center,
-                            padding=ft.padding.only(left=10),
+                        content=ft.Icon(name=ft.Icons.CALENDAR_TODAY, size=20),
+                        width=40,
+                        height=40,
+                        border_radius=8,
+                        alignment=ft.alignment.center,
+                        padding=ft.padding.only(left=10),
                     ),
                     ft.Column([
                         ft.Text("Date", size=14, color=ft.Colors.WHITE70),
@@ -133,56 +127,104 @@ def GradesPage(page):
         ], spacing=5)
         modal.open = True
         page.update()
-    
-    for subject, grades_list in subjects.items():
-        header = ft.Container(
-            content=ft.Column([
-                ft.Text(subject, size=15),
-                ft.Row([
-                    ft.Text(f"{len(grades_list)} " + _("grades"), size=14),
-                    ft.Text((_("Average")) + ": {:.2f}".format(
-                        sum(parse_grade_value(g.value) for g in grades_list if parse_grade_value(g.value) is not None) / max(len([g for g in grades_list if parse_grade_value(g.value) is not None]), 1)
-                    ), size=14),
-                ])
-            ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.START, expand=True),
-            padding=ft.padding.all(10),
-            expand=True,
-        )
-        
-        grade_rows = []
-        for grade in grades_list:
-            grade_rows.append(
-                ft.Container(
-                    content=ft.Row([
-                        ft.Container(
-                            content=ft.Text(grade.value, text_align=ft.TextAlign.CENTER),
-                            bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST,
-                            padding=ft.padding.symmetric(horizontal=12, vertical=8),
-                            border_radius=5,
-                            margin=ft.margin.all(5),
-                            on_click=lambda e, grade=grade: open_grade_modal(grade),
-                        ),
-                        ft.Column([
-                            ft.Text(grade.name),
-                            ft.Row([
-                                ft.Text(format_date(grade.created_at)),
-                                ft.Text((_("Weight")) + ": {:.1f}".format(getattr(grade, 'weight', 1.0)))
-                            ])
-                        ], spacing=1)
-                    ], expand=True),
-                    on_click=lambda e, grade=grade: open_grade_modal(grade),
-                )
+
+    def build_content_for_semester(selected_semester):
+        all_grades = fetch_all_grades(selected_semester)
+        panels = []
+        subjects = {}
+
+        for grade in all_grades:
+            subject = grade.subject
+            subjects.setdefault(subject, []).append(grade)
+
+        # (rest of your logic stays the same)
+
+
+        for subject, grades_list in subjects.items():
+            header = ft.Container(
+                content=ft.Column([
+                    ft.Text(subject, size=15),
+                    ft.Row([
+                        ft.Text(f"{len(grades_list)} " + _("grades"), size=14),
+                        ft.Text((_("Average")) + ": {:.2f}".format(
+                            sum(parse_grade_value(g.value) for g in grades_list if parse_grade_value(g.value) is not None) /
+                            max(len([g for g in grades_list if parse_grade_value(g.value) is not None]), 1)
+                        ), size=14),
+                    ])
+                ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.START, expand=True),
+                padding=ft.padding.all(10),
+                expand=True,
             )
-        
-        panel = ft.ExpansionPanel(
-            header=header,
-            content=ft.Column(grade_rows),
-            expand=False,
-        )
-        panels.append(panel)
-    
+
+            grade_rows = []
+            for grade in grades_list:
+                grade_rows.append(
+                    ft.Container(
+                        content=ft.Row([
+                            ft.Container(
+                                content=ft.Text(grade.value, text_align=ft.TextAlign.CENTER),
+                                bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST,
+                                padding=ft.padding.symmetric(horizontal=12, vertical=8),
+                                border_radius=5,
+                                margin=ft.margin.all(5),
+                                on_click=(lambda e, g=grade: open_grade_modal(g)),
+                            ),
+                            ft.Column([
+                                ft.Text(grade.name),
+                                ft.Row([
+                                    ft.Text(format_date(grade.created_at)),
+                                    ft.Text((_("Weight")) + ": {:.1f}".format(getattr(grade, 'weight', 1.0)))
+                                ])
+                            ], spacing=1)
+                        ], expand=True),
+                        on_click=(lambda e, g=grade: open_grade_modal(g)),
+                    )
+                )
+
+            panel = ft.ExpansionPanel(
+                header=header,
+                content=ft.Column(grade_rows),
+                expand=False,
+            )
+            panels.append(panel)
+
+        return panels
+
+    def on_semester_change(e):
+        selected_sem = int(semester.current.value)
+        panels = build_content_for_semester(selected_sem)
+        content_column.current.controls = [
+            ft.ExpansionPanelList(panels),
+            modal
+        ]
+        page.update()
+
     return ft.Column([
-        ft.Text((_("Grades")), size=30, weight="bold"),
-        ft.ExpansionPanelList(panels),
-        modal
-    ], scroll=True)
+        ft.Row([
+            ft.Text((_("Grades")), size=30, weight="bold"),
+            ft.Dropdown(
+                ref=semester,
+                width=150,
+                value=str(getcurrentsemester()),
+                options=[
+                    ft.dropdown.Option("1", text=(_("Semester 1"))),
+                    ft.dropdown.Option("2", text=(_("Semester 2"))),
+                ],
+                on_change=on_semester_change,
+                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                expand=True,
+            ),
+        ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN, spacing=10),
+        ft.Container(
+            content=ft.Column(
+                ref=content_column,
+                controls=[
+                    ft.ExpansionPanelList(build_content_for_semester(getcurrentsemester())),
+                    modal
+                ],
+                scroll=True
+            ),
+            expand=True
+        )
+
+    ])
