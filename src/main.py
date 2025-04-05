@@ -50,12 +50,16 @@ def sync(page: ft.Page):
     saveauth("Fuji", "Auth Context", jsoncontext)
 
     student = students[student]
-    current_period = next(period for period in student.periods if period.current)
-    grades = interface.get_grades(current_period.number)
+    setcurrentsemester(next(period for period in student.periods if period.current))
     notes = interface.get_notes()
     
+    grades = interface.get_grades(1)
+    create_grades_database(grades_list=grades, smstr=1)
+    grades = interface.get_grades(2)
+    add_grades_to_database(grades_list=grades, smstr=2)
+    
+    
     create_notes_database(notes_list=notes)
-    create_grades_database(grades_list=grades)
     
     def change_page(route):
         routes = {

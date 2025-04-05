@@ -14,6 +14,7 @@ class Grades(SQLModel, table=True):
     created_at: datetime
     subject: str
     creator: str
+    semester: int
 
 class Notes(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)  # Add an auto-incrementing id
@@ -26,7 +27,7 @@ class Notes(SQLModel, table=True):
 engine = create_engine("sqlite:///database.db")
 SQLModel.metadata.create_all(engine)
 
-def create_grades_database(grades_list):
+def create_grades_database(grades_list, smstr):
     with Session(engine) as session:
         session.execute(delete(Grades))
         for grade in grades_list:
@@ -40,6 +41,26 @@ def create_grades_database(grades_list):
                 created_at=grade.created_at,
                 subject=grade.subject, 
                 creator=grade.creator,
+                semester=smstr
+            )
+            
+            session.add(grade_obj)
+            session.commit()
+            
+def add_grades_to_database(grades_list, smstr):
+    with Session(engine) as session:
+        for grade in grades_list:
+            grade_obj = Grades(
+                value=grade.value, 
+                is_point=grade.is_point,
+                point_numerator=grade.point_numerator, 
+                point_denominator=grade.point_denominator, 
+                weight=grade.weight, 
+                name=grade.name, 
+                created_at=grade.created_at,
+                subject=grade.subject, 
+                creator=grade.creator,
+                semester=smstr
             )
             
             session.add(grade_obj)
@@ -55,11 +76,11 @@ def fetch_grades_this_week():
     
     return grades
 
-def fetch_all_grades():
+def fetch_all_grades(semester: int):
     with Session(engine) as session:
-        grades = session.query(Grades).all()
-    
+        grades = session.query(Grades).filter(Grades.semester == semester).all()
     return grades
+
 
 def create_notes_database(notes_list):
     with Session(engine) as session:

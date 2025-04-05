@@ -60,6 +60,29 @@ def setlanguage(lang):
     with open(f"{getconfigpath()}/config.ini", "w") as file:
         config.write(file)
         
+def getcurrentsemester():
+    config = configparser.ConfigParser()
+    config.read(f"{getconfigpath()}/config.ini")
+    
+    try:
+        semester = int(config['User']['semester'])
+    except ValueError:
+        semester = 1
+    
+    return semester
+
+def setcurrentsemester(semester):
+    config = configparser.ConfigParser()
+    config.read(f"{getconfigpath()}/config.ini")
+    
+    try:
+        config["User"]["semester"] = str(semester.number)
+    except ValueError:
+        config["User"]["semester"] = "1"
+    
+    with open(f"{getconfigpath()}/config.ini", "w") as file:
+        config.write(file)
+
 def restart(page: ft.Page):
     try:
         python = sys.executable
