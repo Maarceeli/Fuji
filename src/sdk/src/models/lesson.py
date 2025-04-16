@@ -84,7 +84,6 @@ class Lesson(BaseModel):
     PupilAlias: str | None
     Visible: bool
     Substitution: Substitution | None
-    Parent: str | None
 
     @staticmethod
     def from_hebe_dict(data: dict):
@@ -105,5 +104,4 @@ class Lesson(BaseModel):
             PupilAlias=data["PupilAlias"],
             Visible=data["Visible"],
             Substitution=data["Substitution"],
-            Parent=data["Parent"]
         )
