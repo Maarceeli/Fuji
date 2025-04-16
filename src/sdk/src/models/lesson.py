@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class LessonDate(BaseModel):
     Timestamp: int
-    Date: str
+    Date: date
     DateDisplay: str
     Time: str
 
@@ -73,7 +73,6 @@ class Lesson(BaseModel):
     Subject: Subject
     TeacherPrimary: Teacher
     TeacherSecondary: Teacher | None
-    TeacherSecondary2: Teacher | None
     Change: Change | None
     Clazz: Clazz
     Distribution: Distribution | None
