@@ -20,6 +20,7 @@ from sdk.src.apis.hebe.constants import (
     ENDPOINT_REGISTER_JWT,
     ENDPOINT_REGISTER_TOKEN,
     ENDPOINT_SCHOOL_LUCKY,
+    ENDPOINT_SCHEDULE_WITHCHANGES_BYPUPIL,
     USER_AGENT,
 )
 from sdk.src.apis.hebe.exceptions import (
@@ -39,6 +40,7 @@ from sdk.src.apis.hebe.signer import get_signature_values
 from sdk.src.models.exam import Exam
 from sdk.src.models.grade import Grade
 from sdk.src.models.note import Note
+from sdk.src.models.lesson import Lesson
 
 
 class HebeClient:
@@ -207,3 +209,19 @@ class HebeClient:
             "GET", ENDPOINT_NOTE_BYPUPIL, params={"pupilId": student_id}
         )
         return list(map(Note.from_hebe_dict, envelope))
+    
+    def get_timetablle(self, student_id: int, from_: date, to: date):
+        envelope = self._send_request(
+            "GET", 
+            ENDPOINT_SCHEDULE_WITHCHANGES_BYPUPIL, 
+            params={
+                "pupilId": student_id, 
+                "dateFrom": from_, 
+                "dateTo": to, 
+                "lastId": "-2147483648",
+                "pageSize": 500,
+                "lastSyncDate": "1970-01-01%2001%3A00%3A00",
+            },
+                    
+        )
+        return list(map(Lesson.from_hebe_dict, envelope))
