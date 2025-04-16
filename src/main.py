@@ -54,17 +54,18 @@ def sync(page: ft.Page):
     notes = interface.get_notes()
     
     grades = interface.get_grades(1)
-    create_grades_database(grades_list=grades, smstr=1)
+    if grades: create_grades_database(grades_list=grades, smstr=1)
     grades = interface.get_grades(2)
-    add_grades_to_database(grades_list=grades, smstr=2)
+    if grades: add_grades_to_database(grades_list=grades, smstr=2)
     
     
-    create_notes_database(notes_list=notes)
+    if notes: create_notes_database(notes_list=notes)
     
     
     start, end = get_current_month_dates()
     
-    interface.get_timetable(from_=start, to=end)
+    timetable = interface.get_timetable(from_=start, to=end)
+    create_timetable_database(lesson_list=timetable)
     
     def change_page(route):
         routes = {
