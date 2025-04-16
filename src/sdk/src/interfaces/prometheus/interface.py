@@ -260,6 +260,11 @@ class PrometheusInterface(CoreInterface):
         self._check_is_student_selected()
         return self._hebe_client.get_exams(self._student_context.student_id, from_, to)
 
+    def get_notes(self):
+        self._check_is_auth_context_full()
+        self._check_is_student_selected()
+        return self._hebe_client.get_notes(self._student_context.student_id)
+    
     def get_timetable(self, from_, to):
         self._check_is_auth_context_full()
         self._check_is_student_selected()
