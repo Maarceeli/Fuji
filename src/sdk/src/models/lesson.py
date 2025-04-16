@@ -13,6 +13,7 @@ class Change(BaseModel):
     IsMerge: bool
     Separation: bool
 
+
 class Substitution(BaseModel):
     Id: int
     UnitId: int
@@ -25,12 +26,6 @@ class Distribution(BaseModel):
     Shortcut: str
     Name: str
     PartType: str
-
-class LessonDate(BaseModel):
-    Timestamp: int
-    Date: str
-    DateDisplay: str
-    Time: str
 
 
 class Room(BaseModel):
@@ -67,11 +62,12 @@ class Clazz(BaseModel):
     DisplayName: str
     Symbol: str
 
+
 class Lesson(BaseModel):
     Id: int
     MergeChangeId: int | None
     Event: str | None
-    Date: LessonDate
+    Date: date
     Room: Room
     TimeSlot: TimeSlot
     Subject: Subject
@@ -91,17 +87,17 @@ class Lesson(BaseModel):
             Id=data["Id"],
             MergeChangeId=data["MergeChangeId"],
             Event=data["Event"],
-            Date=LessonDate(**data["Date"]),
+            Date=date.fromtimestamp(data["Date"]["Timestamp"] / 1000),
             Room=Room(**data["Room"]),
             TimeSlot=TimeSlot(**data["TimeSlot"]),
             Subject=Subject(**data["Subject"]),
             TeacherPrimary=Teacher(**data["TeacherPrimary"]),
             TeacherSecondary=Teacher(**data["TeacherSecondary"]) if data["TeacherSecondary"] else None,
             TeacherSecondary2=Teacher(**data["TeacherSecondary2"]) if data["TeacherSecondary2"] else None,
-            Change=data["Change"],
+            Change=Change(**data["Change"]) if data["Change"] else None,
             Clazz=Clazz(**data["Clazz"]),
-            Distribution=data["Distribution"],
+            Distribution=Distribution(**data["Distribution"]) if data["Distribution"] else None,
             PupilAlias=data["PupilAlias"],
             Visible=data["Visible"],
-            Substitution=data["Substitution"],
+            Substitution=Substitution(**data["Substitution"]) if data["Substitution"] else None,
         )
