@@ -210,7 +210,7 @@ class HebeClient:
         )
         return list(map(Note.from_hebe_dict, envelope))
     
-    def get_timetablle(self, student_id: int, from_: date, to: date):
+    def get_timetable(self, student_id: int, from_: date, to: date):
         envelope = self._send_request(
             "GET", 
             ENDPOINT_SCHEDULE_WITHCHANGES_BYPUPIL, 
