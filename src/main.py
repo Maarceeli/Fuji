@@ -6,7 +6,7 @@ import keyring
 import threading
 import configparser
 import flet as ft
-from i18n import *
+from i18n import _
 from utils import *
 from pages.home import *
 from pages.exams import *
@@ -60,6 +60,11 @@ def sync(page: ft.Page):
     
     
     create_notes_database(notes_list=notes)
+    
+    
+    start, end = get_current_month_dates()
+    
+    interface.get_timetable(from_=start, to=end)
     
     def change_page(route):
         routes = {
