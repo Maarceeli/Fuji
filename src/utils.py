@@ -1,6 +1,7 @@
 import keyring
 import os
 from pathlib import Path
+from datetime import datetime, timedelta
 import configparser
 import subprocess
 import sys
@@ -90,3 +91,15 @@ def restart(page: ft.Page):
         page.window.destroy()
     except FileNotFoundError:
         exit()
+        
+def get_current_month_dates():
+    today = datetime.today()
+    start_date = today.replace(day=1)
+    # To get the last day, move to the next month, then subtract one day
+    if today.month == 12:
+        next_month = today.replace(year=today.year + 1, month=1, day=1)
+    else:
+        next_month = today.replace(month=today.month + 1, day=1)
+    end_date = next_month - timedelta(days=1)
+    
+    return start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")
