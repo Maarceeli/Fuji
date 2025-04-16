@@ -1,6 +1,30 @@
 from datetime import datetime, date
 from pydantic import BaseModel
 
+class LessonDate(BaseModel):
+    Timestamp: int
+    Date: str
+    DateDisplay: str
+    Time: str
+
+class Change(BaseModel):
+    Id: int
+    Type: int
+    IsMerge: bool
+    Separation: bool
+
+class Substitution(BaseModel):
+    Id: int
+    UnitId: int
+    ScheduleId: int
+    LessonDate: LessonDate
+
+class Distribution(BaseModel):
+    Id: int
+    Key: str
+    Shortcut: str
+    Name: str
+    PartType: str
 
 class LessonDate(BaseModel):
     Timestamp: int
@@ -43,7 +67,6 @@ class Clazz(BaseModel):
     DisplayName: str
     Symbol: str
 
-
 class Lesson(BaseModel):
     Id: int
     MergeChangeId: int | None
@@ -55,12 +78,12 @@ class Lesson(BaseModel):
     TeacherPrimary: Teacher
     TeacherSecondary: Teacher | None
     TeacherSecondary2: Teacher | None
-    Change: str | None
+    Change: Change | None
     Clazz: Clazz
-    Distribution: str | None
+    Distribution: Distribution | None
     PupilAlias: str | None
     Visible: bool
-    Substitution: str | None
+    Substitution: Substitution | None
     Parent: str | None
 
     @staticmethod
