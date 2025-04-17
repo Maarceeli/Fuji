@@ -25,67 +25,6 @@ class Notes(SQLModel, table=True):
     creator: str
     created_at: datetime
 
-
-class Timetable(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
-    MergeChangeId: int | None
-    Event: str | None
-    Date: date  # Ensure this is a date object
-    RoomId: int
-    RoomCode: str
-    TimeSlotId: int
-    TimeSlotStart: str
-    TimeSlotEnd: str
-    TimeSlotDisplay: str
-    TimeSlotPosition: int
-    SubjectId: int
-    SubjectName: str
-    SubjectKod: str
-    TeacherPrimaryId: int
-    TeacherPrimaryName: str
-    TeacherSecondaryId: int | None = None
-    TeacherSecondaryName: str | None = None
-    ChangeId: int | None = None
-    ChangeType: int | None = None
-    ClazzId: int
-    ClazzDisplayName: str
-    DistributionName: str | None = None
-    PupilAlias: str | None = None
-    Visible: bool
-    SubstitutionDate: date | None = None 
-
-    @staticmethod
-    def from_lesson(lesson: "Lesson") -> "Timetable":
-        return Timetable(
-            MergeChangeId=lesson.MergeChangeId,
-            Event=lesson.Event,
-            Date=lesson.Date,
-            RoomId=lesson.Room.Id,
-            RoomCode=lesson.Room.Code,
-            TimeSlotId=lesson.TimeSlot.Id,
-            TimeSlotStart=lesson.TimeSlot.Start,
-            TimeSlotEnd=lesson.TimeSlot.End,
-            TimeSlotDisplay=lesson.TimeSlot.Display,
-            TimeSlotPosition=lesson.TimeSlot.Position,
-            SubjectId=lesson.Subject.Id,
-            SubjectName=lesson.Subject.Name,
-            SubjectKod=lesson.Subject.Kod,
-            TeacherPrimaryId=lesson.TeacherPrimary.Id,
-            TeacherPrimaryName=lesson.TeacherPrimary.DisplayName,
-            TeacherSecondaryId=lesson.TeacherSecondary.Id if lesson.TeacherSecondary else None,
-            TeacherSecondaryName=lesson.TeacherSecondary.DisplayName if lesson.TeacherSecondary else None,
-            ChangeId=lesson.Change.Id if lesson.Change else None,
-            ChangeType=lesson.Change.Type if lesson.Change else None,
-            ClazzId=lesson.Clazz.Id,
-            ClazzDisplayName=lesson.Clazz.DisplayName,
-            DistributionName=lesson.Distribution.Name if lesson.Distribution else None,
-            PupilAlias=lesson.PupilAlias,
-            Visible=lesson.Visible,
-            SubstitutionDate=lesson.Substitution.LessonDate.Date if lesson.Substitution else None,
-        )
-
-
-
 engine = create_engine("sqlite:///database.db")
 SQLModel.metadata.create_all(engine)
 
@@ -108,17 +47,7 @@ def create_grades_database(grades_list, smstr):
             
             session.add(grade_obj)
             session.commit()
-
-def create_timetable_database(lesson_list):
-    with Session(engine) as session:
-        session.execute(delete(Timetable))
-        for lesson in lesson_list:
-            timetable_obj = Timetable.from_lesson(lesson)
-            session.add(timetable_obj)
-        session.commit()
-
-
-            
+         
 def add_grades_to_database(grades_list, smstr):
     with Session(engine) as session:
         for grade in grades_list:
