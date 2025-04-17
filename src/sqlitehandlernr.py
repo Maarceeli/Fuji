@@ -23,6 +23,19 @@ class Notes(SQLModel, table=True):
     points: Optional[str] = Field(default=None, nullable=True)
     creator: str
     created_at: datetime
+    
+class Timetable(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)  # Add an auto-incrementing id
+    lid: int
+    position : int
+    date: date
+    room: str | None
+    start: str
+    end: str
+    subject: str | None
+    teacher: str | None
+    group: str | None
+    visible: bool
 
 engine = create_engine("sqlite:///database.db")
 SQLModel.metadata.create_all(engine)
@@ -46,6 +59,27 @@ def create_grades_database(grades_list, smstr):
             
             session.add(grade_obj)
             session.commit()
+            
+def create_timetable_database(timetable_list):
+    with Session(engine) as session:
+        session.execute(delete(Timetable))
+        for lesson in timetable_list:
+            lesson_obj = Timetable(
+                lid=lesson.id, 
+                position = lesson.position,
+                date=lesson.date,
+                room=lesson.room, 
+                start=lesson.start, 
+                end=lesson.end, 
+                subject=lesson.subject, 
+                teacher=lesson.teacher, 
+                group=lesson.group, 
+                visible=lesson.visible
+            )
+            
+            session.add(lesson_obj)
+            session.commit()
+            
          
 def add_grades_to_database(grades_list, smstr):
     with Session(engine) as session:

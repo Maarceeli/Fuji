@@ -65,6 +65,7 @@ def sync(page: ft.Page):
     start, end = get_current_month_dates()
     
     timetable = interface.get_timetable(from_=start, to=end)
+    create_timetable_database(timetable_list=timetable)
     
     def change_page(route):
         routes = {
