@@ -2,7 +2,6 @@ from sqlmodel import *
 from datetime import date, datetime, timedelta
 from sqlalchemy import func
 from typing import Optional
-from sdk.src.models.lesson import LessonDate, Room, Subject, Teacher, Clazz, Change, Distribution, Substitution, TimeSlot
 
 class Grades(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)  # Add an auto-incrementing id
