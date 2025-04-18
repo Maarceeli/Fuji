@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, time
 from pydantic import BaseModel
 
 #class Change(BaseModel):
@@ -17,11 +17,11 @@ from pydantic import BaseModel
 # TODO: Add a model for the substitutions
 
 class Lesson(BaseModel):
-    position : int
+    position: int
     date: date
     room: str | None
-    start: str
-    end: str
+    start: time
+    end: time
     subject: str | None
     teacher: str | None
     group: str | None
@@ -31,12 +31,12 @@ class Lesson(BaseModel):
     def from_hebe_dict(data: dict):
         return Lesson(
             position = data["TimeSlot"]["Position"],
-            date=datetime.fromtimestamp(data["Date"]["Timestamp"] / 1000),
-            room=data["Room"]["Code"],
-            start=data["TimeSlot"]["Start"],
-            end=data["TimeSlot"]["End"],
-            subject=data["Subject"]["Name"],
-            teacher=data["TeacherPrimary"]["DisplayName"],
-            group=data["Distribution"]["Shortcut"] if data["Distribution"] else None,
-            visible=data["Visible"],
+            date = datetime.fromtimestamp(data["Date"]["Timestamp"] / 1000).date(),
+            room = data["Room"]["Code"],
+            start = datetime.strptime(data["TimeSlot"]["Start"], "%H:%M").time(),
+            end = datetime.strptime(data["TimeSlot"]["End"], "%H:%M").time(),
+            subject = data["Subject"]["Name"],
+            teacher = data["TeacherPrimary"]["DisplayName"],
+            group = data["Distribution"]["Shortcut"] if data["Distribution"] else None,
+            visible = data["Visible"],
         )
