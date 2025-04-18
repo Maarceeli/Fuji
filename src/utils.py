@@ -107,3 +107,17 @@ def get_current_month_dates():
 def getinitials(full_name):
     initials = ''.join([part[0].upper() for part in full_name.split()])
     return initials
+
+def logout():
+    config = configparser.ConfigParser()
+    config.read(f"{getconfigpath()}/config.ini")
+    config["Settings"]["islogged"] = "False"
+    config["User"]["fullname"] = ""
+    config["User"]["grade"] = ""
+    config["User"]["semester"] = "1"
+
+    if os.path.exists("database.db"):
+        os.remove("database.db")
+    
+    with open(f"{getconfigpath()}/config.ini", "w") as file:
+        config.write(file)

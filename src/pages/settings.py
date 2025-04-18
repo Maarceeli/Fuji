@@ -1,13 +1,26 @@
 import flet as ft
 from constants import *
-from utils import setthemecolor, setlanguage, restart
+from utils import setthemecolor, setlanguage, restart, logout
 from i18n import _, set_language
 
 def SettingsPage(page):
     # Create the main container to hold everything
     main_container = ft.Container()
+
+    def handle_logout(e):
+        logout()
+        restart(e.page)
+    logout_modal = ft.AlertDialog(
+        modal=True,
+        title=ft.Text(_("Logout")),
+        content=ft.Text(_("Do you want to logout?")),
+        actions=[
+            ft.TextButton("Yes", on_click=handle_logout),
+            ft.TextButton("No", on_click=lambda e: page.close(logout_modal)),
+        ],
+        actions_alignment=ft.MainAxisAlignment.END,
+    )
     
-    # Create a custom notification that we'll show/hide
     notification = ft.Container(
         visible=False,
         bgcolor=ft.colors.AMBER_100,
@@ -102,6 +115,12 @@ def SettingsPage(page):
                         options=getthemeoptions(),
                         on_change=onthemechange
                     )
+                ]),
+                ft.Row([
+                    ft.ElevatedButton(
+                        _("Logout"),
+                        on_click=lambda e: page.open(logout_modal)
+                    ),
                 ]),
             ]),
             expand=True  # Make this container expand to push the notification to the bottom
