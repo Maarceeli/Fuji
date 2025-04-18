@@ -26,7 +26,6 @@ class Notes(SQLModel, table=True):
     
 class Timetable(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)  # Add an auto-incrementing id
-    lid: int
     position : int
     date: date
     room: str | None
