@@ -1,15 +1,39 @@
 import flet as ft
+import configparser
 from i18n import _
 from constants import *
-from homeutils import RecentGradesColumn  # Import the function from your new file
+from homeutils import RecentGradesColumn
+from utils import getconfigpath, getinitials
 
 def HomePage():
+    config = configparser.ConfigParser()
+    config.read(f"{getconfigpath()}/config.ini")
+
+    studentFullName = config['User']['fullName']
+    studentClass = config['User']['grade']
     return ft.Column([
         ft.Text((_("Home")), size=30, weight="bold"),
         ft.Text("\n", size=30, weight="bold"),
+        ft.Card(
+            content=ft.Container(
+                content=ft.Column(
+                    controls=[
+                        ft.ListTile(
+                            leading=ft.CircleAvatar(
+                                content=ft.Text(getinitials(studentFullName)),
+                            ),
+                            title=ft.Text(studentFullName),
+                            subtitle=ft.Text(studentClass),
+                        ),
+                    ]
+                ),
+                        width=400,
+                        padding=10
+            ),
+        ),
         ft.Row([
             ft.Card(
-                content=ft.Container(  # Timetable Card
+                content=ft.Container(
                     content=ft.Column([
                         ft.Row([
                             ft.Icon(ft.Icons.BACKPACK_OUTLINED, size=32, color="#FFFFFF"),
@@ -34,8 +58,8 @@ def HomePage():
             ),
             
             ft.Card(
-                content=ft.Container(  # Recent Grades Card
-                    content=RecentGradesColumn(),  # Use the imported function here
+                content=ft.Container(
+                    content=RecentGradesColumn(),
                     #margin=20,
                     padding=10,
                     alignment=ft.alignment.top_left,

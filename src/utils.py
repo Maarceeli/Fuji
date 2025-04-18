@@ -103,3 +103,7 @@ def get_current_month_dates():
     end_date = next_month - timedelta(days=1)
     
     return start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")
+
+def getinitials(full_name):
+    initials = ''.join([part[0].upper() for part in full_name.split()])
+    return initials
