@@ -18,4 +18,4 @@ usrconf = {
     'fullName': '',
     'grade': '',
     'semester': 1,
-    }
+}

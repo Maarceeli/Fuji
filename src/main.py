@@ -73,7 +73,7 @@ def sync(page: ft.Page):
             "/grades": GradesPage(page),
             "/timetable": TimetablePage(),
             "/homework": HomeworkPage(),
-            "/exams": ExamsPage(),
+            "/exams": ExamsPage(page),
             "/attendance": AttendancePage(),
             "/behaviour": BehaviourPage(),
             "/settings": SettingsPage(page)
@@ -117,7 +117,7 @@ def main(page: ft.Page):
             "/grades": GradesPage(page),
             "/timetable": TimetablePage(),
             "/homework": HomeworkPage(),
-            "/exams": ExamsPage(),
+            "/exams": ExamsPage(page),
             "/attendance": AttendancePage(),
             "/behaviour": BehaviourPage(),
             "/settings": SettingsPage(page)
