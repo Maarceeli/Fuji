@@ -218,10 +218,7 @@ class HebeClient:
                 "pupilId": student_id, 
                 "dateFrom": from_, 
                 "dateTo": to, 
-                "lastId": "-2147483648",
-                "pageSize": 500,
-                "lastSyncDate": "1970-01-01%2001%3A00%3A00",
             },
                     
         )
-        return list(map(Lesson.from_hebe_dict, envelope))
+        return list(map(Lesson.from_hebe_dict, filter(lambda lessonRaw: lessonRaw["Visible"], envelope)))
