@@ -1,5 +1,5 @@
 from sqlmodel import *
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, time
 from sqlalchemy import func
 from typing import Optional
 
@@ -29,8 +29,8 @@ class Timetable(SQLModel, table=True):
     position : int
     date: date
     room: str | None
-    start: str
-    end: str
+    start: time
+    end: time
     subject: str | None
     teacher: str | None
     group: str | None
