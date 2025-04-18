@@ -17,7 +17,6 @@ from pydantic import BaseModel
 # TODO: Add a model for the substitutions
 
 class Lesson(BaseModel):
-    id: int
     position : int
     date: date
     room: str | None
@@ -31,7 +30,6 @@ class Lesson(BaseModel):
     @staticmethod
     def from_hebe_dict(data: dict):
         return Lesson(
-            id=data["Id"],
             position = data["TimeSlot"]["Position"],
             date=datetime.fromtimestamp(data["Date"]["Timestamp"] / 1000),
             room=data["Room"]["Code"],

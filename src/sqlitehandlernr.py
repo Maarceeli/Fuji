@@ -65,7 +65,6 @@ def create_timetable_database(timetable_list):
         session.execute(delete(Timetable))
         for lesson in timetable_list:
             lesson_obj = Timetable(
-                lid=lesson.id, 
                 position = lesson.position,
                 date=lesson.date,
                 room=lesson.room, 
