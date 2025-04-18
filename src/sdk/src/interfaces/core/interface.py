@@ -3,6 +3,7 @@ from sdk.src.models.exam import Exam
 from sdk.src.models.grade import Grade
 from sdk.src.models.note import Note
 from sdk.src.models.student import Student
+from sdk.src.models.lesson import Lesson
 
 
 class CoreInterface:
@@ -25,4 +26,7 @@ class CoreInterface:
         pass
 
     def get_notes() -> list[Note]:
+        pass
+    
+    def get_timetable(from_: date, to: date) -> list[Lesson]:
         pass
