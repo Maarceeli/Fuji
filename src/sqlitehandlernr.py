@@ -100,6 +100,9 @@ def create_exams_database(exams_list):
                 creator=exam.creator,
                 created_at=exam.created_at,
             )
+
+            session.add(exam_obj)
+            session.commit()
          
 def add_grades_to_database(grades_list, smstr):
     with Session(engine) as session:
