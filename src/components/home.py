@@ -1,7 +1,7 @@
 import flet as ft
 from collections import defaultdict
 from sqlitehandlernr import fetch_grades_this_week
-from utils import format_grade
+from utils import format_grade, getinitials
 from i18n import _
 
 def RecentGradesColumn():
@@ -100,4 +100,75 @@ def RecentGradesColumn():
         ], spacing=5),
         padding=ft.padding.only(left=5, right=5, top=5),
         expand=True
+    )
+    
+def UserProfileCard(full_name, class_name):
+    return ft.Card(
+        content=ft.Container(
+            content=ft.Column(
+                controls=[
+                    ft.ListTile(
+                        leading=ft.CircleAvatar(
+                            content=ft.Text(getinitials(full_name)),
+                        ),
+                        title=ft.Text(full_name),
+                        subtitle=ft.Text(class_name),
+                    ),
+                ]
+            ),
+            width=410,
+            height=85,
+            padding=10
+        ),
+    )
+
+def TimetableCard():
+    return ft.Card(
+        content=ft.Container(
+            content=ft.Column([
+                ft.Row([
+                    ft.Icon(ft.Icons.BACKPACK_OUTLINED, size=32, color="#FFFFFF"),
+                    ft.Text((_("Timetable")), size=24, font_family="Roboto", weight="bold")
+                ]),
+                ft.ListView(
+                    controls=[
+                        ft.Placeholder()
+                    ],
+                    expand=True,
+                    spacing=10,
+                    padding=10,
+                    auto_scroll=False
+                )
+            ]),
+            #margin=20,
+            padding=10,
+            alignment=ft.alignment.top_left,
+            ),
+        width=420,
+        height=275, 
+    )
+
+def RecentGradesCard():
+    return ft.Card(
+        content=ft.Container(
+            content=RecentGradesColumn(),
+            padding=10,
+            alignment=ft.alignment.top_left,
+                ),
+        width=420,
+        height=275,
+    )
+    
+def UserStatsCard():
+    return ft.Card(
+        content=ft.Container(
+            content=ft.Column(
+                controls=[
+                    
+                ]
+            ),
+            width=410,
+            height=85,
+            padding=10
+        ),
     )
