@@ -2,6 +2,7 @@ from sqlmodel import *
 from datetime import date, datetime, timedelta, time
 from sqlalchemy import func
 from typing import Optional
+from sdk.src.models.exam import ExamType
 
 class Grades(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)  # Add an auto-incrementing id
@@ -35,6 +36,15 @@ class Timetable(SQLModel, table=True):
     teacher: str | None
     group: str | None
     visible: bool
+
+class Exam(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)  # Add an auto-incrementing id
+    deadline: date
+    subject: str
+    type: ExamType
+    description: str
+    creator: str
+    created_at: datetime
 
 engine = create_engine("sqlite:///database.db")
 SQLModel.metadata.create_all(engine)
@@ -78,6 +88,18 @@ def create_timetable_database(timetable_list):
             session.add(lesson_obj)
             session.commit()
             
+def create_exams_database(exams_list):
+    with Session(engine) as session:
+        session.execute(delete(Timetable))
+        for exam in exams_list:
+            exam_obj = Exam(
+                deadline=exam.deadline,
+                subject=exam.subject,
+                type=exam.type,
+                description=exam.description,
+                creator=exam.creator,
+                created_at=exam.created_at,
+            )
          
 def add_grades_to_database(grades_list, smstr):
     with Session(engine) as session:

@@ -68,6 +68,10 @@ def sync(page: ft.Page):
     timetable = interface.get_timetable(from_=start, to=end)
     create_timetable_database(timetable_list=timetable)
     
+    exams = interface.get_exams(start, end)
+    create_exams_database(exams)
+
+    # Page refreshs
     def change_page(route):
         global lucky_number
         routes = {
