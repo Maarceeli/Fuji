@@ -1,131 +1,22 @@
 import flet as ft
 from sqlitehandlernr import fetch_all_grades
 from i18n import _
-from utils import getcurrentsemester
+from utils import getcurrentsemester, calculate_weighted_average, format_date, parse_grade_value
+from components.grades import GradeBottomSheet
 
-def parse_grade_value(value):
-    try:
-        base_value = float(value.rstrip('+-'))
-        if value.endswith('+'):
-            return base_value + 0.25
-        elif value.endswith('-'):
-            return base_value - 0.25
-        return base_value
-    except ValueError:
-        return None
-
-def format_date(dt):
-    return dt.strftime("%Y/%m/%d")
-
-def GradesPage(page):
+def GradesPage(page: ft.Page):
     semester = ft.Ref[ft.Dropdown]()
     content_column = ft.Ref[ft.Column]()
 
-    modal = ft.BottomSheet(
-        content=ft.Column([], spacing=5),
-        enable_drag=True,
-        open=False,
-    )
-
+    modal = GradeBottomSheet(None, None, None, None, None)
+    
     def open_grade_modal(grade):
-        parsed_value = parse_grade_value(grade.value)
-        grade_display = f"{grade.value}" if parsed_value is not None else _("Grade not recognized")
+        global modal
+        
+        grade_display = grade.value
 
-        modal.content = ft.Column([
-            ft.Row([
-                ft.Container(
-                    content=ft.Column([
-                        ft.Text(grade.subject, size=30, weight=ft.FontWeight.BOLD),
-                        ft.Text(grade.name, size=18, color=ft.Colors.WHITE70),
-                    ], spacing=3, tight=True),
-                    padding=ft.padding.only(left=20, top=-20, bottom=5, right=20),
-                    expand=True,
-                ),
-                ft.Container(
-                    content=ft.Column([
-                        ft.Container(
-                            content=ft.Text(grade_display, size=48, weight=ft.FontWeight.BOLD),
-                            width=80,
-                            height=80,
-                            bgcolor=ft.Colors.GREEN_700,
-                            border_radius=ft.border_radius.only(top_left=8, top_right=8),
-                            alignment=ft.alignment.center,
-                            margin=ft.margin.only(bottom=5, top=40)
-                        ),
-                        ft.Container(
-                            content=ft.Row([
-                                ft.Icon(name=ft.Icons.SCALE, size=16, color=ft.Colors.WHITE70),
-                                ft.Text(f"{getattr(grade, 'weight', 1.0):.2f}", size=16),
-                            ], spacing=5, alignment=ft.MainAxisAlignment.CENTER),
-                            width=80,
-                            height=30,
-                            bgcolor=ft.Colors.GREEN_700,
-                            border_radius=ft.border_radius.only(bottom_left=8, bottom_right=8),
-                            alignment=ft.alignment.center,
-                        ),
-                    ], spacing=0, alignment=ft.MainAxisAlignment.CENTER),
-                    padding=ft.padding.only(right=20, top=-5, bottom=10),
-                ),
-            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-            ft.Card(
-                content=ft.Row([
-                    ft.Container(
-                        content=ft.Icon(name=ft.Icons.LOOKS_6_ROUNDED, size=20),
-                        width=40,
-                        height=40,
-                        border_radius=8,
-                        alignment=ft.alignment.center,
-                        padding=ft.padding.only(left=10),
-                    ),
-                    ft.Column([
-                        ft.Text("Grade", size=14, color=ft.Colors.WHITE70),
-                        ft.Text(grade_display, size=20),
-                    ], spacing=2, alignment=ft.MainAxisAlignment.CENTER, expand=True)
-                ], spacing=15, alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER),
-                height=75,
-                color=ft.Colors.SURFACE_CONTAINER_HIGHEST,
-                margin=ft.margin.only(left=15, right=15, bottom=5),
-            ),
-            ft.Card(
-                content=ft.Row([
-                    ft.Container(
-                        content=ft.Icon(name=ft.Icons.SCALE, size=20),
-                        width=40,
-                        height=40,
-                        border_radius=8,
-                        alignment=ft.alignment.center,
-                        padding=ft.padding.only(left=10),
-                    ),
-                    ft.Column([
-                        ft.Text("Weight", size=14, color=ft.Colors.WHITE70),
-                        ft.Text(f"{getattr(grade, 'weight', 1.0):.2f}", size=20),
-                    ], spacing=2, alignment=ft.MainAxisAlignment.CENTER, expand=True)
-                ], spacing=15, alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER),
-                height=75,
-                color=ft.Colors.SURFACE_CONTAINER_HIGHEST,
-                margin=ft.margin.only(left=15, right=15, top=5, bottom=5),
-            ),
-            ft.Card(
-                content=ft.Row([
-                    ft.Container(
-                        content=ft.Icon(name=ft.Icons.CALENDAR_TODAY, size=20),
-                        width=40,
-                        height=40,
-                        border_radius=8,
-                        alignment=ft.alignment.center,
-                        padding=ft.padding.only(left=10),
-                    ),
-                    ft.Column([
-                        ft.Text("Date", size=14, color=ft.Colors.WHITE70),
-                        ft.Text(format_date(grade.created_at), size=20),
-                    ], spacing=2, alignment=ft.MainAxisAlignment.CENTER, expand=True)
-                ], spacing=15, alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER),
-                height=75,
-                color=ft.Colors.SURFACE_CONTAINER_HIGHEST,
-                margin=ft.margin.only(left=15, right=15, bottom=5, top=5),
-            ),
-        ], spacing=5)
-        modal.open = True
+        modal = GradeBottomSheet(GradeDate=format_date(grade.created_at),GradeName=grade.subject,GradeDesc=grade.name,GradeValue=grade_display,GradeWeight=grade.weight)
+        page.open(modal)
         page.update()
 
     def build_content_for_semester(selected_semester):
@@ -137,22 +28,16 @@ def GradesPage(page):
             subject = grade.subject
             subjects.setdefault(subject, []).append(grade)
 
-        # (rest of your logic stays the same)
-
-
         for subject, grades_list in subjects.items():
             header = ft.Container(
                 content=ft.Column([
                     ft.Text(subject, size=15),
                     ft.Row([
                         ft.Text(f"{len(grades_list)} " + _("grades"), size=14),
-                        ft.Text((_("Average")) + ": {:.2f}".format(
-                            sum(parse_grade_value(g.value) for g in grades_list if parse_grade_value(g.value) is not None) /
-                            max(len([g for g in grades_list if parse_grade_value(g.value) is not None]), 1)
-                        ), size=14),
+                        ft.Text((_("Average") + ": {:.2f}").format(calculate_weighted_average(grades_list)), size=14)
                     ])
                 ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.START, expand=True),
-                padding=ft.padding.all(10),
+                padding=10,
                 expand=True,
             )
 
@@ -164,10 +49,12 @@ def GradesPage(page):
                             ft.Container(
                                 content=ft.Text(grade.value, text_align=ft.TextAlign.CENTER),
                                 bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST,
-                                padding=ft.padding.symmetric(horizontal=12, vertical=8),
+                                padding=12,
                                 border_radius=5,
-                                margin=ft.margin.all(5),
+                                margin=5,
                                 on_click=(lambda e, g=grade: open_grade_modal(g)),
+                                width=41,
+                                height=41,
                             ),
                             ft.Column([
                                 ft.Text(grade.name),

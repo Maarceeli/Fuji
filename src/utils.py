@@ -128,3 +128,25 @@ def format_grade(grade):
     """
     # Access the grade value as an attribute, not as a dictionary key
     return str(grade.value)
+
+def calculate_weighted_average(grades_list):
+    valid_grades = [g for g in grades_list if parse_grade_value(g.value) is not None and g.weight > 0]
+    total_weight = sum(g.weight for g in valid_grades)
+    if total_weight == 0:
+        return 0.0
+    weighted_sum = sum(parse_grade_value(g.value) * g.weight for g in valid_grades)
+    return weighted_sum / total_weight
+
+def parse_grade_value(value):
+    try:
+        base_value = float(value.rstrip('+-'))
+        if value.endswith('+'):
+            return base_value + 0.25
+        elif value.endswith('-'):
+            return base_value - 0.25
+        return base_value
+    except ValueError:
+        return None
+    
+def format_date(dt):
+    return dt.strftime("%Y/%m/%d")
