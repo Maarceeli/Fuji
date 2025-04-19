@@ -161,6 +161,7 @@ def RecentGradesCard():
         height=275,
     )
     
+
 def UserStatsCard(lucky_number):
     return ft.Card(
         content=ft.Container(
@@ -175,7 +176,7 @@ def UserStatsCard(lucky_number):
                             ),
                             ft.Column(
                                 controls=[
-                                    ft.Text(lucky_number, size=28)
+                                    ft.ProgressRing() if lucky_number is None else ft.Text(lucky_number, size=28)
                                 ]
                             )
                         ],
