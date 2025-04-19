@@ -1,7 +1,27 @@
 import flet as ft
 
 class GradeBottomSheet(ft.BottomSheet):
-        def __init__(self, GradeName, GradeDesc, GradeValue, GradeWeight, GradeDate) -> None:
+        def __init__(self, GradeName, GradeDesc, GradeValue, GradeWeight, GradeDate, Teacher) -> None:
+            icon = ft.Icons.FILTER_5
+            if isinstance(GradeValue, (str, list)) and len(GradeValue) > 0:
+                grade_value = GradeValue[0]
+                
+                if grade_value.isdigit():
+                    grade = int(grade_value)
+                    match grade:
+                        case 1:
+                            icon = ft.Icons.FILTER_1
+                        case 2:
+                            icon = ft.Icons.FILTER_2
+                        case 3:
+                            icon = ft.Icons.FILTER_3
+                        case 4:
+                            icon = ft.Icons.FILTER_4
+                        case 5:
+                            icon = ft.Icons.FILTER_5
+                        case 6:
+                            icon = ft.Icons.FILTER_6
+
             super().__init__(
                 content=ft.Column([
                 ft.Row([
@@ -48,7 +68,7 @@ class GradeBottomSheet(ft.BottomSheet):
                 ft.Card(
                     content=ft.Row([
                         ft.Container(
-                            content=ft.Icon(name=ft.Icons.SCALE, size=20),
+                            content=ft.Icon(name=icon, size=20),
                             width=40,
                             height=40,
                             border_radius=8,
@@ -86,6 +106,28 @@ class GradeBottomSheet(ft.BottomSheet):
                     color=ft.Colors.SURFACE_CONTAINER_HIGHEST,
                     margin=ft.margin.only(left=15, right=15, top=5, bottom=5),
                 ),
+
+                # Teacher details
+                ft.Card(
+                    content=ft.Row([
+                        ft.Container(
+                            content=ft.Icon(name=ft.Icons.PERSON_ROUNDED, size=20),
+                            width=40,
+                            height=40,
+                            border_radius=8,
+                            alignment=ft.alignment.center,
+                            padding=ft.padding.only(left=10),
+                        ),
+                        ft.Column([
+                            ft.Text("Teacher", size=14, color=ft.Colors.WHITE70),
+                            ft.Text(Teacher, size=20),
+                        ], spacing=2, alignment=ft.MainAxisAlignment.CENTER, expand=True),  # Align and expand
+                    ], spacing=15, alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER),
+                    height=75,
+                    color=ft.Colors.SURFACE_CONTAINER_HIGHEST,
+                    margin=ft.margin.only(left=15, right=15, top=5, bottom=5),
+                ),
+
 
                 # Date details
                 ft.Card(

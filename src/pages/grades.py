@@ -8,14 +8,14 @@ def GradesPage(page: ft.Page):
     semester = ft.Ref[ft.Dropdown]()
     content_column = ft.Ref[ft.Column]()
 
-    modal = GradeBottomSheet(None, None, None, None, None)
+    modal = GradeBottomSheet(None, None, None, None, None, None)
     
     def open_grade_modal(grade):
         global modal
         
         grade_display = grade.value
 
-        modal = GradeBottomSheet(GradeDate=format_date(grade.created_at),GradeName=grade.subject,GradeDesc=grade.name or "No description",GradeValue=grade_display,GradeWeight=grade.weight)
+        modal = GradeBottomSheet(GradeDate=format_date(grade.created_at),GradeName=grade.subject,GradeDesc=grade.name or "No description",GradeValue=grade_display,GradeWeight=grade.weight,Teacher=grade.creator)
         page.open(modal)
         page.update()
 
