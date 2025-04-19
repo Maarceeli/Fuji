@@ -15,7 +15,7 @@ def GradesPage(page: ft.Page):
         
         grade_display = grade.value
 
-        modal = GradeBottomSheet(GradeDate=format_date(grade.created_at),GradeName=grade.subject,GradeDesc=grade.name,GradeValue=grade_display,GradeWeight=grade.weight)
+        modal = GradeBottomSheet(GradeDate=format_date(grade.created_at),GradeName=grade.subject,GradeDesc=grade.name or "No description",GradeValue=grade_display,GradeWeight=grade.weight)
         page.open(modal)
         page.update()
 
@@ -43,11 +43,12 @@ def GradesPage(page: ft.Page):
 
             grade_rows = []
             for grade in grades_list:
+
                 grade_rows.append(
                     ft.Container(
                         content=ft.Row([
                             ft.Container(
-                                content=ft.Text(grade.value, text_align=ft.TextAlign.CENTER),
+                                content=ft.Text(grade.value if grade.value is not None else (_("No description")), text_align=ft.TextAlign.CENTER),
                                 bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST,
                                 padding=12,
                                 border_radius=5,
@@ -57,7 +58,7 @@ def GradesPage(page: ft.Page):
                                 height=41,
                             ),
                             ft.Column([
-                                ft.Text(grade.name),
+                                ft.Text(grade.name or (_("No description"))),
                                 ft.Row([
                                     ft.Text(format_date(grade.created_at)),
                                     ft.Text((_("Weight")) + ": {:.1f}".format(getattr(grade, 'weight', 1.0)))
