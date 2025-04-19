@@ -51,6 +51,8 @@ def sync(page: ft.Page):
     setcurrentsemester(next(period for period in student.periods if period.current))
     notes = interface.get_notes()
     lucky_number = interface.get_lucky_number()
+    if lucky_number == 0:
+        lucky_number = (_("None"))
     
     grades = interface.get_grades(1)
     if grades: create_grades_database(grades_list=grades, smstr=1)
