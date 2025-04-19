@@ -32,7 +32,7 @@ class Lesson(BaseModel):
         return Lesson(
             position = data["TimeSlot"]["Position"],
             date = datetime.fromtimestamp(data["Date"]["Timestamp"] / 1000).date(),
-            room = data["Room"]["Code"],
+            room = data["Room"]["Code"] if data.get("Room") else None,
             start = datetime.strptime(data["TimeSlot"]["Start"], "%H:%M").time(),
             end = datetime.strptime(data["TimeSlot"]["End"], "%H:%M").time(),
             subject = data["Subject"]["Name"] if data["Subject"] else data["Event"],

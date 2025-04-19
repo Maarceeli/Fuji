@@ -103,3 +103,21 @@ def get_current_month_dates():
     end_date = next_month - timedelta(days=1)
     
     return start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")
+
+def getinitials(full_name):
+    initials = ''.join([part[0].upper() for part in full_name.split()])
+    return initials
+
+def logout():
+    config = configparser.ConfigParser()
+    config.read(f"{getconfigpath()}/config.ini")
+    config["Settings"]["islogged"] = "False"
+    config["User"]["fullname"] = ""
+    config["User"]["grade"] = ""
+    config["User"]["semester"] = "1"
+
+    if os.path.exists("database.db"):
+        os.remove("database.db")
+    
+    with open(f"{getconfigpath()}/config.ini", "w") as file:
+        config.write(file)
