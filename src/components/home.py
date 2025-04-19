@@ -1,19 +1,10 @@
 import flet as ft
-import sqlite3
-import datetime
-from datetime import timedelta
 from collections import defaultdict
 from sqlitehandlernr import fetch_grades_this_week
+from utils import format_grade
 from i18n import _
 
-def format_grade(grade):
-    """
-    Format a single grade into a readable string.
-    """
-    # Access the grade value as an attribute, not as a dictionary key
-    return str(grade.value)
-
-def RecentGradesColumn(db_path="grades.db"):
+def RecentGradesColumn():
     """
     Create a column containing the recent grades content styled like the image.
     
@@ -94,10 +85,6 @@ def RecentGradesColumn(db_path="grades.db"):
         padding=ft.padding.only(left=10, right=10, top=10, bottom=16)
     )
     
-    # Create a refresh button function
-    def refresh_grades(e):
-        grades_listview.controls = load_grades()
-        grades_listview.update()
     
     # Create the header section like in the image
     header = ft.Row([

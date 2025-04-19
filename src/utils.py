@@ -121,3 +121,10 @@ def logout():
     
     with open(f"{getconfigpath()}/config.ini", "w") as file:
         config.write(file)
+        
+def format_grade(grade):
+    """
+    Format a single grade into a readable string.
+    """
+    # Access the grade value as an attribute, not as a dictionary key
+    return str(grade.value)

@@ -2,7 +2,7 @@ import flet as ft
 import configparser
 from i18n import _
 from constants import *
-from homeutils import RecentGradesColumn
+from components.home import RecentGradesColumn
 from utils import getconfigpath, getinitials
 
 def HomePage():
