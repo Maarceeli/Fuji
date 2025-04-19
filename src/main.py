@@ -16,10 +16,12 @@ from pages.attendance import *
 from constants import defconf, usrconf
 from sdk.src.interfaces.prometheus.context import *
 from sdk.src.interfaces.prometheus.interface import *
+lucky_number = None
 
 config = configparser.ConfigParser()
 
 def sync(page: ft.Page):
+    global lucky_number
     auth_context_raw = loadauth("Fuji", "Auth Context")
     auth_context = PrometheusAuthContext.model_validate_json(auth_context_raw)
     
@@ -48,6 +50,8 @@ def sync(page: ft.Page):
     student = students[student]
     setcurrentsemester(next(period for period in student.periods if period.current))
     notes = interface.get_notes()
+    #lucky_number = interface.get_lucky_number()
+    lucky_number = 2
     
     grades = interface.get_grades(1)
     if grades: create_grades_database(grades_list=grades, smstr=1)
@@ -64,8 +68,9 @@ def sync(page: ft.Page):
     create_timetable_database(timetable_list=timetable)
     
     def change_page(route):
+        global lucky_number
         routes = {
-            "/": HomePage(),
+            "/": HomePage(lucky_number),
             "/grades": GradesPage(page),
             "/timetable": TimetablePage(),
             "/homework": HomeworkPage(),
@@ -79,7 +84,7 @@ def sync(page: ft.Page):
         view = ft.View(route, [
             ft.Row([
                 bar,
-                ft.Container(content=routes.get(route, HomePage()), expand=True)
+                ft.Container(content=routes.get(route, HomePage(lucky_number)), expand=True)
             ], expand=True)
         ])
         page.views.append(view)
@@ -108,8 +113,9 @@ def main(page: ft.Page):
 
     # Page routing
     def change_page(route):
+        global lucky_number
         routes = {
-            "/": HomePage(),
+            "/": HomePage(lucky_number),
             "/grades": GradesPage(page),
             "/timetable": TimetablePage(),
             "/homework": HomeworkPage(),
@@ -123,7 +129,7 @@ def main(page: ft.Page):
         view = ft.View(route, [
             ft.Row([
                 bar,
-                ft.Container(content=routes.get(route, HomePage()), expand=True)
+                ft.Container(content=routes.get(route, HomePage(lucky_number)), expand=True)
             ], expand=True)
         ])
         page.views.append(view)

@@ -122,6 +122,7 @@ def UserProfileCard(full_name, class_name):
         ),
     )
 
+
 def TimetableCard():
     return ft.Card(
         content=ft.Container(
@@ -148,6 +149,7 @@ def TimetableCard():
         height=275, 
     )
 
+
 def RecentGradesCard():
     return ft.Card(
         content=ft.Container(
@@ -159,16 +161,32 @@ def RecentGradesCard():
         height=275,
     )
     
-def UserStatsCard():
+def UserStatsCard(lucky_number):
     return ft.Card(
         content=ft.Container(
             content=ft.Column(
                 controls=[
-                    
-                ]
+                    ft.Row(
+                        controls=[
+                            ft.Column(
+                                controls=[
+                                    ft.Icon(name=ft.Icons.STAR_ROUNDED, size=38, color=ft.Colors.WHITE)
+                                ]
+                            ),
+                            ft.Column(
+                                controls=[
+                                    ft.Text(lucky_number, size=28)
+                                ]
+                            )
+                        ],
+                        alignment=ft.MainAxisAlignment.CENTER
+                    )
+                ],
+                alignment=ft.MainAxisAlignment.CENTER
             ),
             width=410,
             height=85,
-            padding=10
+            padding=10,
+            alignment=ft.alignment.center
         ),
     )

@@ -5,7 +5,7 @@ from constants import *
 from components.home import RecentGradesCard, UserProfileCard, TimetableCard, UserStatsCard
 from utils import getconfigpath
 
-def HomePage():
+def HomePage(lucky_number):
     config = configparser.ConfigParser()
     config.read(f"{getconfigpath()}/config.ini")
 
@@ -17,7 +17,7 @@ def HomePage():
         ft.Text("\n", size=30, weight="bold"),
         ft.Row([
             UserProfileCard(studentFullName, studentClass),
-            UserStatsCard(),
+            UserStatsCard(lucky_number),
         ]),
         ft.Row([
             TimetableCard(),
