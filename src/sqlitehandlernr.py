@@ -159,3 +159,15 @@ def fetch_all_notes():
         notes = session.query(Notes).all()
     
     return notes
+
+def fetch_exams_for_week(specific_day: date):
+    start_of_week = specific_day - timedelta(days=specific_day.weekday())  # Monday
+    end_of_week = start_of_week + timedelta(days=7)  # Next Monday
+
+    with Session(engine) as session:
+        exams = session.query(Exam).filter(
+            Exam.deadline >= start_of_week,
+            Exam.deadline < end_of_week
+        ).all()
+
+    return exams
