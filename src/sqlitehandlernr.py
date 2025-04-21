@@ -162,7 +162,9 @@ def fetch_all_notes():
 
 def fetch_exams_for_week(specific_day: date):
     start_of_week = specific_day - timedelta(days=specific_day.weekday())  # Monday
-    end_of_week = start_of_week + timedelta(days=7)  # Next Monday
+    end_of_week = start_of_week + timedelta(days=6)
+
+    print(start_of_week, end_of_week)
 
     with Session(engine) as session:
         exams = session.query(Exam).filter(
