@@ -5,9 +5,8 @@ import flet as ft
 from i18n import _
 from utils import *
 from pages.home import *
-from pages.exams import *
 from pages.grades import *
-from pages.homework import *
+from pages.calendar import *
 from pages.settings import *
 from sqlitehandlernr import *
 from pages.timetable import *
@@ -78,8 +77,7 @@ def sync(page: ft.Page):
             "/": HomePage(lucky_number),
             "/grades": GradesPage(page),
             "/timetable": TimetablePage(),
-            "/homework": HomeworkPage(),
-            "/exams": ExamsPage(page),
+            "/calendar": CalendarPage(page),
             "/attendance": AttendancePage(),
             "/behaviour": BehaviourPage(),
             "/settings": SettingsPage(page)
@@ -123,8 +121,7 @@ def main(page: ft.Page):
             "/": HomePage(lucky_number),
             "/grades": GradesPage(page),
             "/timetable": TimetablePage(),
-            "/homework": HomeworkPage(),
-            "/exams": ExamsPage(page),
+            "/calendar": CalendarPage(page),
             "/attendance": AttendancePage(),
             "/behaviour": BehaviourPage(),
             "/settings": SettingsPage(page)
@@ -155,8 +152,7 @@ def main(page: ft.Page):
             ft.NavigationRailDestination(icon=ft.Icons.HOME_OUTLINED, selected_icon=ft.Icons.HOME, label=(_("Home"))),
             ft.NavigationRailDestination(icon=ft.Icons.LOOKS_6_OUTLINED, selected_icon=ft.Icons.LOOKS_6, label=(_("Grades"))),
             ft.NavigationRailDestination(icon=ft.Icons.BACKPACK_OUTLINED, selected_icon=ft.Icons.BACKPACK, label=(_("Timetable"))),
-            ft.NavigationRailDestination(icon=ft.Icons.BOOK_OUTLINED, selected_icon=ft.Icons.BOOK, label=(_("Homework"))),
-            ft.NavigationRailDestination(icon=ft.Icons.CALENDAR_TODAY_OUTLINED, selected_icon=ft.Icons.CALENDAR_TODAY, label=(_("Exams"))),
+            ft.NavigationRailDestination(icon=ft.Icons.CALENDAR_TODAY_OUTLINED, selected_icon=ft.Icons.CALENDAR_TODAY, label=(_("Calendar"))),
             ft.NavigationRailDestination(icon=ft.Icons.EVENT_NOTE_OUTLINED, selected_icon=ft.Icons.EVENT_NOTE, label=(_("Attendance"))),
             ft.NavigationRailDestination(icon=ft.Icons.STICKY_NOTE_2_OUTLINED, selected_icon=ft.Icons.STICKY_NOTE_2, label=(_("Behaviour"))),
             ft.NavigationRailDestination(icon=ft.Icons.SETTINGS_OUTLINED, selected_icon=ft.Icons.SETTINGS_ROUNDED, label=(_("Settings"))),
@@ -165,8 +161,7 @@ def main(page: ft.Page):
             "/",
             "/grades",
             "/timetable",
-            "/homework",
-            "/exams",
+            "/calendar",
             "/attendance",
             "/behaviour",
             "/settings"
