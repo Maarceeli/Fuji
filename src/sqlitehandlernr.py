@@ -90,7 +90,7 @@ def create_timetable_database(timetable_list):
             
 def create_exams_database(exams_list):
     with Session(engine) as session:
-        session.execute(delete(Timetable))
+        session.execute(delete(Exams))
         for exam in exams_list:
             exam_obj = Exam(
                 deadline=exam.deadline,
