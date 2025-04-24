@@ -1,6 +1,7 @@
 import flet as ft
 from datetime import datetime
 from sdk.src.models.exam import ExamType
+from i18n import _
 
 class ExamBottomSheet(ft.BottomSheet):
     def __init__(
@@ -27,13 +28,13 @@ class ExamBottomSheet(ft.BottomSheet):
         examtype = "Other"
         match exam_type:
             case ExamType.SHORT_TEST:
-                examtype = "Short Test"
+                examtype = _("Short Test")
             case ExamType.CLASSWORK:
-                examtype = "Classwork"
+                examtype = _("Classwork")
             case ExamType.TEST:
-                examtype = "Test"
+                examtype = _("Test")
             case ExamType.OTHER:
-                examtype = "Other"
+                examtype = _("Other")
         
         # format created_at
         created_str = created_at.strftime("%Y-%m-%d %H:%M")
@@ -71,7 +72,7 @@ class ExamBottomSheet(ft.BottomSheet):
                                         ft.Icon(name=icon, size=20),
                                         ft.Column(
                                             [
-                                                ft.Text("Type", size=12, color=ft.Colors.WHITE70),
+                                                ft.Text(_("Type"), size=12, color=ft.Colors.WHITE70),
                                                 ft.Text(examtype, size=18),
                                             ],
                                             spacing=2,
@@ -94,7 +95,7 @@ class ExamBottomSheet(ft.BottomSheet):
                                         ft.Icon(name=ft.Icons.CREATE, size=20),
                                         ft.Column(
                                             [
-                                                ft.Text("Created At", size=12, color=ft.Colors.WHITE70),
+                                                ft.Text(_("Created At"), size=12, color=ft.Colors.WHITE70),
                                                 ft.Text(created_str, size=18),
                                             ],
                                             spacing=2,
@@ -117,7 +118,7 @@ class ExamBottomSheet(ft.BottomSheet):
                                         ft.Icon(name=ft.Icons.CALENDAR_TODAY, size=20),
                                         ft.Column(
                                             [
-                                                ft.Text("Deadline", size=12, color=ft.Colors.WHITE70),
+                                                ft.Text(_("Deadline"), size=12, color=ft.Colors.WHITE70),
                                                 ft.Text(deadline, size=18),
                                             ],
                                             spacing=2,
@@ -140,7 +141,7 @@ class ExamBottomSheet(ft.BottomSheet):
                                         ft.Icon(name=ft.Icons.PERSON, size=20),
                                         ft.Column(
                                             [
-                                                ft.Text("Teacher", size=12, color=ft.Colors.WHITE70),
+                                                ft.Text(_("Teacher"), size=12, color=ft.Colors.WHITE70),
                                                 ft.Text(creator, size=18),
                                             ],
                                             spacing=2,
@@ -175,13 +176,13 @@ class ExamEntry(ft.Card):
         examtype = "Other"
         match exam_type:
             case ExamType.SHORT_TEST:
-                examtype = "Short Test"
+                examtype = _("Short Test")
             case ExamType.CLASSWORK:
-                examtype = "Classwork"
+                examtype = _("Classwork")
             case ExamType.TEST:
-                examtype = "Test"
+                examtype = _("Test")
             case ExamType.OTHER:
-                examtype = "Other"
+                examtype = _("Other")
         
         super().__init__(
             content=ft.Container(

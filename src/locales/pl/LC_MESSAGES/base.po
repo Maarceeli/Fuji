@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-10 08:02+0100\n"
+"POT-Creation-Date: 2025-04-24 11:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,147 +17,217 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: homeutils.py:44
-msgid "No grades found for this week."
-msgstr "Nie znaleziono ocen dla tego tygodnia"
+#: src/main.py:55
+msgid "None"
+msgstr "Brak"
 
-#: homeutils.py:106
-msgid "Recent Grades"
-msgstr "Ostatnie oceny"
-
-#: main.py:110 pages/home.py:8
+#: src/main.py:153 src/pages/home.py:16
 msgid "Home"
 msgstr "Strona główna"
 
-#: main.py:111 pages/grades.py:83
+#: src/main.py:154 src/pages/grades.py:92
 msgid "Grades"
 msgstr "Oceny"
 
-#: main.py:112 pages/home.py:15 pages/timetable.py:7
+#: src/main.py:155 src/pages/timetable.py:7 src/components/home.py:132
 msgid "Timetable"
 msgstr "Plan lekcji"
 
-#: main.py:113 pages/homework.py:7
-msgid "Homework"
-msgstr "Zadania domowe"
+#: src/main.py:156 src/pages/calendar.py:69
+msgid "Calendar"
+msgstr "Kalendarz"
 
-#: main.py:114 pages/exams.py:7
-msgid "Exams"
-msgstr "Sprawdziany"
-
-#: main.py:115 pages/attendance.py:6
+#: src/main.py:157 src/pages/attendance.py:6
 msgid "Attendance"
 msgstr "Obecności"
 
-#: main.py:116 pages/behaviour.py:7
+#: src/main.py:158
 msgid "Behaviour"
 msgstr "Zachowanie"
 
-#: main.py:117 pages/settings.py:87
+#: src/main.py:159 src/pages/settings.py:100
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: main.py:240
+#: src/main.py:281
 msgid "Welcome to Fuji!"
 msgstr "Witaj w Fuji!"
 
-#: main.py:242
+#: src/main.py:283
 msgid "Get Started"
 msgstr "Rozpocznij"
 
-#: main.py:268 main.py:287
+#: src/main.py:309 src/main.py:328
 msgid "Log in"
 msgstr "Zaloguj się"
 
-#: main.py:272
+#: src/main.py:313
 msgid "Username"
 msgstr "Nazwa użytkownika"
 
-#: main.py:279
+#: src/main.py:320
 msgid "Password"
 msgstr "Hasło"
 
-#: main.py:309
+#: src/main.py:350
 msgid "Select a student"
 msgstr "Wybierz ucznia"
 
-#: pages/grades.py:8
-msgid "Test modal"
-msgstr ""
+#: src/pages/behaviour.py:11
+msgid "No notes yet"
+msgstr "Brak uwag"
 
-#: pages/grades.py:21
+#: src/pages/exams.py:8
+msgid "Exams"
+msgstr "Sprawdziany"
+
+#: src/pages/grades.py:36
 #, fuzzy
 msgid "grades"
 msgstr "Oceny"
 
-#: pages/grades.py:22
+#: src/pages/grades.py:37
 msgid "Average"
 msgstr "Średnia"
 
-#: pages/grades.py:51 pages/grades.py:72
+#: src/pages/grades.py:51 src/pages/grades.py:61
+msgid "No description"
+msgstr "Brak opisu"
+
+#: src/pages/grades.py:64 src/components/grades.py:102
 msgid "Weight"
 msgstr "Waga"
 
-#: pages/settings.py:19
+#: src/pages/grades.py:98
+msgid "Semester 1"
+msgstr "Semestr 1"
+
+#: src/pages/grades.py:99
+msgid "Semester 2"
+msgstr "Semestr 2"
+
+#: src/pages/homework.py:7
+msgid "Homework"
+msgstr "Zadania domowe"
+
+#: src/pages/settings.py:15 src/pages/settings.py:121
+msgid "Logout"
+msgstr "Wyloguj"
+
+#: src/pages/settings.py:16
+msgid "Do you want to logout?"
+msgstr "Czy chcesz się wylogować?"
+
+#: src/pages/settings.py:32
 msgid "Settings changed. Restart required for changes to take effect."
 msgstr "Ustawienia zostały zmienione. Aby zmiany zaczęły obowiązywać, wymagany jest restart."
 
-#: pages/settings.py:22
+#: src/pages/settings.py:35
 msgid "Restart"
 msgstr "Restart"
 
-#: pages/settings.py:52
+#: src/pages/settings.py:65
 msgid "Red"
 msgstr "Czerwony"
 
-#: pages/settings.py:53
+#: src/pages/settings.py:66
 msgid "Orange"
 msgstr "Pomarańczowy"
 
-#: pages/settings.py:54
+#: src/pages/settings.py:67
 msgid "Yellow"
 msgstr "Żółty"
 
-#: pages/settings.py:55
+#: src/pages/settings.py:68
 msgid "Green"
 msgstr "Zielony"
 
-#: pages/settings.py:56
+#: src/pages/settings.py:69
 msgid "Blue"
 msgstr "Niebieski"
 
-#: pages/settings.py:57
+#: src/pages/settings.py:70
 msgid "Purple"
 msgstr "Fioletowy"
 
-#: pages/settings.py:58
+#: src/pages/settings.py:71
 msgid "Pink"
 msgstr "Różowy"
 
-#: pages/settings.py:59
+#: src/pages/settings.py:72
 msgid "Brown"
 msgstr "Brązowy"
 
-#: pages/settings.py:60
+#: src/pages/settings.py:73
 msgid "Grey"
 msgstr "Szary"
 
-#: pages/settings.py:61
+#: src/pages/settings.py:74
 msgid "Amber"
 msgstr "Bursztynowy"
 
-#: pages/settings.py:62
+#: src/pages/settings.py:75
 msgid "Cyan"
 msgstr "Cyjanowy"
 
-#: pages/settings.py:89
+#: src/pages/settings.py:102
 msgid "Language (Requires restart)"
 msgstr "Język (Wymagany restart)"
 
-#: pages/settings.py:92
+#: src/pages/settings.py:105
 msgid "Language"
 msgstr "Język"
 
-#: pages/settings.py:98 pages/settings.py:101
+#: src/pages/settings.py:111 src/pages/settings.py:114
 msgid "Theme"
 msgstr "Motyw"
+
+#: src/components/calendar.py:31 src/components/calendar.py:179
+msgid "Short Test"
+msgstr "Kartkówka"
+
+#: src/components/calendar.py:33 src/components/calendar.py:181
+#, fuzzy
+msgid "Classwork"
+msgstr "Praca klasowa"
+
+#: src/components/calendar.py:35 src/components/calendar.py:183
+msgid "Test"
+msgstr "Sprawdzian"
+
+#: src/components/calendar.py:37 src/components/calendar.py:185
+msgid "Other"
+msgstr "Inne"
+
+#: src/components/calendar.py:75
+msgid "Type"
+msgstr "Typ"
+
+#: src/components/calendar.py:98
+msgid "Created At"
+msgstr "Utworzono"
+
+#: src/components/calendar.py:121
+msgid "Deadline"
+msgstr "Termin"
+
+#: src/components/calendar.py:144 src/components/grades.py:123
+msgid "Teacher"
+msgstr "Nauczyciel"
+
+#: src/components/grades.py:80
+#, fuzzy
+msgid "Grade"
+msgstr "Oceny"
+
+#: src/components/grades.py:145
+msgid "Date"
+msgstr "Data"
+
+#: src/components/home.py:35
+msgid "No grades found for this week."
+msgstr "Nie znaleziono ocen dla tego tygodnia"
+
+#: src/components/home.py:92
+msgid "Recent Grades"
+msgstr "Ostatnie oceny"

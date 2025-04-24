@@ -1,4 +1,5 @@
 import flet as ft
+from i18n import _
 
 class GradeBottomSheet(ft.BottomSheet):
         def __init__(self, GradeName, GradeDesc, GradeValue, GradeWeight, GradeDate, Teacher) -> None:
@@ -76,7 +77,7 @@ class GradeBottomSheet(ft.BottomSheet):
                                 padding=ft.padding.only(left=10),
                             ),
                             ft.Column([
-                                ft.Text("Grade", size=14, color=ft.Colors.WHITE70),
+                                ft.Text(_("Grade"), size=14, color=ft.Colors.WHITE70),
                                 ft.Text(GradeValue, size=20)
                             ], spacing=2, alignment=ft.MainAxisAlignment.CENTER, expand=True)
                         ], spacing=15, alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER),  
@@ -98,7 +99,7 @@ class GradeBottomSheet(ft.BottomSheet):
                                 padding=ft.padding.only(left=10),
                             ),
                             ft.Column([
-                                ft.Text("Weight", size=14, color=ft.Colors.WHITE70),
+                                ft.Text(_("Weight"), size=14, color=ft.Colors.WHITE70),
                                 ft.Text(GradeWeight, size=20),
                             ], spacing=2, alignment=ft.MainAxisAlignment.CENTER, expand=True),  # Align and expand
                         ], spacing=15, alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER),
@@ -119,7 +120,7 @@ class GradeBottomSheet(ft.BottomSheet):
                                 padding=ft.padding.only(left=10),
                             ),
                             ft.Column([
-                                ft.Text("Teacher", size=14, color=ft.Colors.WHITE70),
+                                ft.Text(_("Teacher"), size=14, color=ft.Colors.WHITE70),
                                 ft.Text(Teacher, size=20),
                             ], spacing=2, alignment=ft.MainAxisAlignment.CENTER, expand=True),  # Align and expand
                         ], spacing=15, alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER),
@@ -141,7 +142,7 @@ class GradeBottomSheet(ft.BottomSheet):
                                 padding=ft.padding.only(left=10),
                             ),
                             ft.Column([
-                                ft.Text("Date", size=14, color=ft.Colors.WHITE70),
+                                ft.Text(_("Date"), size=14, color=ft.Colors.WHITE70),
                                 ft.Text(GradeDate, size=20),
                             ], spacing=2, alignment=ft.MainAxisAlignment.CENTER, expand=True),  # Align and expand
                         ], spacing=15, alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER),
