@@ -17,10 +17,11 @@ from sdk.src.interfaces.prometheus.context import *
 from sdk.src.interfaces.prometheus.interface import *
 lucky_number = None
 
+interface = None
 config = configparser.ConfigParser()
 
 def sync(page: ft.Page):
-    global lucky_number
+    global lucky_number, interface
     auth_context_raw = loadauth("Fuji", "Auth Context")
     auth_context = PrometheusAuthContext.model_validate_json(auth_context_raw)
     
@@ -77,7 +78,7 @@ def sync(page: ft.Page):
             "/": HomePage(lucky_number),
             "/grades": GradesPage(page),
             "/timetable": TimetablePage(),
-            "/calendar": CalendarPage(page),
+            "/calendar": CalendarPage(page, interface),
             "/attendance": AttendancePage(),
             "/behaviour": BehaviourPage(),
             "/settings": SettingsPage(page)
@@ -121,7 +122,7 @@ def main(page: ft.Page):
             "/": HomePage(lucky_number),
             "/grades": GradesPage(page),
             "/timetable": TimetablePage(),
-            "/calendar": CalendarPage(page),
+            "/calendar": CalendarPage(page, interface),
             "/attendance": AttendancePage(),
             "/behaviour": BehaviourPage(),
             "/settings": SettingsPage(page)
