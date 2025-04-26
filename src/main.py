@@ -72,6 +72,7 @@ def sync(page: ft.Page):
     create_exams_database(exams)
 
     homework = interface.get_homework(start, end)
+    create_homework_database(homework)
 
     # Page refreshs
     def change_page(route):

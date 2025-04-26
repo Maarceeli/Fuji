@@ -46,6 +46,14 @@ class Exam(SQLModel, table=True):
     creator: str
     created_at: datetime
 
+class Homework(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)  # Add an auto-incrementing id
+    deadline: date
+    subject: str
+    description: str
+    creator: str
+    created_at: datetime
+
 engine = create_engine("sqlite:///database.db")
 SQLModel.metadata.create_all(engine)
 
@@ -102,6 +110,21 @@ def create_exams_database(exams_list):
             )
 
             session.add(exam_obj)
+            session.commit()
+
+def create_homework_database(homework_list):
+    with Session(engine) as session:
+        session.execute(delete(Homework))
+        for homework in homework_list:
+            homework_obj = Homework(
+                deadline=homework.deadline,
+                subject=homework.subject,
+                description=homework.description,
+                creator=homework.creator,
+                created_at=homework.created_at,
+            )
+
+            session.add(homework_obj)
             session.commit()
          
 def add_grades_to_database(grades_list, smstr):
