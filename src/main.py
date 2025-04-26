@@ -71,6 +71,8 @@ def sync(page: ft.Page):
     exams = interface.get_exams(start, end)
     create_exams_database(exams)
 
+    homework = interface.get_homework(start, end)
+
     # Page refreshs
     def change_page(route):
         global lucky_number

@@ -21,6 +21,7 @@ from sdk.src.apis.hebe.constants import (
     ENDPOINT_REGISTER_TOKEN,
     ENDPOINT_SCHOOL_LUCKY,
     ENDPOINT_SCHEDULE_WITHCHANGES_BYPUPIL,
+    ENDPOINT_HOMEWORK_BYPUPIL,
     USER_AGENT,
 )
 from sdk.src.apis.hebe.exceptions import (
@@ -41,6 +42,7 @@ from sdk.src.models.exam import Exam
 from sdk.src.models.grade import Grade
 from sdk.src.models.note import Note
 from sdk.src.models.lesson import Lesson
+from sdk.src.models.homework import Homework
 
 
 class HebeClient:
@@ -222,3 +224,16 @@ class HebeClient:
                     
         )
         return list(map(Lesson.from_hebe_dict, filter(lambda lessonRaw: lessonRaw["Visible"], envelope)))
+
+    def get_homework(self, student_id: int, from_: date, to: date):
+        envelope = self._send_request(
+            "GET", 
+            ENDPOINT_HOMEWORK_BYPUPIL, 
+            params={
+                "pupilId": student_id, 
+                "dateFrom": from_, 
+                "dateTo": to, 
+            },
+                    
+        )
+        return list(map(Homework.from_hebe_dict, envelope))

@@ -269,3 +269,8 @@ class PrometheusInterface(CoreInterface):
         self._check_is_auth_context_full()
         self._check_is_student_selected()
         return self._hebe_client.get_timetable(self._student_context.student_id, from_, to)
+
+    def get_homework(self, from_, to):
+        self._check_is_auth_context_full()
+        self._check_is_student_selected()
+        return self._hebe_client.get_homework(self._student_context.student_id, from_, to)
