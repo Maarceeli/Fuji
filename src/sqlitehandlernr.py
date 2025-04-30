@@ -146,21 +146,6 @@ def add_grades_to_database(grades_list, smstr):
             session.add(grade_obj)
             session.commit()
 
-def fetch_grades_this_week():
-    today = datetime.today()
-    start_of_week = today - timedelta(days=today.weekday())
-    end_of_week = start_of_week + timedelta(days=7)
-
-    with Session(engine) as session:
-        grades = session.query(Grades).filter(Grades.created_at >= start_of_week, Grades.created_at < end_of_week).all()
-    
-    return grades
-
-def fetch_all_grades(semester: int):
-    with Session(engine) as session:
-        grades = session.query(Grades).filter(Grades.semester == semester).all()
-    return grades
-
 
 def create_notes_database(notes_list):
     with Session(engine) as session:
@@ -176,6 +161,21 @@ def create_notes_database(notes_list):
             
             session.add(note_obj)
             session.commit()
+
+def fetch_grades_this_week():
+    today = datetime.today()
+    start_of_week = today - timedelta(days=today.weekday())
+    end_of_week = start_of_week + timedelta(days=7)
+
+    with Session(engine) as session:
+        grades = session.query(Grades).filter(Grades.created_at >= start_of_week, Grades.created_at < end_of_week).all()
+    
+    return grades
+
+def fetch_all_grades(semester: int):
+    with Session(engine) as session:
+        grades = session.query(Grades).filter(Grades.semester == semester).all()
+    return grades
 
 def fetch_all_notes():
     with Session(engine) as session:
@@ -194,3 +194,15 @@ def fetch_exams_for_week(specific_day: date):
         ).all()
 
     return exams
+
+def fetch_homework_for_week(specific_day: date):
+    start_of_week = specific_day - timedelta(days=specific_day.weekday())  # Monday
+    end_of_week = start_of_week + timedelta(days=6)
+
+    with Session(engine) as session:
+        homework = session.query(Homework).filter(
+            Homework.deadline >= start_of_week,
+            Homework.deadline < end_of_week
+        ).all()
+
+    return homework
