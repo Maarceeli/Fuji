@@ -65,7 +65,6 @@ def CalendarPage(page: ft.Page, interface: PrometheusInterface):
                         ))
 
         page.update()
-        print(calendar_column.controls)
 
 
     def on_week_change(new_start_date):
