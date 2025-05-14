@@ -97,9 +97,9 @@ def CalendarPage(page: ft.Page, interface: PrometheusInterface):
             ft.Text((_("Calendar")), size=30, weight="bold"),
             ft.Row(
                 [
-                    ft.IconButton(icon=ft.icons.ARROW_LEFT, on_click=previous_week),
+                    ft.IconButton(icon=ft.Icons.ARROW_LEFT, on_click=previous_week),
                     week_label,
-                    ft.IconButton(icon=ft.icons.ARROW_RIGHT, on_click=next_week),
+                    ft.IconButton(icon=ft.Icons.ARROW_RIGHT, on_click=next_week),
                 ],
                 alignment=ft.MainAxisAlignment.CENTER
             ),

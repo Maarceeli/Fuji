@@ -23,22 +23,22 @@ def SettingsPage(page):
     
     notification = ft.Container(
         visible=False,
-        bgcolor=ft.colors.AMBER_100,
+        bgcolor=ft.Colors.AMBER_100,
         border_radius=5,
         padding=10,
         margin=ft.margin.only(bottom=20, left=20, right=20),
         content=ft.Row([
-            ft.Icon(ft.icons.INFO_OUTLINED, color=ft.colors.AMBER),
+            ft.Icon(ft.Icons.INFO_OUTLINED, color=ft.Colors.AMBER),
             ft.Text(_("Settings changed. Restart required for changes to take effect."), 
-                   color=ft.colors.BLACK, expand=True),
+                   color=ft.Colors.BLACK, expand=True),
             ft.TextButton(
                 text=_("Restart"),
                 on_click=lambda e: restart(e.page),
-                style=ft.ButtonStyle(color=ft.colors.BLUE),
+                style=ft.ButtonStyle(color=ft.Colors.BLUE),
             ),
             ft.IconButton(
-                icon=ft.icons.CLOSE,
-                icon_color=ft.colors.GREY_800,
+                icon=ft.Icons.CLOSE,
+                icon_color=ft.Colors.GREY_800,
                 icon_size=20,
                 on_click=lambda e: hide_notification()
             )
