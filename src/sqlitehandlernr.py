@@ -5,6 +5,12 @@ from typing import Optional
 from sdk.src.models.exam import ExamType
 from utils import getconfigpath
 from pathlib import Path
+import os
+
+class Credentials(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    auth_context: str
+    student_context: str
 
 class Grades(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)  # Add an auto-incrementing id
@@ -59,7 +65,13 @@ class Homework(SQLModel, table=True):
 config_path = Path(getconfigpath())
 db_path = config_path / "database.db"
 engine = create_engine(f"sqlite:///{db_path}")
-SQLModel.metadata.create_all(engine)
+
+try:
+    SQLModel.metadata.create_all(engine)
+except:
+    os.makedirs(getconfigpath())
+    engine = create_engine(f"sqlite:///{db_path}")
+    SQLModel.metadata.create_all(engine)
 
 def create_grades_database(grades_list, smstr):
     with Session(engine) as session:
@@ -165,6 +177,26 @@ def create_notes_database(notes_list):
             
             session.add(note_obj)
             session.commit()
+
+def create_credentials_database(auth_context, student_context):
+    with Session(engine) as session:
+        session.execute(delete(Credentials))
+        credentials_obj = Credentials(
+            auth_context = auth_context,
+            student_context = student_context,
+        )
+
+        session.add(credentials_obj)
+        session.commit()
+
+def fetch_credentials():
+    with Session(engine) as session:
+        auth_contexts = session.query(Credentials.auth_context).all()
+        student_context = session.query(Credentials.student_context).all()
+        ac = [context[0] for context in auth_contexts]
+        sc = [context[0] for context in student_context]
+
+        return str(ac[0]), int(sc[0])
 
 def fetch_grades_this_week():
     today = datetime.today()

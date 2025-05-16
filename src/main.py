@@ -1,4 +1,3 @@
-import keyring
 import threading
 import configparser
 import flet as ft
@@ -22,7 +21,7 @@ config = configparser.ConfigParser()
 
 def sync(page: ft.Page):
     global lucky_number, interface
-    auth_context_raw = loadauth("Fuji", "Auth Context")
+    auth_context_raw, student_context_raw = fetch_credentials()
     auth_context = PrometheusAuthContext.model_validate_json(auth_context_raw)
     
     interface = PrometheusInterface(
@@ -40,12 +39,12 @@ def sync(page: ft.Page):
     
     students = interface.get_students()
     
-    student = int(keyring.get_password("Fuji", "Student_Index"))
+    student = int(student_context_raw)
     interface.select_student(students[student].context)
     
     auth_context = interface.get_auth_context()
     jsoncontext = auth_context.model_dump_json()
-    saveauth("Fuji", "Auth Context", jsoncontext)
+    create_credentials_database(str(jsoncontext), str(student_context_raw))
 
     student = students[student]
     setcurrentsemester(next(period for period in student.periods if period.current))
@@ -230,13 +229,11 @@ def login(page: ft.Page):
             selected_index = next((i for i, student in enumerate(students) if student.full_name == e.control.value), -1)
             
             interface.select_student(students[selected_index].context)
-            keyring.set_password("Fuji", "Student_Index", str(selected_index))
             
             
             auth_context = interface.get_auth_context()
             jsoncontext = auth_context.model_dump_json()
-            
-            saveauth("Fuji", "Auth Context", jsoncontext)
+            create_credentials_database(str(jsoncontext), str(selected_index))
             
             config.read(f"{getconfigpath()}/config.ini")
             config['Settings']['isLogged'] = 'True'
@@ -397,7 +394,10 @@ if __name__ == "__main__":
                 ft.app(target=login)
         
     except (FileNotFoundError, KeyError):
-        os.makedirs(getconfigpath())
+        try:
+            os.makedirs(getconfigpath())
+        except FileExistsError:
+            pass
         config['Settings'] = defconf
         config['User'] = usrconf
         
