@@ -15,8 +15,8 @@ from pages.attendance import *
 from constants import defconf, usrconf
 from sdk.src.interfaces.prometheus.context import *
 from sdk.src.interfaces.prometheus.interface import *
-lucky_number = None
 
+lucky_number = None
 interface = None
 config = configparser.ConfigParser()
 
