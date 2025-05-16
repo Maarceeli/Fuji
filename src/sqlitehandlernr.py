@@ -242,3 +242,13 @@ def fetch_homework_for_week(specific_day: date):
         ).all()
 
     return homework
+
+def fetch_timetable_for_day(day: datetime):
+    with Session(engine) as session:
+        timetable_entries = session.query(Timetable).filter(
+            Timetable.date == day.date(),
+            Timetable.visible == True
+        ).order_by(Timetable.position).all()
+    
+    return timetable_entries
+
