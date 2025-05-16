@@ -79,7 +79,7 @@ def sync(page: ft.Page):
         routes = {
             "/": HomePage(lucky_number),
             "/grades": GradesPage(page),
-            "/timetable": TimetablePage(),
+            "/timetable": TimetablePage(page, interface),
             "/calendar": CalendarPage(page, interface),
             "/attendance": AttendancePage(),
             "/behaviour": BehaviourPage(),
@@ -123,7 +123,7 @@ def main(page: ft.Page):
         routes = {
             "/": HomePage(lucky_number),
             "/grades": GradesPage(page),
-            "/timetable": TimetablePage(),
+            "/timetable": TimetablePage(page, interface),
             "/calendar": CalendarPage(page, interface),
             "/attendance": AttendancePage(),
             "/behaviour": BehaviourPage(),
