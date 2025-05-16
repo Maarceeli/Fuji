@@ -3,7 +3,9 @@ import configparser
 from i18n import _
 from constants import *
 from components.home import RecentGradesCard, UserProfileCard, TimetableCard, UserStatsCard
-from utils import getconfigpath
+from utils import getconfigpath, format_lessons
+from sqlitehandlernr import fetch_timetable_for_day
+from datetime import datetime
 
 def HomePage(lucky_number):
     config = configparser.ConfigParser()
@@ -12,6 +14,10 @@ def HomePage(lucky_number):
     studentFullName = config['User']['fullName']
     studentClass = config['User']['grade']
     
+    timetable = fetch_timetable_for_day(datetime.today())
+
+    lessons = format_lessons(timetable)
+
     return ft.Column([
         ft.Text((_("Home")), size=30, weight="bold"),
         ft.Text("\n", size=30, weight="bold"),
@@ -20,7 +26,7 @@ def HomePage(lucky_number):
             UserStatsCard(lucky_number),
         ]),
         ft.Row([
-            TimetableCard(),
+            TimetableCard(lessons),
             RecentGradesCard()
         ]),
     ])

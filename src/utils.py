@@ -101,8 +101,8 @@ def logout():
     config["User"]["grade"] = ""
     config["User"]["semester"] = "1"
 
-    if os.path.exists("database.db"):
-        os.remove("database.db")
+    if os.path.exists(f"{getconfigpath()}/database.db"):
+        os.remove(f"{getconfigpath()}/database.db")
     
     with open(f"{getconfigpath()}/config.ini", "w") as file:
         config.write(file)
@@ -135,3 +135,13 @@ def parse_grade_value(value):
     
 def format_date(dt):
     return dt.strftime("%Y/%m/%d")
+
+def format_lessons(lessons):
+        formatted = []
+        for lesson in lessons:
+            pos = lesson.position
+            subject = lesson.subject or "No Subject"
+            room = lesson.room or "No Room"
+            formatted.append((pos, f"{pos}. {subject} ({room})"))
+        formatted.sort(key=lambda x: x[0])
+        return [line for _, line in formatted]

@@ -123,7 +123,12 @@ def UserProfileCard(full_name, class_name):
     )
 
 
-def TimetableCard():
+def TimetableCard(lessons):
+    lesson_text = ft.Column([], scroll=True)
+
+    for lesson in lessons:
+        lesson_text.controls.append(ft.Text(lesson, size=16, font_family="Roboto"))
+    
     return ft.Card(
         content=ft.Container(
             content=ft.Column([
@@ -133,7 +138,7 @@ def TimetableCard():
                 ]),
                 ft.ListView(
                     controls=[
-                        ft.Placeholder()
+                        lesson_text
                     ],
                     expand=True,
                     spacing=10,
