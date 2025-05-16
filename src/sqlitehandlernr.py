@@ -3,6 +3,8 @@ from datetime import date, datetime, timedelta, time
 from sqlalchemy import func
 from typing import Optional
 from sdk.src.models.exam import ExamType
+from utils import getconfigpath
+from pathlib import Path
 
 class Grades(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)  # Add an auto-incrementing id
@@ -54,7 +56,9 @@ class Homework(SQLModel, table=True):
     creator: str
     created_at: datetime
 
-engine = create_engine("sqlite:///database.db")
+config_path = Path(getconfigpath())
+db_path = config_path / "database.db"
+engine = create_engine(f"sqlite:///{db_path}")
 SQLModel.metadata.create_all(engine)
 
 def create_grades_database(grades_list, smstr):
