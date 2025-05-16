@@ -36,7 +36,7 @@ class Lesson(BaseModel):
             start = datetime.strptime(data["TimeSlot"]["Start"], "%H:%M").time(),
             end = datetime.strptime(data["TimeSlot"]["End"], "%H:%M").time(),
             subject = data["Subject"]["Name"] if data["Subject"] else data["Event"],
-            teacher = data["TeacherPrimary"]["DisplayName"],
+            teacher = data["TeacherPrimary"]["DisplayName"] if data[TeacherPrimary] else "null",
             group = data["Distribution"]["Shortcut"] if data["Distribution"] else None,
             visible = data["Visible"],
         )
