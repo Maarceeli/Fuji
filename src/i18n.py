@@ -5,9 +5,9 @@ import json
 import os
 import sys
 
-# Detect if running as a compiled Nuitka binary
+# Detect if running as a compiled Nuitka or PyInstaller binary
 if getattr(sys, 'frozen', False):
-    BASE_DIR = sys._MEIPASS  # Nuitka extracts files here
+    BASE_DIR = sys._MEIPASS  # Extracted folder for frozen app
 else:
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Running locally
 
@@ -27,13 +27,13 @@ finally:
 
 # Determine the correct locales directory
 if getattr(sys, 'frozen', False):
-    # Running as a compiled binary
-    localedir = os.path.join(BASE_DIR, "src", "locales")
+    # Running as a compiled binary (PyInstaller)
+    localedir = os.path.join(sys._MEIPASS, "locales")
 else:
     # Running locally
     localedir = os.path.join(BASE_DIR, "locales")
 
-# Ensure .mo files exist
+# Ensure .mo files exist (only when running locally)
 def ensure_mo_files():
     for root, _, files in os.walk(localedir):
         for file in files:
@@ -45,7 +45,7 @@ def ensure_mo_files():
                     print(f"Compiling {po_path} to {mo_path}")
                     os.system(f"msgfmt {po_path} -o {mo_path}")
 
-if not getattr(sys, 'frozen', False):  # Only check when running locally
+if not getattr(sys, 'frozen', False):
     ensure_mo_files()
 
 # Function to load translations safely
