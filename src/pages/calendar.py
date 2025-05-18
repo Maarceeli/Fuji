@@ -22,7 +22,7 @@ def CalendarPage(page: ft.Page, interface: PrometheusInterface):
     current_week_start = datetime.today() - timedelta(days=datetime.today().weekday())
     current_month = current_week_start.month  # Initial month
     week_label = ft.Text(get_week_range(current_week_start), size=18, weight="bold")
-    calendar_column = ft.Column([], expand=True)
+    calendar_column = ft.Column([], expand=True, scroll=True)
 
     def on_month_change(start_of_month: datetime, end_of_month: datetime):
         print(f"Month changed! New month range: {start_of_month.strftime('%Y-%m-%d')} to {end_of_month.strftime('%Y-%m-%d')}")
