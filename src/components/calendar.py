@@ -161,7 +161,6 @@ class ExamBottomSheet(ft.BottomSheet):
             open=False,
         )
 
-
 class ExamEntry(ft.Card):
     def __init__(self, deadline, description, subject, creator, exam_type, created_at, page):
         # Store the required data in the ExamEntry itself
@@ -189,7 +188,7 @@ class ExamEntry(ft.Card):
                 content=ft.Column([
                     # Top Row: Description and Type
                     ft.Row([
-                        ft.Text(description, font_family="Roboto", weight='bold', size=18),
+                        ft.Text(description, font_family="Roboto", weight='bold', size=18, width=800, overflow=ft.TextOverflow.ELLIPSIS),
                         ft.Text(examtype, font_family="Roboto", size=16, color=ft.Colors.BLUE_300),
                     ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
 
@@ -340,7 +339,6 @@ class HomeworkBottomSheet(ft.BottomSheet):
             open=False,
         )
 
-
 class HomeworkEntry(ft.Card):
     def __init__(self, deadline, description, subject, creator, created_at, page):
         # Store the required data in the ExamEntry itself
@@ -356,7 +354,7 @@ class HomeworkEntry(ft.Card):
                 content=ft.Column([
                     # Top Row: Description and Type
                     ft.Row([
-                        ft.Text(description, font_family="Roboto", weight='bold', size=18, width=max),
+                        ft.Text(description, font_family="Roboto", weight='bold', size=18, width=800, overflow=ft.TextOverflow.ELLIPSIS),
                         ft.Text(_("Homework"), font_family="Roboto", size=16, color=ft.Colors.BLUE_300),
                     ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
 
