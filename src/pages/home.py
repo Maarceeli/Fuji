@@ -3,11 +3,11 @@ import configparser
 from i18n import _
 from constants import *
 from components.home import RecentGradesCard, UserProfileCard, TimetableCard, UserStatsCard
-from utils import getconfigpath, format_lessons
+from utils import getconfigpath, format_lessons, restart
 from sqlitehandlernr import fetch_timetable_for_day
 from datetime import datetime
 
-def HomePage(lucky_number):
+def HomePage(lucky_number, page):
     config = configparser.ConfigParser()
     config.read(f"{getconfigpath()}/config.ini")
 
@@ -15,6 +15,9 @@ def HomePage(lucky_number):
     studentClass = config['User']['grade']
     
     timetable = fetch_timetable_for_day(datetime.today())
+    
+    if timetable == 0:
+        restart(page)
 
     lessons = format_lessons(timetable)
 

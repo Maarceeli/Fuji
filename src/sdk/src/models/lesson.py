@@ -1,20 +1,13 @@
 from datetime import datetime, date, time
 from pydantic import BaseModel
+from enum import Enum
 
-#class Change(BaseModel):
-#    Id: int
-#    Type: int
-#    IsMerge: bool
-#    Separation: bool
-
-
-#class Substitution(BaseModel):
-#    Id: int
-#    UnitId: int
-#    ScheduleId: int
-#    LessonDate: LessonDate
-
-# TODO: Add a model for the substitutions
+class ChangeType(Enum):
+    SUBSTITUTION = 0
+    ABSENCE = 1
+    MERGE = 2
+    MOVE = 3
+    SEPARATION = 4
 
 class Lesson(BaseModel):
     position: int
@@ -26,17 +19,52 @@ class Lesson(BaseModel):
     teacher: str | None
     group: str | None
     visible: bool
+    substitutiontype: ChangeType | None
+    replacedteacher: str | None
+    replacedroom: str | None
 
     @staticmethod
     def from_hebe_dict(data: dict):
-        return Lesson(
-            position = data["TimeSlot"]["Position"],
-            date = datetime.fromtimestamp(data["Date"]["Timestamp"] / 1000).date(),
-            room = data["Room"]["Code"] if data.get("Room") else None,
-            start = datetime.strptime(data["TimeSlot"]["Start"], "%H:%M").time(),
-            end = datetime.strptime(data["TimeSlot"]["End"], "%H:%M").time(),
-            subject = data["Subject"]["Name"] if data["Subject"] else data["Event"],
-            teacher = data["TeacherPrimary"]["DisplayName"] if data["TeacherPrimary"] else None,
-            group = data["Distribution"]["Shortcut"] if data["Distribution"] else None,
-            visible = data["Visible"],
-        )
+        if data["Substitution"]:
+            stype = None
+
+            if data["Substitution"]["TeacherPrimary"]:
+                stype = ChangeType.SUBSTITUTION
+
+            elif data["Substitution"]["TimeSlot"]:
+                stype = ChangeType.MOVE
+
+            elif data["Substitution"]["TeacherAbsenceReasonId"]:
+                stype = ChangeType.ABSENCE
+
+
+            return Lesson(
+                position = data["TimeSlot"]["Position"],
+                date = datetime.fromtimestamp(data["Date"]["Timestamp"] / 1000).date(),
+                room = data["Substitution"]["Room"]["Code"] if data["Substitution"]["Room"] else data["Room"]["Code"] if data["Room"] else None,
+                start = datetime.strptime(data["TimeSlot"]["Start"], "%H:%M").time(),
+                end = datetime.strptime(data["TimeSlot"]["End"], "%H:%M").time(),
+                subject = data["Subject"]["Name"] if data["Subject"] else data["Event"],
+                teacher = data["Substitution"]["TeacherPrimary"]["DisplayName"] if data["Substitution"]["TeacherPrimary"] else data["TeacherPrimary"]["DisplayName"] if data["TeacherPrimary"] else None,
+                group = data["Distribution"]["Shortcut"] if data["Distribution"] else None,
+                visible = data["Visible"],
+                substitutiontype = stype,
+                replacedteacher = data["TeacherPrimary"]["DisplayName"] if data["TeacherPrimary"] else None,
+                replacedroom = data["Room"]["Code"] if data["Room"] else None,
+            )
+
+        else:
+            return Lesson(
+                position = data["TimeSlot"]["Position"],
+                date = datetime.fromtimestamp(data["Date"]["Timestamp"] / 1000).date(),
+                room = data["Room"]["Code"] if data["Room"] else None,
+                start = datetime.strptime(data["TimeSlot"]["Start"], "%H:%M").time(),
+                end = datetime.strptime(data["TimeSlot"]["End"], "%H:%M").time(),
+                subject = data["Subject"]["Name"] if data["Subject"] else data["Event"],
+                teacher = data["TeacherPrimary"]["DisplayName"] if data["TeacherPrimary"] else None,
+                group = data["Distribution"]["Shortcut"] if data["Distribution"] else None,
+                visible = data["Visible"],
+                substitutiontype = None,
+                replacedteacher = None,
+                replacedroom = None,
+            )

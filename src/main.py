@@ -77,7 +77,7 @@ def sync(page: ft.Page):
     def change_page(route):
         global lucky_number
         routes = {
-            "/": HomePage(lucky_number),
+            "/": HomePage(lucky_number, page),
             "/grades": GradesPage(page),
             "/timetable": TimetablePage(page, interface),
             "/calendar": CalendarPage(page, interface),
@@ -90,7 +90,7 @@ def sync(page: ft.Page):
         view = ft.View(route, [
             ft.Row([
                 bar,
-                ft.Container(content=routes.get(route, HomePage(lucky_number)), expand=True)
+                ft.Container(content=routes.get(route, HomePage(lucky_number, page)), expand=True)
             ], expand=True)
         ])
         page.views.append(view)
@@ -121,7 +121,7 @@ def main(page: ft.Page):
     def change_page(route):
         global lucky_number
         routes = {
-            "/": HomePage(lucky_number),
+            "/": HomePage(lucky_number, page),
             "/grades": GradesPage(page),
             "/timetable": TimetablePage(page, interface),
             "/calendar": CalendarPage(page, interface),
@@ -134,7 +134,7 @@ def main(page: ft.Page):
         view = ft.View(route, [
             ft.Row([
                 bar,
-                ft.Container(content=routes.get(route, HomePage(lucky_number)), expand=True)
+                ft.Container(content=routes.get(route, HomePage(lucky_number, page)), expand=True)
             ], expand=True)
         ])
         page.views.append(view)

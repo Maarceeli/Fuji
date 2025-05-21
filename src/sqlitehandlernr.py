@@ -3,6 +3,7 @@ from datetime import date, datetime, timedelta, time
 from sqlalchemy import func
 from typing import Optional
 from sdk.src.models.exam import ExamType
+from sdk.src.models.lesson import ChangeType
 from utils import getconfigpath
 from pathlib import Path
 import os
@@ -44,6 +45,9 @@ class Timetable(SQLModel, table=True):
     teacher: str | None
     group: str | None
     visible: bool
+    substitutiontype: ChangeType | None
+    replacedteacher: str | None
+    replacedroom: str | None
 
 class Exam(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)  # Add an auto-incrementing id
@@ -95,7 +99,9 @@ def create_grades_database(grades_list, smstr):
             
 def create_timetable_database(timetable_list):
     with Session(engine) as session:
-        session.execute(delete(Timetable))
+        session.execute(text('DROP TABLE IF EXISTS timetable'))
+        session.commit()
+        SQLModel.metadata.create_all(engine)
         for lesson in timetable_list:
             lesson_obj = Timetable(
                 position = lesson.position,
@@ -106,11 +112,15 @@ def create_timetable_database(timetable_list):
                 subject=lesson.subject, 
                 teacher=lesson.teacher, 
                 group=lesson.group, 
-                visible=lesson.visible
+                visible=lesson.visible,
+                substitutiontype=lesson.substitutiontype,
+                replacedteacher=lesson.replacedteacher,
+                replacedroom=lesson.replacedroom
             )
             
             session.add(lesson_obj)
             session.commit()
+
             
 def create_exams_database(exams_list):
     with Session(engine) as session:
@@ -245,10 +255,15 @@ def fetch_homework_for_week(specific_day: date):
 
 def fetch_timetable_for_day(day: datetime):
     with Session(engine) as session:
-        timetable_entries = session.query(Timetable).filter(
-            Timetable.date == day.date(),
-            Timetable.visible == True
-        ).order_by(Timetable.position).all()
+        try:
+            timetable_entries = session.query(Timetable).filter(
+                Timetable.date == day.date(),
+                Timetable.visible == True
+            ).order_by(Timetable.position).all()
+        except:
+            print("it did not work")
+            session.execute(text('DROP TABLE IF EXISTS timetable'))
+            return 0
     
     return timetable_entries
 
