@@ -23,7 +23,7 @@ def TimetablePage(page: ft.Page, interface: PrometheusInterface):
         timetable_column.controls = []
         
         for lesson in timetable:
-            timetable_column.controls.append(LessonEntry(start_time=lesson.start, end_time=lesson.end, subject=lesson.subject, teacher=lesson.teacher, room=lesson.room, lesson_number=lesson.position, page=page))
+            timetable_column.controls.append(LessonEntry(start_time=lesson.start, end_time=lesson.end, subject=lesson.subject, teacher=lesson.teacher, room=lesson.room, lesson_number=lesson.position, page=page, substitutiontype=lesson.substitutiontype))
 
         page.update()
 
