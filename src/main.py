@@ -191,6 +191,11 @@ def login(page: ft.Page):
 
     interface = None
     data = {"usr": None, "passwd": None}
+
+    if getattr(sys, 'frozen', False):
+        BASE_DIR = sys._MEIPASS  # Extracted folder for frozen app
+    else:
+        BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Running locally
     
     # Saving credentials
     def changeusr(e):
@@ -272,7 +277,7 @@ def login(page: ft.Page):
                         content=ft.Column(
                             [
                                 ft.Image(
-                                    src="src/assets/logo.png",
+                                    src=f"{BASE_DIR}/assets/logo.png",
                                     width=256,
                                     height=256,
                                     fit=ft.ImageFit.CONTAIN,
