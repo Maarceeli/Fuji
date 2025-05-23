@@ -11,6 +11,7 @@ from sqlitehandlernr import *
 from pages.timetable import *
 from pages.behaviour import *
 from pages.attendance import *
+from pages.about import *
 from constants import defconf, usrconf
 from sdk.src.interfaces.prometheus.context import *
 from sdk.src.interfaces.prometheus.interface import *
@@ -18,6 +19,11 @@ from sdk.src.interfaces.prometheus.interface import *
 lucky_number = None
 interface = None
 config = configparser.ConfigParser()
+
+if getattr(sys, 'frozen', False):
+    BASE_DIR = sys._MEIPASS  # Extracted folder for frozen app
+else:
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Running locally
 
 def sync(page: ft.Page):
     global lucky_number, interface
@@ -83,7 +89,8 @@ def sync(page: ft.Page):
             "/calendar": CalendarPage(page, interface),
             "/attendance": AttendancePage(),
             "/behaviour": BehaviourPage(),
-            "/settings": SettingsPage(page)
+            "/settings": SettingsPage(page),
+            "/about": AboutPage(BASE_DIR),
         }
         
         page.views.clear()
@@ -127,7 +134,8 @@ def main(page: ft.Page):
             "/calendar": CalendarPage(page, interface),
             "/attendance": AttendancePage(),
             "/behaviour": BehaviourPage(),
-            "/settings": SettingsPage(page)
+            "/settings": SettingsPage(page),
+            "/about": AboutPage(BASE_DIR),
         }
         
         page.views.clear()
@@ -191,11 +199,6 @@ def login(page: ft.Page):
 
     interface = None
     data = {"usr": None, "passwd": None}
-
-    if getattr(sys, 'frozen', False):
-        BASE_DIR = sys._MEIPASS  # Extracted folder for frozen app
-    else:
-        BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Running locally
     
     # Saving credentials
     def changeusr(e):

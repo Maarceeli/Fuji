@@ -21,37 +21,30 @@ def SettingsPage(page):
         actions_alignment=ft.MainAxisAlignment.END,
     )
     
-    notification = ft.Container(
-        visible=False,
+    notification = ft.Banner(
         bgcolor=ft.Colors.AMBER_100,
-        border_radius=5,
-        padding=10,
-        margin=ft.margin.only(bottom=20, left=20, right=20),
-        content=ft.Row([
-            ft.Icon(ft.Icons.INFO_OUTLINED, color=ft.Colors.AMBER),
-            ft.Text(_("Settings changed. Restart required for changes to take effect."), 
-                   color=ft.Colors.BLACK, expand=True),
+        leading=ft.Icon(ft.Icons.WARNING_AMBER_ROUNDED, color=ft.Colors.AMBER, size=40),
+        content=ft.Text(
+            value=f"{_("Settings changed. Restart required for changes to take effect.")}",
+            color=ft.Colors.BLACK,
+        ),
+        actions=[
             ft.TextButton(
-                text=_("Restart"),
-                on_click=lambda e: restart(e.page),
-                style=ft.ButtonStyle(color=ft.Colors.BLUE),
+                text=_("Restart"), style=ft.ButtonStyle(color=ft.Colors.BLUE), on_click=lambda e: restart(e.page),
             ),
-            ft.IconButton(
-                icon=ft.Icons.CLOSE,
-                icon_color=ft.Colors.GREY_800,
-                icon_size=20,
-                on_click=lambda e: hide_notification()
-            )
-        ])
+            ft.TextButton(
+                text=_("Later"), style=ft.ButtonStyle(color=ft.Colors.BLUE), on_click=lambda e: hide_notification()
+            ),
+        ],
     )
 
     
     def hide_notification():
-        notification.visible = False
+        page.close(notification)
         main_container.update()
     
     def show_notification():
-        notification.visible = True
+        page.open(notification)
         main_container.update()
     
     def getlangoptions():
@@ -117,9 +110,27 @@ def SettingsPage(page):
                     )
                 ]),
                 ft.Row([
-                    ft.ElevatedButton(
-                        _("Logout"),
-                        on_click=lambda e: page.open(logout_modal)
+                    ft.Card(
+                        content=ft.Container(
+                            content=ft.Text(_("Logout")),
+                            on_click=lambda e: page.open(logout_modal),
+                            alignment=ft.alignment.center,
+                            bgcolor=ft.Colors.with_opacity(0.5, ft.Colors.RED_400),
+                            border_radius=15
+                        ),
+                        expand=True,
+                        height=75
+                    ),
+                    ft.Card(
+                        content=ft.Container(
+                            content=ft.Text(_("About")),
+                            alignment=ft.alignment.center,
+                            bgcolor=ft.Colors.with_opacity(0.5, ft.Colors.BLUE_400),
+                            border_radius=15,
+                            on_click=lambda e: page.go("/about")
+                        ),
+                        expand=True,
+                        height=75
                     ),
                 ]),
             ]),
