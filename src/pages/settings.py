@@ -87,10 +87,9 @@ def SettingsPage(page):
     
     # Create a column with settings at top and notification container at bottom
     main_content = ft.Column([
-        # Settings at the top
+        ft.Text(_("Settings"), size=30, weight="bold"),
         ft.Container(
             content=ft.Column([
-                ft.Text(_("Settings"), size=30, weight="bold"),
                 ft.Row([
                     ft.Text(_("Language (Requires restart)")),
                     ft.Dropdown(
@@ -99,7 +98,7 @@ def SettingsPage(page):
                         options=getlangoptions(),
                         on_change=onlangchange
                     ),
-                ]),
+                ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                 ft.Row([
                     ft.Text(_("Theme")),
                     ft.Dropdown(
@@ -108,8 +107,11 @@ def SettingsPage(page):
                         options=getthemeoptions(),
                         on_change=onthemechange
                     )
-                ]),
-                ft.Row([
+                ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+            ]),
+            expand=True  # Make this container expand to push the notification to the bottom
+        ),
+        ft.Row([
                     ft.Card(
                         content=ft.Container(
                             content=ft.Text(_("Logout")),
@@ -133,12 +135,7 @@ def SettingsPage(page):
                         height=75
                     ),
                 ]),
-            ]),
-            expand=True  # Make this container expand to push the notification to the bottom
-        ),
-        # Notification at the bottom
-        notification
-    ], expand=True)  # Make the column expand to fill the available space
+    ], expand=True)
     
     main_container.content = main_content
     main_container.expand = True  # Make the main container expand
