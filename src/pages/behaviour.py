@@ -41,6 +41,7 @@ def BehaviourPage():
         )
     
     return ft.Column([
+                ft.Text((_("Behaviour")), size=30, weight="bold"),
                 ft.ListView(
                             controls=[
                                 ft.Column(
