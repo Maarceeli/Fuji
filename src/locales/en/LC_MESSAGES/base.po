@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-24 11:34+0200\n"
+"POT-Creation-Date: 2025-05-26 08:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,60 +17,64 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main.py:55
+#: src/main.py:60
 msgid "None"
 msgstr ""
 
-#: src/main.py:153 src/pages/home.py:16
+#: src/main.py:163 src/pages/home.py:25
 msgid "Home"
 msgstr ""
 
-#: src/main.py:154 src/pages/grades.py:92
+#: src/main.py:164 src/pages/grades.py:92
 msgid "Grades"
 msgstr ""
 
-#: src/main.py:155 src/pages/timetable.py:7 src/components/home.py:132
+#: src/main.py:165 src/pages/timetable.py:74 src/components/home.py:137
 msgid "Timetable"
 msgstr ""
 
-#: src/main.py:156 src/pages/calendar.py:69
+#: src/main.py:166 src/pages/calendar.py:97
 msgid "Calendar"
 msgstr ""
 
-#: src/main.py:157 src/pages/attendance.py:6
+#: src/main.py:167 src/pages/attendance.py:6
 msgid "Attendance"
 msgstr ""
 
-#: src/main.py:158
+#: src/main.py:168 src/pages/behaviour.py:44
 msgid "Behaviour"
 msgstr ""
 
-#: src/main.py:159 src/pages/settings.py:100
+#: src/main.py:169 src/pages/settings.py:90
 msgid "Settings"
 msgstr ""
 
-#: src/main.py:281
+#: src/main.py:289
 msgid "Welcome to Fuji!"
 msgstr ""
 
-#: src/main.py:283
+#: src/main.py:291
 msgid "Get Started"
 msgstr ""
 
-#: src/main.py:309 src/main.py:328
+#: src/main.py:317 src/main.py:336
 msgid "Log in"
 msgstr ""
 
-#: src/main.py:313
+#: src/main.py:321
 msgid "Username"
 msgstr ""
 
-#: src/main.py:320
+#: src/main.py:328
 msgid "Password"
 msgstr ""
 
-#: src/main.py:350
+#: src/main.py:358
 msgid "Select a student"
+msgstr ""
+
+#: src/pages/about.py:9 src/pages/settings.py:128
+msgid "About"
 msgstr ""
 
 #: src/pages/behaviour.py:11
@@ -105,11 +109,11 @@ msgstr ""
 msgid "Semester 2"
 msgstr ""
 
-#: src/pages/homework.py:7
+#: src/pages/homework.py:7 src/components/calendar.py:358
 msgid "Homework"
 msgstr ""
 
-#: src/pages/settings.py:15 src/pages/settings.py:121
+#: src/pages/settings.py:15 src/pages/settings.py:117
 msgid "Logout"
 msgstr ""
 
@@ -117,83 +121,115 @@ msgstr ""
 msgid "Do you want to logout?"
 msgstr ""
 
-#: src/pages/settings.py:32
+#: src/pages/settings.py:28
 msgid "Settings changed. Restart required for changes to take effect."
 msgstr ""
 
-#: src/pages/settings.py:35
+#: src/pages/settings.py:33
 msgid "Restart"
 msgstr ""
 
-#: src/pages/settings.py:65
+#: src/pages/settings.py:36
+msgid "Later"
+msgstr ""
+
+#: src/pages/settings.py:58
 msgid "Red"
 msgstr ""
 
-#: src/pages/settings.py:66
+#: src/pages/settings.py:59
 msgid "Orange"
 msgstr ""
 
-#: src/pages/settings.py:67
+#: src/pages/settings.py:60
 msgid "Yellow"
 msgstr ""
 
-#: src/pages/settings.py:68
+#: src/pages/settings.py:61
 msgid "Green"
 msgstr ""
 
-#: src/pages/settings.py:69
+#: src/pages/settings.py:62
 msgid "Blue"
 msgstr ""
 
-#: src/pages/settings.py:70
+#: src/pages/settings.py:63
 msgid "Purple"
 msgstr ""
 
-#: src/pages/settings.py:71
+#: src/pages/settings.py:64
 msgid "Pink"
 msgstr ""
 
-#: src/pages/settings.py:72
+#: src/pages/settings.py:65
 msgid "Brown"
 msgstr ""
 
-#: src/pages/settings.py:73
+#: src/pages/settings.py:66
 msgid "Grey"
 msgstr ""
 
-#: src/pages/settings.py:74
+#: src/pages/settings.py:67
 msgid "Amber"
 msgstr ""
 
-#: src/pages/settings.py:75
+#: src/pages/settings.py:68
 msgid "Cyan"
 msgstr ""
 
-#: src/pages/settings.py:102
+#: src/pages/settings.py:94
 msgid "Language (Requires restart)"
 msgstr ""
 
-#: src/pages/settings.py:105
+#: src/pages/settings.py:97
 msgid "Language"
 msgstr ""
 
-#: src/pages/settings.py:111 src/pages/settings.py:114
+#: src/pages/settings.py:103 src/pages/settings.py:106
 msgid "Theme"
 msgstr ""
 
-#: src/components/calendar.py:31 src/components/calendar.py:179
+#: src/pages/timetable.py:12
+msgid "Monday"
+msgstr ""
+
+#: src/pages/timetable.py:13
+msgid "Tuesday"
+msgstr ""
+
+#: src/pages/timetable.py:14
+msgid "Wednesday"
+msgstr ""
+
+#: src/pages/timetable.py:15
+msgid "Thursday"
+msgstr ""
+
+#: src/pages/timetable.py:16
+msgid "Friday"
+msgstr ""
+
+#: src/pages/timetable.py:17
+msgid "Saturday"
+msgstr ""
+
+#: src/pages/timetable.py:18
+msgid "Sunday"
+msgstr ""
+
+#: src/components/calendar.py:31 src/components/calendar.py:178
 msgid "Short Test"
 msgstr ""
 
-#: src/components/calendar.py:33 src/components/calendar.py:181
+#: src/components/calendar.py:33 src/components/calendar.py:180
 msgid "Classwork"
 msgstr ""
 
-#: src/components/calendar.py:35 src/components/calendar.py:183
+#: src/components/calendar.py:35 src/components/calendar.py:182
 msgid "Test"
 msgstr ""
 
-#: src/components/calendar.py:37 src/components/calendar.py:185
+#: src/components/calendar.py:37 src/components/calendar.py:184
 msgid "Other"
 msgstr ""
 
@@ -201,15 +237,16 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: src/components/calendar.py:98
+#: src/components/calendar.py:98 src/components/calendar.py:274
 msgid "Created At"
 msgstr ""
 
-#: src/components/calendar.py:121
+#: src/components/calendar.py:121 src/components/calendar.py:297
 msgid "Deadline"
 msgstr ""
 
-#: src/components/calendar.py:144 src/components/grades.py:123
+#: src/components/calendar.py:144 src/components/calendar.py:320
+#: src/components/grades.py:123
 msgid "Teacher"
 msgstr ""
 

@@ -3,13 +3,28 @@ from i18n import _
 from datetime import datetime, timedelta
 from sqlitehandlernr import fetch_timetable_for_day, create_timetable_database
 from components.timetable import *
+from calendar import monthrange
 from sdk.src.interfaces.prometheus.interface import PrometheusInterface
+
+def get_translated_weekday(date: datetime) -> str:
+    """Get translated weekday name"""
+    weekdays = {
+        0: _("Monday"),
+        1: _("Tuesday"), 
+        2: _("Wednesday"),
+        3: _("Thursday"),
+        4: _("Friday"),
+        5: _("Saturday"),
+        6: _("Sunday")
+    }
+    return weekdays[date.weekday()]
 
 def TimetablePage(page: ft.Page, interface: PrometheusInterface):
     current_day = datetime.today()
     current_month = current_day.month
 
-    day_label = ft.Text(current_day.strftime("%A, %Y-%m-%d"), size=18, weight="bold")
+    # Use translated weekday instead of strftime
+    day_label = ft.Text(f"{get_translated_weekday(current_day)}, {current_day.strftime('%Y-%m-%d')}", size=18, weight="bold")
     timetable_column = ft.Column([], expand=True, scroll=True)
 
     def on_month_change(start_of_month: datetime, end_of_month: datetime):
@@ -38,7 +53,8 @@ def TimetablePage(page: ft.Page, interface: PrometheusInterface):
             on_month_change(start_of_month, end_of_month)
 
         current_day = new_date
-        day_label.value = current_day.strftime("%A, %Y-%m-%d")
+        # Update label with translated weekday
+        day_label.value = f"{get_translated_weekday(current_day)}, {current_day.strftime('%Y-%m-%d')}"
         fetch_day_data(new_date)
 
     def previous_day(e):
@@ -55,7 +71,7 @@ def TimetablePage(page: ft.Page, interface: PrometheusInterface):
 
     return ft.Column([
         ft.Row([
-            ft.Text("Timetable", size=30, weight="bold"),
+            ft.Text(_("Timetable"), size=30, weight="bold"),
             ft.Row([
                 ft.IconButton(icon=ft.Icons.ARROW_LEFT, on_click=previous_day),
                 day_label,

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-24 11:34+0200\n"
+"POT-Creation-Date: 2025-05-26 08:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,61 +17,65 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main.py:55
+#: src/main.py:60
 msgid "None"
 msgstr "Brak"
 
-#: src/main.py:153 src/pages/home.py:16
+#: src/main.py:163 src/pages/home.py:25
 msgid "Home"
 msgstr "Strona główna"
 
-#: src/main.py:154 src/pages/grades.py:92
+#: src/main.py:164 src/pages/grades.py:92
 msgid "Grades"
 msgstr "Oceny"
 
-#: src/main.py:155 src/pages/timetable.py:7 src/components/home.py:132
+#: src/main.py:165 src/pages/timetable.py:74 src/components/home.py:137
 msgid "Timetable"
 msgstr "Plan lekcji"
 
-#: src/main.py:156 src/pages/calendar.py:69
+#: src/main.py:166 src/pages/calendar.py:97
 msgid "Calendar"
 msgstr "Kalendarz"
 
-#: src/main.py:157 src/pages/attendance.py:6
+#: src/main.py:167 src/pages/attendance.py:6
 msgid "Attendance"
 msgstr "Obecności"
 
-#: src/main.py:158
+#: src/main.py:168 src/pages/behaviour.py:44
 msgid "Behaviour"
 msgstr "Zachowanie"
 
-#: src/main.py:159 src/pages/settings.py:100
+#: src/main.py:169 src/pages/settings.py:90
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: src/main.py:281
+#: src/main.py:289
 msgid "Welcome to Fuji!"
 msgstr "Witaj w Fuji!"
 
-#: src/main.py:283
+#: src/main.py:291
 msgid "Get Started"
 msgstr "Rozpocznij"
 
-#: src/main.py:309 src/main.py:328
+#: src/main.py:317 src/main.py:336
 msgid "Log in"
 msgstr "Zaloguj się"
 
-#: src/main.py:313
+#: src/main.py:321
 msgid "Username"
 msgstr "Nazwa użytkownika"
 
-#: src/main.py:320
+#: src/main.py:328
 msgid "Password"
 msgstr "Hasło"
 
-#: src/main.py:350
+#: src/main.py:358
 msgid "Select a student"
 msgstr "Wybierz ucznia"
+
+#: src/pages/about.py:9 src/pages/settings.py:128
+msgid "About"
+msgstr "O aplikacji"
 
 #: src/pages/behaviour.py:11
 msgid "No notes yet"
@@ -106,11 +110,11 @@ msgstr "Semestr 1"
 msgid "Semester 2"
 msgstr "Semestr 2"
 
-#: src/pages/homework.py:7
+#: src/pages/homework.py:7 src/components/calendar.py:358
 msgid "Homework"
 msgstr "Zadania domowe"
 
-#: src/pages/settings.py:15 src/pages/settings.py:121
+#: src/pages/settings.py:15 src/pages/settings.py:117
 msgid "Logout"
 msgstr "Wyloguj"
 
@@ -118,84 +122,118 @@ msgstr "Wyloguj"
 msgid "Do you want to logout?"
 msgstr "Czy chcesz się wylogować?"
 
-#: src/pages/settings.py:32
+#: src/pages/settings.py:28
 msgid "Settings changed. Restart required for changes to take effect."
-msgstr "Ustawienia zostały zmienione. Aby zmiany zaczęły obowiązywać, wymagany jest restart."
+msgstr ""
+"Ustawienia zostały zmienione. Aby zmiany zaczęły obowiązywać, wymagany jest "
+"restart."
 
-#: src/pages/settings.py:35
+#: src/pages/settings.py:33
 msgid "Restart"
 msgstr "Restart"
 
-#: src/pages/settings.py:65
+#: src/pages/settings.py:36
+msgid "Later"
+msgstr "Później"
+
+#: src/pages/settings.py:58
 msgid "Red"
 msgstr "Czerwony"
 
-#: src/pages/settings.py:66
+#: src/pages/settings.py:59
 msgid "Orange"
 msgstr "Pomarańczowy"
 
-#: src/pages/settings.py:67
+#: src/pages/settings.py:60
 msgid "Yellow"
 msgstr "Żółty"
 
-#: src/pages/settings.py:68
+#: src/pages/settings.py:61
 msgid "Green"
 msgstr "Zielony"
 
-#: src/pages/settings.py:69
+#: src/pages/settings.py:62
 msgid "Blue"
 msgstr "Niebieski"
 
-#: src/pages/settings.py:70
+#: src/pages/settings.py:63
 msgid "Purple"
 msgstr "Fioletowy"
 
-#: src/pages/settings.py:71
+#: src/pages/settings.py:64
 msgid "Pink"
 msgstr "Różowy"
 
-#: src/pages/settings.py:72
+#: src/pages/settings.py:65
 msgid "Brown"
 msgstr "Brązowy"
 
-#: src/pages/settings.py:73
+#: src/pages/settings.py:66
 msgid "Grey"
 msgstr "Szary"
 
-#: src/pages/settings.py:74
+#: src/pages/settings.py:67
 msgid "Amber"
 msgstr "Bursztynowy"
 
-#: src/pages/settings.py:75
+#: src/pages/settings.py:68
 msgid "Cyan"
 msgstr "Cyjanowy"
 
-#: src/pages/settings.py:102
+#: src/pages/settings.py:94
 msgid "Language (Requires restart)"
 msgstr "Język (Wymagany restart)"
 
-#: src/pages/settings.py:105
+#: src/pages/settings.py:97
 msgid "Language"
 msgstr "Język"
 
-#: src/pages/settings.py:111 src/pages/settings.py:114
+#: src/pages/settings.py:103 src/pages/settings.py:106
 msgid "Theme"
 msgstr "Motyw"
 
-#: src/components/calendar.py:31 src/components/calendar.py:179
+#: src/pages/timetable.py:12
+msgid "Monday"
+msgstr "Poniedziałek"
+
+#: src/pages/timetable.py:13
+msgid "Tuesday"
+msgstr "Wtorek"
+
+#: src/pages/timetable.py:14
+msgid "Wednesday"
+msgstr "Środa"
+
+#: src/pages/timetable.py:15
+msgid "Thursday"
+msgstr "Czwartek"
+
+#: src/pages/timetable.py:16
+msgid "Friday"
+msgstr "Piątek"
+
+#: src/pages/timetable.py:17
+msgid "Saturday"
+msgstr "Sobota"
+
+#: src/pages/timetable.py:18
+msgid "Sunday"
+msgstr "Niedziela"
+
+#: src/components/calendar.py:31 src/components/calendar.py:178
 msgid "Short Test"
 msgstr "Kartkówka"
 
-#: src/components/calendar.py:33 src/components/calendar.py:181
+#: src/components/calendar.py:33 src/components/calendar.py:180
 #, fuzzy
 msgid "Classwork"
 msgstr "Praca klasowa"
 
-#: src/components/calendar.py:35 src/components/calendar.py:183
+#: src/components/calendar.py:35 src/components/calendar.py:182
 msgid "Test"
 msgstr "Sprawdzian"
 
-#: src/components/calendar.py:37 src/components/calendar.py:185
+#: src/components/calendar.py:37 src/components/calendar.py:184
 msgid "Other"
 msgstr "Inne"
 
@@ -203,15 +241,16 @@ msgstr "Inne"
 msgid "Type"
 msgstr "Typ"
 
-#: src/components/calendar.py:98
+#: src/components/calendar.py:98 src/components/calendar.py:274
 msgid "Created At"
 msgstr "Utworzono"
 
-#: src/components/calendar.py:121
+#: src/components/calendar.py:121 src/components/calendar.py:297
 msgid "Deadline"
 msgstr "Termin"
 
-#: src/components/calendar.py:144 src/components/grades.py:123
+#: src/components/calendar.py:144 src/components/calendar.py:320
+#: src/components/grades.py:123
 msgid "Teacher"
 msgstr "Nauczyciel"
 
