@@ -1,0 +1,63 @@
+version: 0.{build}
+
+branches:
+  only:
+    - main
+
+image:
+- Visual Studio 2019
+- Ubuntu
+
+skip_branch_with_pr: true
+stack: python 3.13
+
+environment:
+  GITHUB_TOKEN:
+    secure: Ti46nPnZgFh0nRteU6ma0EhJnCTW7PaMn9hnnewZl4gBFPyRQnXNCwGog02+MRLX
+
+install:
+- pip install -r requirements.txt
+
+build_script:
+- set VERSION=%APPVEYOR_BUILD_VERSION%
+- flet pack main.py --name Fuji --icon src/icon.ico --product-name Fuji --product-version %VERSION% --copyright "Copyright (c) 2025 Fuji --onedir"
+
+
+test: off
+
+# Publish artifacts to GitHub Releases on "tag" builds
+deploy:
+  provider: GitHub
+  auth_token: $(GITHUB_TOKEN)
+  on:
+    APPVEYOR_REPO_TAG: true
+
+#
+#   Windows package
+# 
+for:
+-
+  matrix:
+    only:
+    - image: Visual Studio 2019
+
+  after_build:
+  - 7z a Fuji-Windows-amd64.zip %CD%\dist\*
+
+  artifacts:
+  - path: Fuji-Windows-amd64.zip
+
+#
+#   Linux package
+# 
+-
+  matrix:
+    only:
+    - image: Ubuntu
+
+  after_build:
+  - tar -czvf Fuji-Linux-amd64.tar.gz -C dist
+
+  artifacts:
+  - path: Fuji-Linux-amd64.tar.gz
+
