@@ -32,7 +32,7 @@ for:
     - image: Visual Studio 2019
 
   after_build:
-  - 7z a Fuji-Windows-amd64.zip %CD%\dist\*
+  - 7z a Fuji-Windows-amd64.zip %CD%\dist\Fuji
 
   artifacts:
   - path: Fuji-Windows-amd64.zip
@@ -46,7 +46,7 @@ for:
     - image: Ubuntu
 
   after_build:
-  - tar -czvf Fuji-Linux-amd64.tar.gz -C dist
+  - tar -czvf Fuji-Linux-amd64.tar.gz -C dist Fuji
 
   artifacts:
   - path: Fuji-Linux-amd64.tar.gz
