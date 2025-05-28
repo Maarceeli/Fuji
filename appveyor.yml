@@ -21,7 +21,7 @@ install:
 
 build_script:
 - set VERSION=%APPVEYOR_BUILD_VERSION%
-- flet pack src/main.py --name Fuji --icon src/icon.ico --product-name Fuji --product-version %VERSION% --copyright "Copyright (c) 2025 Fuji --onedir"
+- flet pack main.py --name Fuji --icon src/assets/icon.ico --product-name Fuji --product-version %VERSION% --copyright "Copyright (c) 2025 Fuji --onedir"
 
 
 test: off
