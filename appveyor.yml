@@ -16,9 +16,8 @@ install:
 - pip install PyInstaller
 
 build_script:
-- set VERSION=%APPVEYOR_BUILD_VERSION%
+- ps: Set-Content -Path src/version.py -Value "ver=`"$env:APPVEYOR_BUILD_VERSION`"" -Encoding ascii
 - flet pack src/main.py --name Fuji --icon src/assets/rlogo.ico --onedir --add-data=src/locales:locales --add-data=src/assets:assets --yes
-
 
 test: off
 
@@ -45,9 +44,12 @@ for:
     only:
     - image: Ubuntu
 
+  build_script:
+  - echo "ver=\"$APPVEYOR_BUILD_VERSION\"" > src/version.py
+  - flet pack src/main.py --name Fuji --icon src/assets/rlogo.ico --onedir --add-data=src/locales:locales --add-data=src/assets:assets --yes
+
   after_build:
   - tar -czvf Fuji-Linux-amd64.tar.gz -C dist Fuji
 
   artifacts:
   - path: Fuji-Linux-amd64.tar.gz
-
