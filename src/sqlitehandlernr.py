@@ -230,14 +230,22 @@ def fetch_all_notes():
     return notes
 
 def fetch_exams_for_week(specific_day: date):
-    start_of_week = specific_day - timedelta(days=specific_day.weekday())  # Monday
+    # Get start of week (Monday)
+    start_of_week = specific_day - timedelta(days=specific_day.weekday())
+    # Get end of week (Sunday)
     end_of_week = start_of_week + timedelta(days=6)
+    
+    print(f"Fetching exams between {start_of_week} and {end_of_week}")  # Debug print
 
     with Session(engine) as session:
         exams = session.query(Exam).filter(
-            Exam.deadline >= start_of_week,
-            Exam.deadline < end_of_week
+            Exam.deadline >= start_of_week.date() if isinstance(start_of_week, datetime) else start_of_week,
+            Exam.deadline <= end_of_week.date() if isinstance(end_of_week, datetime) else end_of_week
         ).all()
+
+        # Debug print results
+        for exam in exams:
+            print(f"Found exam: {exam.subject} on {exam.deadline}")
 
     return exams
 
@@ -246,12 +254,15 @@ def fetch_homework_for_week(specific_day: date):
     end_of_week = start_of_week + timedelta(days=6)
 
     with Session(engine) as session:
-        homework = session.query(Homework).filter(
-            Homework.deadline >= start_of_week,
-            Homework.deadline < end_of_week
+        homeworks = session.query(Homework).filter(
+            Homework.deadline >= start_of_week.date() if isinstance(start_of_week, datetime) else start_of_week,
+            Homework.deadline <= end_of_week.date() if isinstance(end_of_week, datetime) else end_of_week
         ).all()
 
-    return homework
+        for homework in homeworks:
+            print(f"Found homeworks: {homework.subject} on {homework.deadline}")
+
+    return homeworks
 
 def fetch_timetable_for_day(day: datetime):
     with Session(engine) as session:
