@@ -34,7 +34,7 @@ class Lesson(BaseModel):
             elif data["Substitution"]["TimeSlot"]:
                 stype = ChangeType.MOVE
 
-            elif data["Substitution"]["TeacherAbsenceReasonId"]:
+            elif data["Substitution"]["TeacherAbsenceReasonId"] or data["Substitution"]["TeacherPrimary"] == None:
                 stype = ChangeType.ABSENCE
 
 
